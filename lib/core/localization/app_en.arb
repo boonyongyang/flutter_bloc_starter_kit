@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "homePageTitle": "Home Page",
+  "welcomeMessage": "Welcome to the Flutter Bloc Starter Kit!",
+  "aboutProjectTitle": "About the Project",
+  "aboutProjectDescription": "Learn more about the features and goals.",
+  "apiCalls": "API Calls",
+  "localDatabase": "Local Database",
+  "offlineSync": "Offline Sync",
+  "localization": "Localization"
+}

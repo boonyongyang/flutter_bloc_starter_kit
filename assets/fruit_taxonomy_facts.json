@@ -1,0 +1,554 @@
+{
+  "family": {
+    "Betulaceae": {
+      "description": "The Betulaceae family is known for trees like birch, alder, and hazel, which produce edible nuts and seeds.",
+      "funFacts": [
+        "Though most Betulaceae are trees, some produce edible nuts like hazelnuts and filberts.",
+        "Many Betulaceae trees are known for their ornamental bark, especially the white-barked birches."
+      ]
+    },
+    "Rosaceae": {
+      "description": "The Rosaceae family includes many popular fruits like apples, pears, cherries, and strawberries.",
+      "funFacts": [
+        "Rosaceae is the same family as roses — your apple tree is a cousin to a rose bush!",
+        "Many Rosaceae fruits have five-petaled flowers, a trait they share with ornamental roses."
+      ]
+    },
+    "Rutaceae": {
+      "description": "The Rutaceae family includes many citrus fruits like oranges, lemons, and limes.",
+      "funFacts": [
+        "Citrus fruits in the Rutaceae family are hybrids developed over thousands of years.",
+        "Rutaceae plants often contain fragrant oils, which are used in perfumes and cleaning products."
+      ]
+    },
+    "Cucurbitaceae": {
+      "description": "The Cucurbitaceae family includes melons, cucumbers, squashes, and gourds.",
+      "funFacts": [
+        "Watermelons, pumpkins, and cucumbers all belong to this same sprawling family.",
+        "Many Cucurbitaceae plants produce tendrils to help them climb and spread across the ground."
+      ]
+    },
+    "Ebenaceae": {
+      "description": "The Ebenaceae family is known for persimmons and ebony trees with dense, dark wood.",
+      "funFacts": [
+        "Persimmons contain tannins that make them astringent until fully ripe.",
+        "Ebony wood from this family is prized for its black color and use in luxury items."
+      ]
+    },
+    "Musaceae": {
+      "description": "The Musaceae family includes bananas and plantains, among the world's most popular fruits.",
+      "funFacts": [
+        "Banana plants are actually giant herbs, not trees, and are related to ginger and bird-of-paradise.",
+        "Commercially grown bananas are sterile and propagated through cuttings rather than seeds."
+      ]
+    },
+    "Solanaceae": {
+      "description": "The Solanaceae family includes tomatoes, potatoes, eggplants, and peppers.",
+      "funFacts": [
+        "Many Solanaceae plants contain alkaloids like solanine that can be toxic in large amounts.",
+        "The Solanaceae family is sometimes called the 'nightshade' family, with both edible and poisonous members."
+      ]
+    },
+    "Malvaceae": {
+      "description": "The Malvaceae family includes durian, cacao (chocolate), and okra.",
+      "funFacts": [
+        "Durian, known as the 'king of fruits,' is notorious for its strong smell yet beloved for its custard-like flesh.",
+        "Cacao, the source of chocolate, also belongs to this family and was considered sacred by ancient Mesoamericans."
+      ]
+    },
+    "Ericaceae": {
+      "description": "The Ericaceae family includes blueberries, cranberries, and other berry-producing shrubs.",
+      "funFacts": [
+        "Ericaceae plants typically thrive in acidic soils where many other plants struggle to grow.",
+        "Many members of this family form symbiotic relationships with specialized fungi to help them absorb nutrients."
+      ]
+    },
+    "Actinidiaceae": {
+      "description": "The Actinidiaceae family is most famous for the kiwifruit genus Actinidia.",
+      "funFacts": [
+        "Kiwifruit plants are actually woody vines that can grow up to 30 feet long.",
+        "Most commercial kiwi varieties require both male and female plants for fruit production."
+      ]
+    },
+    "Sapindaceae": {
+      "description": "The Sapindaceae family includes lychee, rambutan, and longan fruits.",
+      "funFacts": [
+        "Many Sapindaceae fruits have sweet, translucent flesh surrounding a single seed.",
+        "Lychee has been cultivated in China for more than 2,000 years and was highly prized by emperors."
+      ]
+    },
+    "Bromeliaceae": {
+      "description": "The Bromeliaceae family includes pineapples and ornamental plants like bromeliads.",
+      "funFacts": [
+        "Pineapple is actually a composite fruit formed from many small fruits fused together.",
+        "Many bromeliads can collect water in their leaf rosettes, creating mini ecosystems in tropical forests."
+      ]
+    },
+    "Moraceae": {
+      "description": "The Moraceae family includes figs, mulberries, and breadfruit.",
+      "funFacts": [
+        "Fig fruits contain tiny wasp pollinators that enter through a small opening and can't escape.",
+        "Breadfruit, an important staple in the Pacific Islands, was the catalyst for the famous mutiny on the HMS Bounty."
+      ]
+    },
+    "Grossulariaceae": {
+      "description": "The Grossulariaceae family includes gooseberries and currants.",
+      "funFacts": [
+        "Black currants were once banned in the United States because they can spread a disease harmful to pine trees.",
+        "The name 'gooseberry' likely comes from the French 'groseille' rather than any connection to geese."
+      ]
+    },
+    "Passifloraceae": {
+      "description": "The Passifloraceae family includes passion fruits and is known for its distinctive flowers.",
+      "funFacts": [
+        "Passion flowers have elaborate structures said to symbolize elements of the Passion of Christ, hence the name.",
+        "Passion fruit vines can grow up to 20 feet in a single year in ideal conditions."
+      ]
+    },
+    "Anacardiaceae": {
+      "description": "The Anacardiaceae family includes mangoes, cashews, and pistachios.",
+      "funFacts": [
+        "Cashew nuts grow outside the fruit, and their shells contain an oil that can cause skin irritation.",
+        "Mangoes are related to poison ivy, which explains why some people are allergic to mango skin."
+      ]
+    },
+    "Myrtaceae": {
+      "description": "The Myrtaceae family includes guavas, eucalyptus, and cloves.",
+      "funFacts": [
+        "Many Myrtaceae plants contain aromatic oils used in traditional medicine and perfumery.",
+        "Eucalyptus, though mostly known for its timber and oils, produces fruits that Aboriginal Australians eat."
+      ]
+    },
+    "Cactaceae": {
+      "description": "The Cactaceae family includes prickly pears, dragon fruit, and other edible cacti.",
+      "funFacts": [
+        "Cacti have adapted to store water in their fleshy stems and can survive years of drought.",
+        "Prickly pear cactus fruits can be made into jams, candies, and even alcoholic beverages."
+      ]
+    },
+    "Lythraceae": {
+      "description": "The Lythraceae family includes pomegranates and crape myrtles.",
+      "funFacts": [
+        "Pomegranate fruits contain hundreds of edible seeds (arils) surrounded by juicy pulp.",
+        "Pomegranates have been cultivated since ancient times and feature in many cultural myths and religions."
+      ]
+    },
+    "Vitaceae": {
+      "description": "The Vitaceae family includes grapes and related climbing vines.",
+      "funFacts": [
+        "Wine production from grapes dates back over 8,000 years, making it one of humanity's oldest cultivated crops.",
+        "Most grape varieties used for wine production are from the species Vitis vinifera, native to the Mediterranean."
+      ]
+    },
+    "Lauraceae": {
+      "description": "The Lauraceae family includes avocados, cinnamon, and bay leaves.",
+      "funFacts": [
+        "Avocados contain more potassium than bananas and are one of the few fruits with significant fat content.",
+        "Avocado trees won't self-pollinate efficiently; they have evolved mechanisms to encourage cross-pollination."
+      ]
+    },
+    "Clusiaceae": {
+      "description": "The Clusiaceae family includes mangosteen and other tropical fruits.",
+      "funFacts": [
+        "Mangosteen has been called the 'queen of fruits' for its delicate, sweet-tart flavor.",
+        "The thick purple rind of mangosteen contains compounds being studied for potential medicinal properties."
+      ]
+    },
+    "Caricaceae": {
+      "description": "The Caricaceae family includes papayas and related species.",
+      "funFacts": [
+        "Papayas produce an enzyme called papain that can break down proteins and is used as a meat tenderizer.",
+        "Most papaya plants are either male or female, but some can change their sex depending on environmental conditions."
+      ]
+    },
+    "Annonaceae": {
+      "description": "The Annonaceae family includes custard apples, cherimoya, and soursop.",
+      "funFacts": [
+        "These fruits have a creamy texture and are sometimes called 'ice cream fruits' in tropical regions.",
+        "Many Annonaceae fruits have antiseptic properties and have been used in traditional medicine."
+      ]
+    },
+    "Salicaceae": {
+      "description": "The Salicaceae family includes kei apple and other less common fruit-bearing plants.",
+      "funFacts": [
+        "This family is better known for willows and poplars than for its edible fruits.",
+        "The kei apple from this family is actually a thorny shrub that produces small, acidic yellow fruits."
+      ]
+    },
+    "Myrtoideae": {
+      "description": "The Myrtoideae is actually a subfamily of Myrtaceae that includes many berry-producing plants.",
+      "funFacts": [
+        "This group includes the jaboticaba, which unusually grows its fruits directly on the trunk of the tree.",
+        "Many Myrtoideae plants have aromatic leaves containing essential oils."
+      ]
+    }
+  },
+  "genus": {
+    "Citrus": {
+      "description": "Genus Citrus includes oranges, lemons, limes, and other popular fruits.",
+      "funFacts": [
+        "All modern citrus fruits are hybrids derived from just three ancestors: pomelo, mandarin, and citron.",
+        "Citrus trees can produce both flowers and fruit at the same time — a rare trait in plants."
+      ]
+    },
+    "Prunus": {
+      "description": "Genus Prunus includes cherries, plums, apricots, and almonds.",
+      "funFacts": [
+        "Prunus trees bloom in early spring and are famous for their beautiful flowers.",
+        "Almonds are actually the edible seeds of Prunus dulcis, a close relative of peaches."
+      ]
+    },
+    "Cucumis": {
+      "description": "Cucumis includes melons and cucumbers and belongs to the gourd family.",
+      "funFacts": [
+        "Cucumbers and cantaloupes are both part of the Cucumis genus.",
+        "Cucumis fruits are known for their cooling and hydrating properties."
+      ]
+    },
+    "Diospyros": {
+      "description": "Genus Diospyros includes persimmons and ebony trees.",
+      "funFacts": [
+        "The name Diospyros means 'food of the gods' in Greek.",
+        "Some persimmon varieties must be fully ripened and soft before eating to avoid their astringent taste."
+      ]
+    },
+    "Fragaria": {
+      "description": "Genus Fragaria contains strawberries, one of the most popular berries worldwide.",
+      "funFacts": [
+        "The red 'berry' of strawberries is actually an enlarged receptacle, while the true fruits are the small seeds on the surface.",
+        "Strawberries are the only fruit with seeds on the outside rather than the inside."
+      ]
+    },
+    "Musa": {
+      "description": "Genus Musa includes bananas and plantains.",
+      "funFacts": [
+        "Wild bananas contain large, hard seeds, unlike the tiny black specks in cultivated varieties.",
+        "The banana 'tree' is actually the world's largest herb, with a pseudostem made of leaf sheaths."
+      ]
+    },
+    "Solanum": {
+      "description": "Genus Solanum includes tomatoes, eggplants, and potatoes.",
+      "funFacts": [
+        "Tomatoes were once thought to be poisonous in Europe and were grown only as ornamental plants.",
+        "Eggplants are technically berries, as they develop from a single flower with one ovary."
+      ]
+    },
+    "Pyrus": {
+      "description": "Genus Pyrus contains pears, cultivated for thousands of years.",
+      "funFacts": [
+        "Pears are one of the few fruits that ripen better off the tree than on it.",
+        "There are over 3,000 varieties of pears worldwide, with distinct flavors and textures."
+      ]
+    },
+    "Durio": {
+      "description": "Genus Durio contains durian, known for its strong smell and creamy texture.",
+      "funFacts": [
+        "Durian smell is so potent that it's banned in many hotels, public transport, and airports across Southeast Asia.",
+        "The durian fruit can weigh up to 7 pounds and has a thick, thorny husk protecting the edible flesh."
+      ]
+    },
+    "Rubus": {
+      "description": "Genus Rubus includes raspberries, blackberries, and other bramble fruits.",
+      "funFacts": [
+        "Blackberries and raspberries are aggregate fruits made up of many small drupelets.",
+        "Some Rubus species can spread aggressively and are considered invasive weeds in certain regions."
+      ]
+    },
+    "Vaccinium": {
+      "description": "Genus Vaccinium includes blueberries, cranberries, and bilberries.",
+      "funFacts": [
+        "Wild blueberries have twice the antioxidant content of cultivated varieties.",
+        "Cranberries don't actually grow in water, but their harvesting often involves flooding fields."
+      ]
+    },
+    "Apteryx": {
+      "description": "Note: Apteryx is actually a bird genus (kiwi birds). Kiwifruit belongs to Actinidia genus.",
+      "funFacts": [
+        "This is a taxonomic error; Apteryx refers to the flightless kiwi bird of New Zealand, not the fruit.",
+        "The kiwifruit was renamed from 'Chinese gooseberry' for marketing purposes in the 20th century."
+      ]
+    },
+    "Litchi": {
+      "description": "Genus Litchi contains the lychee fruit, prized for its sweet, floral flavor.",
+      "funFacts": [
+        "Fresh lychees need to be consumed quickly as they deteriorate rapidly after harvesting.",
+        "Lychee trees can grow up to 100 feet tall and can produce fruit for hundreds of years."
+      ]
+    },
+    "Ananas": {
+      "description": "Genus Ananas contains pineapples, tropical fruits with a distinctive crown of spiky leaves.",
+      "funFacts": [
+        "A pineapple plant typically produces just one fruit in its lifetime.",
+        "The word 'pineapple' was originally used to describe pine cones before being applied to the fruit."
+      ]
+    },
+    "Ficus": {
+      "description": "Genus Ficus includes figs and fig trees, which have a unique pollination relationship with wasps.",
+      "funFacts": [
+        "Fig 'fruits' are actually inverted flowers that develop inside a structure called a syconium.",
+        "Each fig species typically has its own specialized species of pollinator wasp."
+      ]
+    },
+    "Ribes": {
+      "description": "Genus Ribes includes currants and gooseberries.",
+      "funFacts": [
+        "The skins of these berries are edible and contain beneficial antioxidants.",
+        "Black currants have four times more vitamin C than oranges, weight for weight."
+      ]
+    },
+    "Passiflora": {
+      "description": "Genus Passiflora includes passion fruits and passion flowers.",
+      "funFacts": [
+        "There are over 500 species of Passiflora, but only a few produce edible fruits.",
+        "Passion flowers have complex structures with religious symbolism that inspired their name."
+      ]
+    },
+    "Malus": {
+      "description": "Genus Malus includes apples and crabapples.",
+      "funFacts": [
+        "Apple trees won't grow true from seeds; each seed produces a different variety.",
+        "There are over 7,500 known varieties of apples grown worldwide."
+      ]
+    },
+    "Mangifera": {
+      "description": "Genus Mangifera includes mangoes, one of the most widely consumed fruits in tropical regions.",
+      "funFacts": [
+        "Mangoes have been cultivated in South Asia for over 4,000 years and are considered sacred in some cultures.",
+        "A single mango tree can produce hundreds or even thousands of fruits in a season."
+      ]
+    },
+    "Psidium": {
+      "description": "Genus Psidium includes guavas, tropical fruits with edible seeds and skin.",
+      "funFacts": [
+        "Guavas have more vitamin C than oranges and more potassium than bananas.",
+        "The entire guava fruit is edible, including the rind, which is often richer in nutrients than the flesh."
+      ]
+    },
+    "Punica": {
+      "description": "Genus Punica contains pomegranates, ancient fruits with jewel-like seeds.",
+      "funFacts": [
+        "Pomegranates have been found in Egyptian tombs, indicating their cultural significance.",
+        "The leathery skin of pomegranates helps them stay fresh for months if kept cool."
+      ]
+    },
+    "Selenicereus": {
+      "description": "Genus Selenicereus includes dragon fruits or pitayas, with striking pink or yellow skin.",
+      "funFacts": [
+        "Dragon fruit plants are actually climbing cacti that often grow on trees or rocks in the wild.",
+        "Dragon fruit flowers bloom at night and are pollinated by bats and moths."
+      ]
+    },
+    "Vitis": {
+      "description": "Genus Vitis includes grapes and grapevines used for wine, raisins, and table consumption.",
+      "funFacts": [
+        "The oldest known winery was discovered in a cave in Armenia and dates back over 6,000 years.",
+        "Different wine grape varieties show dramatic differences in flavor despite having very similar DNA."
+      ]
+    },
+    "Morus": {
+      "description": "Genus Morus includes mulberries, which grow on trees rather than bushes.",
+      "funFacts": [
+        "Mulberry trees were essential to the silk industry as they are the sole food of silkworms.",
+        "White mulberries can produce fruit that's white, lavender, or black, despite the tree's name."
+      ]
+    },
+    "Sellowiana": {
+      "description": "Note: Sellowiana is actually a species name (Acca sellowiana) for the feijoa or pineapple guava.",
+      "funFacts": [
+        "This is a taxonomic error; the correct genus for feijoa is Acca, not Sellowiana.",
+        "Feijoa fruits have a unique flavor combining notes of guava, strawberry, and mint."
+      ]
+    },
+    "Persea": {
+      "description": "Genus Persea includes avocados, unique fruits with high oil content.",
+      "funFacts": [
+        "A single avocado tree can produce up to 500 fruits per year in ideal conditions.",
+        "Avocados ripen only after being picked from the tree, never while still attached."
+      ]
+    },
+    "Actinidia": {
+      "description": "Genus Actinidia includes kiwifruits, with fuzzy brown skin and bright green flesh.",
+      "funFacts": [
+        "Kiwifruit plants can live for over 50 years, producing fruit seasonally.",
+        "The brown 'fuzz' on kiwi skin is actually tiny, stiff hairs called trichomes."
+      ]
+    },
+    "Corylus": {
+      "description": "Genus Corylus includes hazelnuts and filberts.",
+      "funFacts": [
+        "Hazelnut trees can produce nuts for up to 40-50 years once established.",
+        "Hazelnuts are rich in protein and healthy fats, making them nutritionally valuable."
+      ]
+    },
+    "Garcinia": {
+      "description": "Genus Garcinia includes mangosteen and other tropical fruits.",
+      "funFacts": [
+        "The juice from mangosteen rinds has been used as a dye for centuries.",
+        "Mangosteen trees are notoriously difficult to grow outside their native tropical habitats."
+      ]
+    },
+    "Cucurbita": {
+      "description": "Genus Cucurbita includes pumpkins, squashes, and some gourds.",
+      "funFacts": [
+        "All parts of Cucurbita plants were used by Native Americans, including seeds, flesh, flowers, and oil.",
+        "The world's heaviest pumpkin weighed over 2,700 pounds (1,226 kg)."
+      ]
+    },
+    "Carica": {
+      "description": "Genus Carica includes papayas, tropical fruits with enzyme-rich flesh.",
+      "funFacts": [
+        "Unripe green papayas are used in cooking, while ripe orange ones are eaten fresh.",
+        "Christopher Columbus called papaya the 'fruit of the angels' because of its sweet taste."
+      ]
+    },
+    "Annonas": {
+      "description": "Genus Annona (corrected from Annonas) includes custard apples, cherimoya, and soursop.",
+      "funFacts": [
+        "Mark Twain called the cherimoya 'the most delicious fruit known to man.'",
+        "Annona fruits have been cultivated since pre-Columbian times in Central and South America."
+      ]
+    },
+    "Dovyalis": {
+      "description": "Genus Dovyalis includes kei apple and other lesser-known tropical fruits.",
+      "funFacts": [
+        "Dovyalis plants are often used as security hedges because of their thorny stems.",
+        "The kei apple is more closely related to willows than to apples, despite its name."
+      ]
+    },
+    "Artocarpus": {
+      "description": "Genus Artocarpus includes jackfruit and breadfruit.",
+      "funFacts": [
+        "Jackfruit is the largest tree-borne fruit, with some weighing up to 100 pounds (45 kg).",
+        "Breadfruit can be prepared in numerous ways similar to potatoes — roasted, boiled, or fried."
+      ]
+    }
+  },
+  "order": {
+    "Rosales": {
+      "description": "Rosales is a diverse plant order that includes roses, figs, mulberries, and cannabis.",
+      "funFacts": [
+        "The fig tree, a member of Rosales, has one of the most complex pollination systems involving wasps.",
+        "Mulberries from the Moraceae family (within Rosales) feed silkworms used in silk production."
+      ]
+    },
+    "Sapindales": {
+      "description": "Sapindales includes citrus fruits, maples, and cashews.",
+      "funFacts": [
+        "Many economically important trees like mango and cashew belong to this order.",
+        "Sapindales includes both tropical and temperate species."
+      ]
+    },
+    "Cucurbitales": {
+      "description": "The Cucurbitales order includes squash, melons, and gourds.",
+      "funFacts": [
+        "Plants in the Cucurbitales order are typically fast-growing vines.",
+        "Cucurbitales flowers are often large and colorful to attract pollinators."
+      ]
+    },
+    "Zingiberales": {
+      "description": "Zingiberales includes bananas, gingers, and birds-of-paradise.",
+      "funFacts": [
+        "Plants in this order often have starchy rhizomes used in cooking and traditional medicine.",
+        "Many Zingiberales are important in tropical agriculture and horticulture."
+      ]
+    },
+    "Solanales": {
+      "description": "Solanales includes tomatoes, potatoes, eggplants, and morning glories.",
+      "funFacts": [
+        "This order contains several of the world's most economically important food crops.",
+        "Many Solanales were initially viewed with suspicion in Europe due to their relation to toxic nightshades."
+      ]
+    },
+    "Malvales": {
+      "description": "Malvales includes chocolate (cacao), durian, cotton, and hibiscus.",
+      "funFacts": [
+        "This order contains some of the world's most important non-food crops like cotton.",
+        "The cacao tree, source of chocolate, can only grow within 20 degrees of the equator."
+      ]
+    },
+    "Ericales": {
+      "description": "Ericales includes blueberries, tea plants, and persimmons.",
+      "funFacts": [
+        "Plants in this order often grow in acidic soil conditions where other plants struggle.",
+        "The tea plant (Camellia sinensis) belongs to this order, providing the world's most consumed beverage after water."
+      ]
+    },
+    "Struthioniformes": {
+      "description": "Note: Struthioniformes is actually a bird order (ostriches), not a plant order. This is a data error.",
+      "funFacts": [
+        "This is a taxonomic error; Struthioniformes refers to flightless birds like ostriches, not plants.",
+        "Kiwifruit belongs to order Ericales, not Struthioniformes."
+      ]
+    },
+    "Poales": {
+      "description": "Poales includes grasses, pineapples, and sedges.",
+      "funFacts": [
+        "This order contains the grass family, which includes wheat, rice, corn, and other staple crops.",
+        "Pineapples are an unusual fruit-producing member of this otherwise largely grain-producing order."
+      ]
+    },
+    "Saxifragales": {
+      "description": "Saxifragales includes gooseberries, currants, and stonecrop plants.",
+      "funFacts": [
+        "Plants in this order often grow in rocky areas or harsh environments.",
+        "The name 'Saxifragales' comes from Latin, meaning 'stone-breaker,' as many species grow in rock crevices."
+      ]
+    },
+    "Malpighiales": {
+      "description": "Malpighiales includes passion fruits, willows, and violets.",
+      "funFacts": [
+        "This diverse order contains both important timber trees and ornamental flowers.",
+        "Many Malpighiales produce latex, oils, or other commercially valuable plant products."
+      ]
+    },
+    "Myrtales": {
+      "description": "Myrtales includes pomegranates, eucalyptus, and guavas.",
+      "funFacts": [
+        "Plants in this order often produce essential oils with medicinal properties.",
+        "Myrtales contains some of the world's tallest flowering plants, including certain eucalyptus species."
+      ]
+    },
+    "Caryophyllales": {
+      "description": "Caryophyllales includes cacti, amaranth, and beets.",
+      "funFacts": [
+        "This order includes many plants adapted to extreme environments like deserts and salt marshes.",
+        "Many Caryophyllales have unusual pigments not found in other plant groups."
+      ]
+    },
+    "Vitales": {
+      "description": "Vitales is a small order that primarily contains the grape family (Vitaceae).",
+      "funFacts": [
+        "Almost all members of Vitales are climbing plants with tendrils.",
+        "Grape cultivation for wine production is one of humanity's oldest agricultural practices."
+      ]
+    },
+    "Laurales": {
+      "description": "Laurales includes avocados, cinnamon, and laurel.",
+      "funFacts": [
+        "Many Laurales plants produce aromatic compounds used in cooking and perfumery.",
+        "Avocados have an unusual flowering mechanism where flowers open as female on the first day and male on the second."
+      ]
+    },
+    "Fagales": {
+      "description": "Fagales includes beeches, oaks, hazelnuts, and walnuts.",
+      "funFacts": [
+        "This order contains some of the world's most important timber trees.",
+        "Many Fagales have mutually beneficial relationships with fungi that help them absorb nutrients."
+      ]
+    },
+    "Brassicales": {
+      "description": "Brassicales includes papayas, capers, and mustard plants.",
+      "funFacts": [
+        "Plants in this order often contain compounds that give them a distinctive spicy or bitter taste.",
+        "Papaya is an unusual fruit-bearing member of this otherwise largely vegetable-producing order."
+      ]
+    },
+    "Myrtoideae": {
+      "description": "Note: This is actually a subfamily, not an order. The correct order is Myrtales.",
+      "funFacts": [
+        "This is a taxonomic classification error; Myrtoideae is a subfamily of the Myrtaceae family.",
+        "Plants in this group include eucalyptus, guava, and cloves."
+      ]
+    }
+  }
+}
