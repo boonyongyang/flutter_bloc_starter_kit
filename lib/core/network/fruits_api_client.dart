@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import '../../models/fruit_model.dart';
+
+import '../../features/fruits/models/fruit_model.dart';
 
 part 'fruits_api_client.g.dart';
 

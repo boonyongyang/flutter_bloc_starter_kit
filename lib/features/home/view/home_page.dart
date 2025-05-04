@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../blocs/theme_cubit.dart';
+import '../../../features/theme/bloc/theme_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -24,15 +24,19 @@ class HomePage extends StatelessWidget {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              context.read<ThemeCubit>().state.brightness == Brightness.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-              color: colorScheme.onPrimary,
-            ),
-            onPressed: () {
-              context.read<ThemeCubit>().toggleTheme();
+          BlocBuilder<ThemeCubit, ThemeData>(
+            builder: (context, themeState) {
+              return IconButton(
+                icon: Icon(
+                  themeState.brightness == Brightness.dark
+                      ? Icons.light_mode
+                      : Icons.dark_mode,
+                  color: colorScheme.onPrimary,
+                ),
+                onPressed: () {
+                  context.read<ThemeCubit>().toggleTheme();
+                },
+              );
             },
           ),
         ],

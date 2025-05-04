@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../style/app_colors.dart';
 
 /// Common nutrition icons and colors used throughout the app
@@ -30,6 +29,28 @@ class NutritionInfo {
       icon: Icons.local_fire_department,
       color: AppColors.laserAmber,
       tooltip: 'Energy provided in kcal'
+    ),
+  };
+}
+
+/// Taxonomy information for displaying fruit classifications
+class TaxonomyInfo {
+  static const Map<String, ({IconData icon, Color color, String tooltip})>
+      taxonomy = {
+    'family': (
+      icon: Icons.family_restroom,
+      color: AppColors.neonBlue,
+      tooltip: 'Botanical family'
+    ),
+    'genus': (
+      icon: Icons.eco,
+      color: AppColors.successGreen,
+      tooltip: 'Genus classification'
+    ),
+    'order': (
+      icon: Icons.account_tree,
+      color: AppColors.cyberpunkPurple,
+      tooltip: 'Order in plant taxonomy'
     ),
   };
 }

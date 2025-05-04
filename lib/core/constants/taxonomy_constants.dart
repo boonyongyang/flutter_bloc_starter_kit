@@ -1,7 +1,8 @@
-/// Constants related to taxonomy types used throughout the application
-/// These constants are used to ensure consistency and avoid magic strings
-
 // Taxonomy type constants
+import 'package:flutter/material.dart';
+
+import '../style/style.dart';
+
 const String kFamilyType = 'family';
 const String kGenusType = 'genus';
 const String kOrderType = 'order';
@@ -26,3 +27,25 @@ const Map<String, String> kTaxonomyDisplayNames = {
   kGenusType: 'Genus',
   kOrderType: 'Order',
 };
+
+/// Taxonomy information for displaying fruit classifications
+class TaxonomyInfo {
+  static const Map<String, ({IconData icon, Color color, String tooltip})>
+      taxonomy = {
+    'family': (
+      icon: Icons.family_restroom,
+      color: AppColors.neonBlue,
+      tooltip: 'Botanical family'
+    ),
+    'genus': (
+      icon: Icons.eco,
+      color: AppColors.successGreen,
+      tooltip: 'Genus classification'
+    ),
+    'order': (
+      icon: Icons.account_tree,
+      color: AppColors.cyberpunkPurple,
+      tooltip: 'Order in plant taxonomy'
+    ),
+  };
+}
