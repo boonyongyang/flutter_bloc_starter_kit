@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/nutrition_constants.dart';
 import '../../../../core/constants/taxonomy_constants.dart';
@@ -107,11 +108,11 @@ class _FruitsPageState extends State<FruitsPage> {
               context.read<FruitsCubit>().fetchFruits();
             }),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showSortSheet,
-        tooltip: 'Sort',
-        child: const Icon(Icons.sort),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _showSortSheet,
+      //   tooltip: 'Sort',
+      //   child: const Icon(Icons.sort),
+      // ),
     );
   }
 }
@@ -260,8 +261,7 @@ class _FruitsBody extends StatelessWidget {
     return BlocBuilder<FruitsCubit, FruitsState>(
       builder: (context, state) {
         if (state is FruitsLoading) {
-          // TODO: update loading view with skeleton
-          return const Center(child: CircularProgressIndicator());
+          return const _FruitsBodyLoadingView();
         }
 
         if (state is FruitsLoaded) {
@@ -313,7 +313,6 @@ class _FruitsBody extends StatelessWidget {
           final avgFat = fruitCount > 0 ? totalFat / fruitCount : 0;
           final avgCalories = fruitCount > 0 ? totalCalories / fruitCount : 0;
 
-          // --- Modern dashboard layout ---
           return RefreshIndicator(
             onRefresh: onRefresh ?? () async {},
             child: ListView(
@@ -389,20 +388,52 @@ class _FruitsBody extends StatelessWidget {
                       const Gap(16),
 
                       // List header
+                      Row(
+                        children: [
+                          const Icon(Icons.format_list_bulleted, size: 16),
+                          const Gap(8),
+                          Text(
+                            'All Fruits',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      ),
+                      const Gap(16),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: Row(
                           children: [
-                            const Icon(Icons.format_list_bulleted, size: 16),
-                            const Gap(8),
-                            Text(
-                              'All Fruits',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            ActionChip(
+                              avatar: const Icon(Icons.sort,
+                                  size: 16, color: AppColors.hologramWhite),
+                              label: Text(
+                                effectiveSort.label,
+                                style: const TextStyle(
+                                  color: AppColors.hologramWhite,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              onPressed: () {
+                                final pageState =
+                                    context.findAncestorStateOfType<
+                                        _FruitsPageState>();
+                                pageState?._showSortSheet();
+                              },
+                              backgroundColor:
+                                  AppColors.cyberpunkPurple, // A vibrant color
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(16), // Border radius
+                              ),
+                              visualDensity: VisualDensity.compact,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4), // Adjust padding as needed
                             ),
                             const Spacer(),
                             Text(
@@ -436,6 +467,171 @@ class _FruitsBody extends StatelessWidget {
 
         return const Center(child: Text('No data available'));
       },
+    );
+  }
+}
+
+class _FruitsBodyLoadingView extends StatelessWidget {
+  const _FruitsBodyLoadingView();
+
+  @override
+  Widget build(BuildContext context) {
+    final cardBorderRadius = BorderRadius.circular(12);
+    final shimmerElementColor = Colors.white.withOpacity(0.5);
+
+    return Shimmer.fromColors(
+      baseColor: AppColors.midnightBlue,
+      highlightColor: AppColors.nightShade,
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Shimmer for NutritionalOverviewSection
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    3,
+                    (_) => Expanded(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: cardBorderRadius),
+                        child: Container(
+                          height: 100,
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: BoxDecoration(
+                            color: shimmerElementColor,
+                            borderRadius: cardBorderRadius,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Gap(24),
+                // Shimmer for NutritionalBarChartSection
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: shimmerElementColor,
+                      borderRadius: cardBorderRadius,
+                    ),
+                  ),
+                ),
+                const Gap(24),
+                // Shimmer for TaxonomyDistributionSection
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
+                  child: Container(
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: shimmerElementColor,
+                      borderRadius: cardBorderRadius,
+                    ),
+                  ),
+                ),
+                const Gap(24),
+                // Shimmer for NotableFruitsSection
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
+                  child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: shimmerElementColor,
+                      borderRadius: cardBorderRadius,
+                    ),
+                  ),
+                ),
+                const Gap(24),
+                // Shimmer for NutritionalComparisonSection
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
+                  child: Container(
+                    height: 300,
+                    decoration: BoxDecoration(
+                      color: shimmerElementColor,
+                      borderRadius: cardBorderRadius,
+                    ),
+                  ),
+                ),
+                const Gap(16),
+                // Shimmer for List header
+                Row(
+                  children: [
+                    Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: shimmerElementColor,
+                            borderRadius: BorderRadius.circular(4))),
+                    const Gap(8),
+                    Container(
+                        width: 100,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: shimmerElementColor,
+                            borderRadius: BorderRadius.circular(4))),
+                    const Spacer(),
+                    Container(
+                        width: 80,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: shimmerElementColor,
+                            borderRadius: BorderRadius.circular(4))),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Shimmer for FruitListTiles
+          ...List.generate(
+            5, // Number of shimmer list items
+            (index) => Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                children: [
+                  Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: shimmerElementColor,
+                          borderRadius: BorderRadius.circular(8)),
+                      margin: const EdgeInsets.only(right: 16)),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: double.infinity,
+                            height: 16,
+                            decoration: BoxDecoration(
+                                color: shimmerElementColor,
+                                borderRadius: BorderRadius.circular(4))),
+                        const Gap(4),
+                        Container(
+                            width: 100,
+                            height: 12,
+                            decoration: BoxDecoration(
+                                color: shimmerElementColor,
+                                borderRadius: BorderRadius.circular(4))),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/fruits/presentation/pages/fruits_page.dart';
 import '../../features/theme/bloc/theme_cubit.dart';
 import '../../features/fruits/bloc/fruits_cubit.dart';
-import '../../features/fruits/presentation/pages/fruits_page.dart';
 import '../../features/home/presentation/pages/local_database_page.dart';
 import '../../features/home/presentation/pages/localization_page.dart';
 import '../../features/home/presentation/pages/offline_sync_page.dart';
