@@ -15,8 +15,8 @@ final locator = GetIt.instance;
 final Dio dio = Dio(
   BaseOptions(
     baseUrl: 'https://api.example.com',
-    connectTimeout: const Duration(milliseconds: 5000),
-    receiveTimeout: const Duration(milliseconds: 3000),
+    connectTimeout: const Duration(seconds: 30),
+    receiveTimeout: const Duration(seconds: 30),
   ),
 )..interceptors.add(
     PrettyDioLogger(
