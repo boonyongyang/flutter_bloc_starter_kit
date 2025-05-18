@@ -25,30 +25,33 @@ class TaxonomyFactCard extends StatefulWidget {
 
 class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   late final TaxonomyCubit _taxonomyCubit;
-  String _selectedType = kFamilyType; // Default to family
+  late final ValueNotifier<String> _selectedTypeNotifier;
 
   @override
   void initState() {
     super.initState();
     _taxonomyCubit = TaxonomyCubit(locator());
+    _selectedTypeNotifier = ValueNotifier(kFamilyType); // Default to family
     _loadFact();
   }
 
   @override
   void dispose() {
     _taxonomyCubit.close();
+    _selectedTypeNotifier.dispose();
     super.dispose();
   }
 
   void _loadFact() {
     final fruit = widget.fruit;
+    final selectedType = _selectedTypeNotifier.value;
 
     // Add debug logging
-    logger.d('Loading $_selectedType fact for: ${fruit.name}');
+    logger.d('Loading $selectedType fact for: ${fruit.name}');
     logger.d(
         'Family: ${fruit.family}, Genus: ${fruit.genus}, Order: ${fruit.order}');
 
-    switch (_selectedType) {
+    switch (selectedType) {
       case kFamilyType:
         if (fruit.family.isEmpty) {
           logger.d('Warning: Fruit has empty family name');
@@ -72,40 +75,45 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _taxonomyCubit,
-      child: BlocBuilder<TaxonomyCubit, TaxonomyState>(
-        builder: (context, state) {
-          return Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(
-                color: _getColorForType().withOpacity(0.2),
-                width: 1,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(context),
-                  Divider(
-                    height: 24,
-                    color: _getColorForType().withOpacity(0.3),
+    return ValueListenableBuilder<String>(
+      valueListenable: _selectedTypeNotifier,
+      builder: (context, selectedType, _) {
+        return BlocProvider.value(
+          value: _taxonomyCubit,
+          child: BlocBuilder<TaxonomyCubit, TaxonomyState>(
+            builder: (context, state) {
+              return Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: BorderSide(
+                    color: _getColorForType(selectedType).withOpacity(0.2),
+                    width: 1,
                   ),
-                  _buildContent(context, state),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(context, selectedType),
+                      Divider(
+                        height: 24,
+                        color: _getColorForType(selectedType).withOpacity(0.3),
+                      ),
+                      _buildContent(context, state, selectedType),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, String selectedType) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -126,14 +134,14 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
           child: SizedBox(
             // Setting a width constraint to ensure proper sizing
             width: MediaQuery.of(context).size.width * 0.8,
-            child: _buildTypeSelector(),
+            child: _buildTypeSelector(selectedType),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildTypeSelector() {
+  Widget _buildTypeSelector(String selectedType) {
     return SegmentedButton<String>(
       segments: const [
         ButtonSegment<String>(
@@ -152,23 +160,25 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
           label: Text('Order', style: TextStyle(fontSize: 12)),
         ),
       ],
-      selected: {_selectedType},
-      style: const ButtonStyle(
+      selected: {selectedType},
+      style: SegmentedButton.styleFrom(
         visualDensity: VisualDensity.compact,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        selectedForegroundColor: Colors.white,
+        selectedBackgroundColor: Colors.grey[800],
       ),
+      showSelectedIcon: false,
       onSelectionChanged: (Set<String> selection) {
-        setState(() {
-          _selectedType = selection.first;
-          _loadFact();
-        });
+        _selectedTypeNotifier.value = selection.first;
+        _loadFact();
       },
     );
   }
 
-  Widget _buildContent(BuildContext context, TaxonomyState state) {
+  Widget _buildContent(
+      BuildContext context, TaxonomyState state, String selectedType) {
     if (state is TaxonomyLoading) {
-      final displayType = kTaxonomyDisplayNames[_selectedType] ?? _selectedType;
+      final displayType = kTaxonomyDisplayNames[selectedType] ?? selectedType;
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 40),
@@ -176,13 +186,14 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
             mainAxisSize: MainAxisSize.min,
             children: [
               CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(_getColorForType()),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    _getColorForType(selectedType)),
               ),
               const SizedBox(height: 16),
               Text(
                 'Loading $displayType information...',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: _getColorForType(),
+                      color: _getColorForType(selectedType),
                     ),
               ),
             ],
@@ -190,10 +201,11 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
         ),
       );
     } else if (state is TaxonomyLoaded) {
-      return _buildFactDisplay(context, state.fact, state.taxonomyName);
+      return _buildFactDisplay(
+          context, state.fact, state.taxonomyName, selectedType);
     } else if (state is TaxonomyError) {
       // Handle error state with more user-friendly message and retry option
-      return _buildErrorDisplay(context, state.message);
+      return _buildErrorDisplay(context, state.message, selectedType);
     } else {
       return const Center(
         child: Padding(
@@ -208,6 +220,7 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
     BuildContext context,
     TaxonomyFact fact,
     String taxonomyName,
+    String selectedType,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,21 +228,21 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
           decoration: BoxDecoration(
-            color: _getColorForType().withOpacity(0.15),
+            color: _getColorForType(selectedType).withOpacity(0.15),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                _getTaxonomyTypeIcon(),
+                _getTaxonomyTypeIcon(selectedType),
                 style: const TextStyle(fontSize: 20),
               ),
               const Gap(8),
               Text(
                 taxonomyName,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: _getColorForType(),
+                      color: _getColorForType(selectedType),
                       fontWeight: FontWeight.w600,
                     ),
               ),
@@ -246,7 +259,7 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           decoration: BoxDecoration(
-            color: _getColorForType().withOpacity(0.08),
+            color: _getColorForType(selectedType).withOpacity(0.08),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
@@ -257,13 +270,13 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
                   Icon(
                     Icons.lightbulb_outline,
                     size: 16,
-                    color: _getColorForType(),
+                    color: _getColorForType(selectedType),
                   ),
                   const Gap(6),
                   Text(
                     'Fun Facts',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: _getColorForType(),
+                          color: _getColorForType(selectedType),
                         ),
                   ),
                 ],
@@ -278,7 +291,7 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: _getColorForType(),
+                              color: _getColorForType(selectedType),
                             )),
                         const Gap(8),
                         Expanded(
@@ -298,9 +311,10 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   }
 
   // Helper method to build error display
-  Widget _buildErrorDisplay(BuildContext context, String message) {
-    final displayType = kTaxonomyDisplayNames[_selectedType] ??
-        _selectedType[0].toUpperCase() + _selectedType.substring(1);
+  Widget _buildErrorDisplay(
+      BuildContext context, String message, String selectedType) {
+    final displayType = kTaxonomyDisplayNames[selectedType] ??
+        selectedType[0].toUpperCase() + selectedType.substring(1);
 
     return Container(
       padding: const EdgeInsets.all(20.0),
@@ -330,7 +344,7 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
-              '$displayType: ${_getTaxonomyName()}',
+              '$displayType: ${_getTaxonomyName(selectedType)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.red.shade800,
                   ),
@@ -356,8 +370,8 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   }
 
   // Get the current taxonomy name based on selected type
-  String _getTaxonomyName() {
-    switch (_selectedType) {
+  String _getTaxonomyName(String selectedType) {
+    switch (selectedType) {
       case kFamilyType:
         return widget.fruit.family;
       case kGenusType:
@@ -369,12 +383,12 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
     }
   }
 
-  String _getTaxonomyTypeIcon() {
-    return kTaxonomyIcons[_selectedType] ?? '🔍';
+  String _getTaxonomyTypeIcon(String selectedType) {
+    return kTaxonomyIcons[selectedType] ?? '🔍';
   }
 
-  Color _getColorForType() {
-    switch (_selectedType) {
+  Color _getColorForType(String selectedType) {
+    switch (selectedType) {
       case kFamilyType:
         return AppColors.neonBlue;
       case kGenusType:
