@@ -17,7 +17,7 @@ import '../widgets/nutritional_bar_chart_section.dart';
 import '../widgets/nutritional_comparison_section.dart';
 import '../widgets/nutritional_overview_section.dart';
 import '../widgets/taxonomy_distribution_section.dart';
-import '../widgets/loading_constants.dart';
+import '../../../../core/constants/loading_constants.dart';
 
 class FruitsPage extends StatefulWidget {
   const FruitsPage({super.key});

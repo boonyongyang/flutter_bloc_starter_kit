@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/style/nutrition_ui_constants.dart';
+import '../../../../core/constants/nutrition_constants.dart';
 import '../../models/fruit_model.dart';
 
 class NutritionChips extends StatelessWidget {

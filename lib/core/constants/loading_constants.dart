@@ -1,6 +1,3 @@
-
-// Defines constants used for the loading shimmer effect in the fruits feature.
-
 // BorderRadius for shimmer cards
 const double kShimmerCardBorderRadius = 12.0;
 
