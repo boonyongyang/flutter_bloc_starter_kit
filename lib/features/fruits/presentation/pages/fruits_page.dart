@@ -8,41 +8,16 @@ import '../../../../core/constants/taxonomy_constants.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../bloc/fruits_cubit.dart';
 import '../../bloc/fruits_state.dart';
+import '../../models/fruit_model.dart';
+import '../../models/fruit_sort.dart';
+import '../../utils/fruit_analysis_utils.dart';
 import '../widgets/fruit_list_tile.dart';
 import '../widgets/notable_fruits_section.dart';
 import '../widgets/nutritional_bar_chart_section.dart';
 import '../widgets/nutritional_comparison_section.dart';
 import '../widgets/nutritional_overview_section.dart';
 import '../widgets/taxonomy_distribution_section.dart';
-
-enum FruitSort {
-  name('Name (A-Z)'),
-  sugar('Sugar (High to Low)'),
-  sugarLow('Sugar (Low to High)'),
-  protein('Protein (High to Low)'),
-  fat('Fat (High to Low)'),
-  calories('Calories (High to Low)');
-
-  final String label;
-  const FruitSort(this.label);
-
-  int compare(dynamic a, dynamic b) {
-    switch (this) {
-      case FruitSort.name:
-        return a.name.toLowerCase().compareTo(b.name.toLowerCase());
-      case FruitSort.sugar:
-        return b.nutritions.sugar.compareTo(a.nutritions.sugar);
-      case FruitSort.sugarLow:
-        return a.nutritions.sugar.compareTo(b.nutritions.sugar);
-      case FruitSort.protein:
-        return b.nutritions.protein.compareTo(a.nutritions.protein);
-      case FruitSort.fat:
-        return b.nutritions.fat.compareTo(a.nutritions.fat);
-      case FruitSort.calories:
-        return b.nutritions.calories.compareTo(a.nutritions.calories);
-    }
-  }
-}
+import '../widgets/loading_constants.dart';
 
 class FruitsPage extends StatefulWidget {
   const FruitsPage({super.key});
@@ -54,11 +29,30 @@ class FruitsPage extends StatefulWidget {
 class _FruitsPageState extends State<FruitsPage> {
   final ValueNotifier<FruitSort> _selectedSort =
       ValueNotifier(FruitSort.calories);
+  late ScrollController _scrollController;
+  final ValueNotifier<bool> _showFab = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     // context.read<FruitsCubit>().fetchFruits(); // not required, as it's provided by parent
+  }
+
+  void _scrollListener() {
+    if (!mounted) return;
+    final screenHeight = MediaQuery.of(context).size.height;
+    // Show FAB if scrolled more than half the screen height
+    if (_scrollController.offset > screenHeight * 0.5) {
+      if (!_showFab.value) {
+        _showFab.value = true;
+      }
+    } else {
+      if (_showFab.value) {
+        _showFab.value = false;
+      }
+    }
   }
 
   void _showSortSheet() async {
@@ -75,6 +69,9 @@ class _FruitsPageState extends State<FruitsPage> {
   @override
   void dispose() {
     _selectedSort.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    _showFab.dispose();
     super.dispose();
   }
 
@@ -103,16 +100,32 @@ class _FruitsPageState extends State<FruitsPage> {
       body: ValueListenableBuilder<FruitSort>(
         valueListenable: _selectedSort,
         builder: (context, sort, _) => _FruitsBody(
-            sort: sort,
-            onRefresh: () async {
-              context.read<FruitsCubit>().fetchFruits();
-            }),
+          sort: sort,
+          onRefresh: () async {
+            context.read<FruitsCubit>().fetchFruits();
+          },
+          onSortPressed: _showSortSheet,
+          scrollController: _scrollController, // Pass the scroll controller
+        ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _showSortSheet,
-      //   tooltip: 'Sort',
-      //   child: const Icon(Icons.sort),
-      // ),
+      floatingActionButton: ValueListenableBuilder<bool>(
+        valueListenable: _showFab,
+        builder: (context, show, child) {
+          return show
+              ? FloatingActionButton(
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      0.0,
+                      duration: const Duration(milliseconds: 1000),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  tooltip: 'Scroll to Top',
+                  child: const Icon(Icons.arrow_upward),
+                )
+              : const SizedBox.shrink();
+        },
+      ),
     );
   }
 }
@@ -254,7 +267,15 @@ class _IconInfo {
 class _FruitsBody extends StatelessWidget {
   final FruitSort? sort;
   final Future<void> Function()? onRefresh;
-  const _FruitsBody({this.sort, this.onRefresh});
+  final VoidCallback? onSortPressed;
+  final ScrollController? scrollController; // Add scrollController
+
+  const _FruitsBody({
+    this.sort,
+    this.onRefresh,
+    this.onSortPressed,
+    this.scrollController, // Add to constructor
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -266,56 +287,20 @@ class _FruitsBody extends StatelessWidget {
 
         if (state is FruitsLoaded) {
           final FruitSort effectiveSort = sort ?? FruitSort.name;
-          final sortedFruits = [...state.fruits]..sort(effectiveSort.compare);
+          final sortedFruits = List<Fruit>.from(state.fruits)
+            ..sort(effectiveSort.compare);
+
           if (sortedFruits.isEmpty) {
             return const Center(child: Text('No fruits available'));
           }
 
-          // --- Calculate nutritional averages and find extremes ---
-          double totalSugar = 0,
-              totalCarbs = 0,
-              totalProtein = 0,
-              totalFat = 0,
-              totalCalories = 0;
-          var highestCaloriesFruit = sortedFruits.first;
-          var highestProteinFruit = sortedFruits.first;
-          var highestSugarFruit = sortedFruits.first;
-          var lowestCaloriesFruit = sortedFruits.first;
-
-          for (final fruit in sortedFruits) {
-            totalSugar += fruit.nutritions.sugar;
-            totalCarbs += fruit.nutritions.carbohydrates;
-            totalProtein += fruit.nutritions.protein;
-            totalFat += fruit.nutritions.fat;
-            totalCalories += fruit.nutritions.calories;
-
-            if (fruit.nutritions.calories >
-                highestCaloriesFruit.nutritions.calories) {
-              highestCaloriesFruit = fruit;
-            }
-            if (fruit.nutritions.protein >
-                highestProteinFruit.nutritions.protein) {
-              highestProteinFruit = fruit;
-            }
-            if (fruit.nutritions.sugar > highestSugarFruit.nutritions.sugar) {
-              highestSugarFruit = fruit;
-            }
-            if (fruit.nutritions.calories <
-                lowestCaloriesFruit.nutritions.calories) {
-              lowestCaloriesFruit = fruit;
-            }
-          }
-
-          final fruitCount = sortedFruits.length;
-          final avgSugar = fruitCount > 0 ? totalSugar / fruitCount : 0;
-          final avgCarbs = fruitCount > 0 ? totalCarbs / fruitCount : 0;
-          final avgProtein = fruitCount > 0 ? totalProtein / fruitCount : 0;
-          final avgFat = fruitCount > 0 ? totalFat / fruitCount : 0;
-          final avgCalories = fruitCount > 0 ? totalCalories / fruitCount : 0;
+          // Calculate nutritional data using the imported function
+          final analysisData = calculateFruitAnalysisData(sortedFruits);
 
           return RefreshIndicator(
             onRefresh: onRefresh ?? () async {},
             child: ListView(
+              controller: scrollController, // Assign the controller
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 Padding(
@@ -339,21 +324,21 @@ class _FruitsBody extends StatelessWidget {
 
                       // Nutritional overview cards
                       NutritionalOverviewSection(
-                        avgCalories: avgCalories,
-                        avgProtein: avgProtein,
-                        avgSugar: avgSugar,
-                        avgCarbs: avgCarbs,
-                        fruitCount: sortedFruits.length,
+                        avgCalories: analysisData.avgCalories,
+                        avgProtein: analysisData.avgProtein,
+                        avgSugar: analysisData.avgSugar,
+                        avgCarbs: analysisData.avgCarbs,
+                        fruitCount: analysisData.fruitCount,
                       ),
 
                       const Gap(24),
 
                       // Bar chart comparing average nutrient values
                       NutritionalBarChartSection(
-                        avgSugar: avgSugar,
-                        avgCarbs: avgCarbs,
-                        avgProtein: avgProtein,
-                        avgFat: avgFat,
+                        avgSugar: analysisData.avgSugar,
+                        avgCarbs: analysisData.avgCarbs,
+                        avgProtein: analysisData.avgProtein,
+                        avgFat: analysisData.avgFat,
                       ),
 
                       const Gap(24),
@@ -367,10 +352,10 @@ class _FruitsBody extends StatelessWidget {
 
                       // Notable fruits section
                       NotableFruitsSection(
-                        highestCaloriesFruit: highestCaloriesFruit,
-                        highestProteinFruit: highestProteinFruit,
-                        highestSugarFruit: highestSugarFruit,
-                        lowestCaloriesFruit: lowestCaloriesFruit,
+                        highestCaloriesFruit: analysisData.highestCaloriesFruit,
+                        highestProteinFruit: analysisData.highestProteinFruit,
+                        highestSugarFruit: analysisData.highestSugarFruit,
+                        lowestCaloriesFruit: analysisData.lowestCaloriesFruit,
                       ),
 
                       const Gap(24),
@@ -379,9 +364,9 @@ class _FruitsBody extends StatelessWidget {
                       NutritionalComparisonSection(
                         fruits: sortedFruits,
                         selectedFruits: [
-                          highestCaloriesFruit.name,
-                          highestProteinFruit.name,
-                          highestSugarFruit.name
+                          analysisData.highestCaloriesFruit.name,
+                          analysisData.highestProteinFruit.name,
+                          analysisData.highestSugarFruit.name
                         ],
                       ),
 
@@ -409,8 +394,11 @@ class _FruitsBody extends StatelessWidget {
                         child: Row(
                           children: [
                             ActionChip(
-                              avatar: const Icon(Icons.sort,
-                                  size: 16, color: AppColors.hologramWhite),
+                              avatar: const Icon(
+                                Icons.sort,
+                                size: 16,
+                                color: AppColors.hologramWhite,
+                              ),
                               label: Text(
                                 effectiveSort.label,
                                 style: const TextStyle(
@@ -418,26 +406,20 @@ class _FruitsBody extends StatelessWidget {
                                   fontSize: 12,
                                 ),
                               ),
-                              onPressed: () {
-                                final pageState =
-                                    context.findAncestorStateOfType<
-                                        _FruitsPageState>();
-                                pageState?._showSortSheet();
-                              },
-                              backgroundColor:
-                                  AppColors.cyberpunkPurple, // A vibrant color
+                              onPressed: onSortPressed,
+                              backgroundColor: AppColors.cyberpunkPurple,
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(16), // Border radius
+                                borderRadius: BorderRadius.circular(16),
                               ),
                               visualDensity: VisualDensity.compact,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4), // Adjust padding as needed
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                             ),
                             const Spacer(),
                             Text(
-                              '${sortedFruits.length} items',
+                              '${analysisData.fruitCount} items',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -476,7 +458,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardBorderRadius = BorderRadius.circular(12);
+    final cardBorderRadius = BorderRadius.circular(kShimmerCardBorderRadius);
     final shimmerElementColor = Colors.white.withOpacity(0.5);
 
     return Shimmer.fromColors(
@@ -497,13 +479,13 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
-                    3,
+                    kShimmerOverviewCardCount,
                     (_) => Expanded(
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: cardBorderRadius),
                         child: Container(
-                          height: 100,
+                          height: kShimmerOverviewHeight,
                           margin: const EdgeInsets.symmetric(horizontal: 4),
                           decoration: BoxDecoration(
                             color: shimmerElementColor,
@@ -519,7 +501,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: 200,
+                    height: kShimmerBarChartHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -531,7 +513,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: 250,
+                    height: kShimmerTaxonomyHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -543,7 +525,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: 150,
+                    height: kShimmerNotableHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -555,7 +537,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: 300,
+                    height: kShimmerComparisonHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -567,22 +549,22 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                        width: 20,
-                        height: 20,
+                        width: kShimmerListHeaderIconSize,
+                        height: kShimmerListHeaderIconSize,
                         decoration: BoxDecoration(
                             color: shimmerElementColor,
                             borderRadius: BorderRadius.circular(4))),
                     const Gap(8),
                     Container(
-                        width: 100,
-                        height: 20,
+                        width: kShimmerListHeaderTextWidth,
+                        height: kShimmerListHeaderIconSize,
                         decoration: BoxDecoration(
                             color: shimmerElementColor,
                             borderRadius: BorderRadius.circular(4))),
                     const Spacer(),
                     Container(
-                        width: 80,
-                        height: 20,
+                        width: kShimmerListHeaderCounterWidth,
+                        height: kShimmerListHeaderIconSize,
                         decoration: BoxDecoration(
                             color: shimmerElementColor,
                             borderRadius: BorderRadius.circular(4))),
@@ -593,15 +575,15 @@ class _FruitsBodyLoadingView extends StatelessWidget {
           ),
           // Shimmer for FruitListTiles
           ...List.generate(
-            5, // Number of shimmer list items
+            kShimmerListItemCount,
             (index) => Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Row(
                 children: [
                   Container(
-                      width: 40,
-                      height: 40,
+                      width: kShimmerListItemImageSize,
+                      height: kShimmerListItemImageSize,
                       decoration: BoxDecoration(
                           color: shimmerElementColor,
                           borderRadius: BorderRadius.circular(8)),
@@ -612,14 +594,15 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                       children: [
                         Container(
                             width: double.infinity,
-                            height: 16,
+                            height: kShimmerListItemTitleHeight,
                             decoration: BoxDecoration(
                                 color: shimmerElementColor,
                                 borderRadius: BorderRadius.circular(4))),
                         const Gap(4),
                         Container(
-                            width: 100,
-                            height: 12,
+                            width:
+                                100, // Could be a constant if desired, e.g., kShimmerListItemSubtitleMaxWidth
+                            height: kShimmerListItemSubtitleHeight,
                             decoration: BoxDecoration(
                                 color: shimmerElementColor,
                                 borderRadius: BorderRadius.circular(4))),

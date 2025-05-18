@@ -1,5 +1,4 @@
-
-import './fruit_model.dart'; // For the Fruit type in compare method
+import './fruit_model.dart';
 
 enum FruitSort {
   name('Name (A-Z)'),
