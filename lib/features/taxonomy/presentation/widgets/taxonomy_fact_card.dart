@@ -46,7 +46,6 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
     final fruit = widget.fruit;
     final selectedType = _selectedTypeNotifier.value;
 
-    // Add debug logging
     logger.d('Loading $selectedType fact for: ${fruit.name}');
     logger.d(
         'Family: ${fruit.family}, Genus: ${fruit.genus}, Order: ${fruit.order}');
@@ -351,7 +350,6 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
             ),
           ),
           const SizedBox(height: 20),
-          // Add retry button
           ElevatedButton.icon(
             onPressed: _loadFact,
             icon: const Icon(Icons.refresh, size: 16),

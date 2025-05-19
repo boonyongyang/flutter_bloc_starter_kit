@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/nutrition_constants.dart';
 import '../../../../core/constants/taxonomy_constants.dart';
+import '../../../../core/constants/presentation_constants.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../../../../core/style/app_colors.dart';
+import '../../../auth/bloc/auth_cubit.dart';
+import '../../../auth/bloc/auth_state.dart';
 import '../../bloc/fruits_cubit.dart';
 import '../../bloc/fruits_state.dart';
 import '../../models/fruit_model.dart';
@@ -37,9 +43,19 @@ class _FruitsPageState extends State<FruitsPage> {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    // context.read<FruitsCubit>().fetchFruits(); // not required, as it's provided by parent
+    // Initial data fetch is handled by the parent/router.
   }
 
+  @override
+  void dispose() {
+    _selectedSort.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    _showFab.dispose();
+    super.dispose();
+  }
+
+  // --- UI Event Handlers ---
   void _scrollListener() {
     if (!mounted) return;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -63,16 +79,9 @@ class _FruitsPageState extends State<FruitsPage> {
     );
     if (result != null && result != _selectedSort.value) {
       _selectedSort.value = result;
+      HapticFeedback.lightImpact();
+      // TODO: [Demo Enhancement] Add subtle animation on sort change.
     }
-  }
-
-  @override
-  void dispose() {
-    _selectedSort.dispose();
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-    _showFab.dispose();
-    super.dispose();
   }
 
   void _showIconInfoSheet() {
@@ -84,47 +93,117 @@ class _FruitsPageState extends State<FruitsPage> {
     );
   }
 
+  void _onLogoutPressed() async {
+    final confirmLogout = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Confirm Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(false);
+              },
+            ),
+            TextButton(
+              child: const Text('Logout'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmLogout == true) {
+      context.read<AuthCubit>().logout();
+    }
+  }
+
+  Future<void> _onRefreshRequested() async {
+    context.read<FruitsCubit>().fetchFruits();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Refreshing fruits data...'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+    // It's better to show success/failure based on the actual result from the cubit.
+  }
+
+  void _onScrollToTopPressed() {
+    _scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  // --- Build Methods ---
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fruits'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            tooltip: 'Icon legend',
-            onPressed: _showIconInfoSheet,
+    return PrimaryScrollController(
+      controller: _scrollController,
+      child: Scaffold(
+        // TODO: [Demo Enhancement] Consider making AppBar theme more dynamic or customizable.
+        appBar: AppBar(
+          title: const Text('Fruits Dashboard'),
+          leading: IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: _onLogoutPressed,
           ),
-        ],
-      ),
-      body: ValueListenableBuilder<FruitSort>(
-        valueListenable: _selectedSort,
-        builder: (context, sort, _) => _FruitsBody(
-          sort: sort,
-          onRefresh: () async {
-            context.read<FruitsCubit>().fetchFruits();
-          },
-          onSortPressed: _showSortSheet,
-          scrollController: _scrollController, // Pass the scroll controller
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              tooltip: 'Icon legend',
+              onPressed: _showIconInfoSheet,
+            ),
+          ],
         ),
-      ),
-      floatingActionButton: ValueListenableBuilder<bool>(
-        valueListenable: _showFab,
-        builder: (context, show, child) {
-          return show
-              ? FloatingActionButton(
-                  onPressed: () {
-                    _scrollController.animateTo(
-                      0.0,
-                      duration: const Duration(milliseconds: 1000),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  tooltip: 'Scroll to Top',
-                  child: const Icon(Icons.arrow_upward),
-                )
-              : const SizedBox.shrink();
-        },
+        body: BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            state.whenOrNull(
+              unauthenticated: () {
+                // Navigate to login when unauthenticated.
+                // This assumes FruitsPage always requires authentication.
+                final currentLocation = GoRouter.of(context)
+                    .routerDelegate
+                    .currentConfiguration
+                    .uri
+                    .toString();
+                if (currentLocation != AppRoutes.login.path) {
+                  context.go(AppRoutes.login.path);
+                }
+              },
+            );
+          },
+          child: ValueListenableBuilder<FruitSort>(
+            valueListenable: _selectedSort,
+            builder: (context, sort, _) => _FruitsBody(
+              sort: sort,
+              onRefresh: _onRefreshRequested,
+              onSortPressed: _showSortSheet,
+              scrollController: _scrollController,
+            ),
+          ),
+        ),
+        floatingActionButton: ValueListenableBuilder<bool>(
+          valueListenable: _showFab,
+          builder: (context, show, child) {
+            return show
+                ? FloatingActionButton(
+                    shape: const CircleBorder(),
+                    onPressed: _onScrollToTopPressed,
+                    tooltip: 'Scroll to Top',
+                    // TODO: [Demo Enhancement] Consider a more descriptive icon or mini-fab.
+                    child: const Icon(Icons.arrow_upward),
+                  )
+                : const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
@@ -136,63 +215,36 @@ class _IconInfoSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<_IconInfo> items = [
-      _IconInfo(
-        icon: NutritionInfo.nutrients['sugar']!.icon,
-        color: NutritionInfo.nutrients['sugar']!.color,
-        title: 'Sugar',
-        description:
-            'Amount of sugar (g) in the fruit. High sugar fruits are sweeter.',
-      ),
-      _IconInfo(
-        icon: NutritionInfo.nutrients['carbohydrates']!.icon,
-        color: NutritionInfo.nutrients['carbohydrates']!.color,
-        title: 'Carbohydrates',
-        description: 'Total carbohydrates (g), including sugars and fiber.',
-      ),
-      _IconInfo(
-        icon: NutritionInfo.nutrients['protein']!.icon,
-        color: NutritionInfo.nutrients['protein']!.color,
-        title: 'Protein',
-        description:
-            'Protein (g) content. Important for body repair and growth.',
-      ),
-      _IconInfo(
-        icon: NutritionInfo.nutrients['fat']!.icon,
-        color: NutritionInfo.nutrients['fat']!.color,
-        title: 'Fat',
-        description: 'Fat (g) content. Most fruits are naturally low in fat.',
-      ),
-      _IconInfo(
-        icon: NutritionInfo.nutrients['calories']!.icon,
-        color: NutritionInfo.nutrients['calories']!.color,
-        title: 'Calories',
-        description: 'Energy provided by the fruit (kcal).',
-      ),
-      _IconInfo(
-        icon: TaxonomyInfo.taxonomy['family']!.icon,
-        color: TaxonomyInfo.taxonomy['family']!.color,
-        title: 'Family',
-        description: 'The botanical family this fruit belongs to.',
-      ),
-      _IconInfo(
-        icon: TaxonomyInfo.taxonomy['genus']!.icon,
-        color: TaxonomyInfo.taxonomy['genus']!.color,
-        title: 'Genus',
-        description: 'The genus classification of the fruit.',
-      ),
-      _IconInfo(
-        icon: TaxonomyInfo.taxonomy['order']!.icon,
-        color: TaxonomyInfo.taxonomy['order']!.color,
-        title: 'Order',
-        description: 'The order classification in plant taxonomy.',
-      ),
-    ];
+    // TODO: [Demo Enhancement] Consider making this data driven from a config file or constants.
+    final List<_IconInfo> items = IconGlossaryConstants.items.map((itemData) {
+      final String key = itemData['key'] as String;
+      final InfoSourceType sourceType =
+          itemData['sourceType'] as InfoSourceType;
+      IconData icon;
+      Color color;
+
+      if (sourceType == InfoSourceType.nutrition) {
+        icon = NutritionInfo.nutrients[key]!.icon;
+        color = NutritionInfo.nutrients[key]!.color;
+      } else {
+        // InfoSourceType.taxonomy
+        icon = TaxonomyInfo.taxonomy[key]!.icon;
+        color = TaxonomyInfo.taxonomy[key]!.color;
+      }
+
+      return _IconInfo(
+        icon: icon,
+        color: color,
+        title: itemData['title'] as String,
+        description: itemData['description'] as String,
+      );
+    }).toList();
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min, // Ensure Column takes minimum height
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -207,6 +259,12 @@ class _IconInfoSheet extends StatelessWidget {
               ],
             ),
             const Gap(12),
+            // Removed Expanded and ListView, directly using Column for items
+            // as the content is not expected to be excessively long and
+            // MainAxisSize.min on the parent Column will handle sizing.
+            // If content *can* be very long, then ListView + Expanded is correct,
+            // but isScrollControlled: true would also be needed on showModalBottomSheet.
+            // For a typical glossary, this direct Column approach is often sufficient.
             ...items.map((item) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
@@ -268,20 +326,32 @@ class _FruitsBody extends StatelessWidget {
   final FruitSort? sort;
   final Future<void> Function()? onRefresh;
   final VoidCallback? onSortPressed;
-  final ScrollController? scrollController; // Add scrollController
+  final ScrollController? scrollController;
 
   const _FruitsBody({
     this.sort,
     this.onRefresh,
     this.onSortPressed,
-    this.scrollController, // Add to constructor
+    this.scrollController,
   });
+
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 17) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FruitsCubit, FruitsState>(
       builder: (context, state) {
         if (state is FruitsLoading) {
+          // TODO: [Demo Enhancement] Add a more engaging loading animation or placeholder.
           return const _FruitsBodyLoadingView();
         }
 
@@ -291,16 +361,16 @@ class _FruitsBody extends StatelessWidget {
             ..sort(effectiveSort.compare);
 
           if (sortedFruits.isEmpty) {
-            return const Center(child: Text('No fruits available'));
+            // TODO: [Demo Enhancement] Add an illustration or a "call to action" for empty states.
+            return _buildEmptyState(context);
           }
 
-          // Calculate nutritional data using the imported function
           final analysisData = calculateFruitAnalysisData(sortedFruits);
 
           return RefreshIndicator(
             onRefresh: onRefresh ?? () async {},
             child: ListView(
-              controller: scrollController, // Assign the controller
+              controller: scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 Padding(
@@ -311,16 +381,24 @@ class _FruitsBody extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Center(
-                      //   child: Text(
-                      //     'Fruit Nutrition Dashboard',
-                      //     style: Theme.of(context)
-                      //         .textTheme
-                      //         .titleLarge
-                      //         ?.copyWith(fontWeight: FontWeight.bold),
-                      //   ),
-                      // ),
-                      // const Gap(24),
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, authState) {
+                          String username = 'User';
+                          authState.whenOrNull(
+                            authenticated: (name) {
+                              username = name;
+                            },
+                          );
+                          return Text(
+                            '${_getGreeting()}, $username!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          );
+                        },
+                      ),
+                      const Gap(12),
 
                       // Nutritional overview cards
                       NutritionalOverviewSection(
@@ -434,21 +512,63 @@ class _FruitsBody extends StatelessWidget {
                   ),
                 ),
                 // --- List of fruits ---
+                // TODO: [Demo Enhancement] Implement pagination or infinite scrolling for very long lists.
                 ...List.generate(
                   sortedFruits.length,
                   (index) => FruitListTile(fruit: sortedFruits[index]),
                 ),
+                const Gap(16),
               ],
             ),
           );
         }
 
         if (state is FruitsError) {
-          return Center(child: Text('Error: ${state.message}'));
+          // TODO: [Demo Enhancement] Provide a "Retry" button or more specific error feedback.
+          return _buildErrorState(context, state.message);
         }
 
-        return const Center(child: Text('No data available'));
+        // TODO: [Demo Enhancement] Handle unexpected states more gracefully.
+        return _buildEmptyState(context,
+            message: 'No data available (unexpected state).');
       },
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context,
+      {String message = 'No fruits available'}) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(message),
+          const Gap(8),
+          ElevatedButton(
+            onPressed: () {
+              context.read<FruitsCubit>().fetchFruits();
+            },
+            child: const Text('Try Again'),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(BuildContext context, String errorMessage) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Error: $errorMessage'),
+          const Gap(16),
+          ElevatedButton(
+            onPressed: () {
+              context.read<FruitsCubit>().fetchFruits();
+            },
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,11 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:uuid/uuid.dart';
 
 import '../config/logger.dart';
 import '../network/fruits_api_client.dart';
 import '../storage/local_database_client.dart';
 import '../providers/performance_config.dart';
+import '../../features/auth/bloc/auth_cubit.dart';
+import '../../features/auth/services/auth_service.dart';
 import '../../features/fruits/data/fruits_repository_impl.dart';
 import '../../features/fruits/data/fruits_repository.dart';
 import '../../features/taxonomy/data/taxonomy_repository.dart';
@@ -38,6 +42,19 @@ void setupServiceLocator() {
   locator.registerLazySingleton<FruitsRepository>(
       () => FruitsRepositoryImpl(FruitsApiClient(dio)));
 
+  // Register FlutterSecureStorage
+  locator.registerLazySingleton<FlutterSecureStorage>(
+      () => const FlutterSecureStorage());
+
+  // Register Uuid
+  locator.registerLazySingleton<Uuid>(() => const Uuid());
+
+  // Register AuthService
+  locator.registerLazySingleton<AuthService>(() => AuthService(
+        locator<FlutterSecureStorage>(),
+        locator<Uuid>(),
+      ));
+
   // Register our local database client as a singleton
   final localDbClient = LocalDatabaseClient();
   locator.registerLazySingleton(() => localDbClient);
@@ -45,4 +62,9 @@ void setupServiceLocator() {
   // Register our taxonomy repository (using the local database)
   locator.registerLazySingleton<TaxonomyRepository>(
       () => TaxonomyRepositoryImpl(localDbClient));
+
+  // Register Cubits/Blocs as factories
+  locator.registerFactory<AuthCubit>(
+    () => AuthCubit(locator<AuthService>()),
+  );
 }

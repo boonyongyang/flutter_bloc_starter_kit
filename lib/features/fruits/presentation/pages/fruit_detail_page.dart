@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../../../taxonomy/presentation/widgets/taxonomy_fact_card.dart';
 import '../../models/fruit_model.dart';
@@ -44,8 +45,8 @@ class FruitDetailPage extends StatelessWidget {
                   // Fruit info card
                   FruitInfoCard(fruit: fruit),
 
-                  const SizedBox(height: 28),
-                  const SizedBox(height: 28),
+                  const Gap(28),
+                  const Gap(28),
 
                   // Radar chart for main macros
                   MacroNutrientRadarChart(
@@ -53,17 +54,17 @@ class FruitDetailPage extends StatelessWidget {
                     macroLabels: macroLabels,
                   ),
 
-                  const SizedBox(height: 28),
+                  const Gap(28),
 
                   // Nutrition breakdown chips
                   NutritionChips(nutrition: nutrition),
 
-                  const SizedBox(height: 28),
+                  const Gap(28),
 
                   // Taxonomy facts card
                   TaxonomyFactCard(fruit: fruit),
 
-                  const SizedBox(height: 28),
+                  const Gap(72),
                 ],
               ),
             ),
