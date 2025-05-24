@@ -80,7 +80,6 @@ class _FruitsPageState extends State<FruitsPage> {
     if (result != null && result != _selectedSort.value) {
       _selectedSort.value = result;
       HapticFeedback.lightImpact();
-      // TODO: [Demo Enhancement] Add subtle animation on sort change.
     }
   }
 
@@ -147,19 +146,21 @@ class _FruitsPageState extends State<FruitsPage> {
     return PrimaryScrollController(
       controller: _scrollController,
       child: Scaffold(
-        // TODO: [Demo Enhancement] Consider making AppBar theme more dynamic or customizable.
         appBar: AppBar(
           title: const Text('Fruits Dashboard'),
           leading: IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-            onPressed: _onLogoutPressed,
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'Icon legend',
+            onPressed: _showIconInfoSheet,
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.info_outline),
-              tooltip: 'Icon legend',
-              onPressed: _showIconInfoSheet,
+              icon: const Icon(
+                Icons.logout,
+                color: AppColors.errorRed,
+              ),
+              tooltip: 'Logout',
+              onPressed: _onLogoutPressed,
             ),
           ],
         ),
@@ -198,7 +199,6 @@ class _FruitsPageState extends State<FruitsPage> {
                     shape: const CircleBorder(),
                     onPressed: _onScrollToTopPressed,
                     tooltip: 'Scroll to Top',
-                    // TODO: [Demo Enhancement] Consider a more descriptive icon or mini-fab.
                     child: const Icon(Icons.arrow_upward),
                   )
                 : const SizedBox.shrink();
@@ -215,7 +215,6 @@ class _IconInfoSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: [Demo Enhancement] Consider making this data driven from a config file or constants.
     final List<_IconInfo> items = IconGlossaryConstants.items.map((itemData) {
       final String key = itemData['key'] as String;
       final InfoSourceType sourceType =
@@ -351,7 +350,6 @@ class _FruitsBody extends StatelessWidget {
     return BlocBuilder<FruitsCubit, FruitsState>(
       builder: (context, state) {
         if (state is FruitsLoading) {
-          // TODO: [Demo Enhancement] Add a more engaging loading animation or placeholder.
           return const _FruitsBodyLoadingView();
         }
 
@@ -361,7 +359,6 @@ class _FruitsBody extends StatelessWidget {
             ..sort(effectiveSort.compare);
 
           if (sortedFruits.isEmpty) {
-            // TODO: [Demo Enhancement] Add an illustration or a "call to action" for empty states.
             return _buildEmptyState(context);
           }
 
@@ -512,10 +509,11 @@ class _FruitsBody extends StatelessWidget {
                   ),
                 ),
                 // --- List of fruits ---
-                // TODO: [Demo Enhancement] Implement pagination or infinite scrolling for very long lists.
                 ...List.generate(
                   sortedFruits.length,
-                  (index) => FruitListTile(fruit: sortedFruits[index]),
+                  (index) => FruitListTile(
+                    fruit: sortedFruits[index],
+                  ),
                 ),
                 const Gap(16),
               ],
@@ -524,13 +522,10 @@ class _FruitsBody extends StatelessWidget {
         }
 
         if (state is FruitsError) {
-          // TODO: [Demo Enhancement] Provide a "Retry" button or more specific error feedback.
           return _buildErrorState(context, state.message);
         }
 
-        // TODO: [Demo Enhancement] Handle unexpected states more gracefully.
-        return _buildEmptyState(context,
-            message: 'No data available (unexpected state).');
+        return _buildEmptyState(context, message: 'No data available.');
       },
     );
   }
