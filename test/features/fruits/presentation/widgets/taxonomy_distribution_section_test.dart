@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc_starter_kit/features/fruits/presentation/widgets/taxonomy_distribution_section.dart';
-import 'package:flutter_bloc_starter_kit/features/fruits/models/fruit_model.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/data/models/fruit_model.dart';
 
 void main() {
   testWidgets('TaxonomyDistributionSection displays taxonomy info',

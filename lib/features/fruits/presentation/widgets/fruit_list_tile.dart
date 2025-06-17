@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/style/style.dart';
 import '../../../../core/constants/nutrition_constants.dart';
-import '../../models/fruit_model.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../../data/models/fruit_model.dart';
 
 class FruitListTile extends StatelessWidget {
   final Fruit fruit;
@@ -13,6 +13,8 @@ class FruitListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nutrition = fruit.nutritions;
+    final theme = Theme.of(context);
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       elevation: 2,
@@ -30,13 +32,12 @@ class FruitListTile extends StatelessWidget {
               // Leading icon for fruit
               CircleAvatar(
                 radius: 24,
-                backgroundColor: AppColors.neonBlue.withOpacity(0.12),
+                backgroundColor: theme.colorScheme.tertiary.withOpacity(0.12),
                 child: Text(
                   fruit.name.isNotEmpty ? fruit.name[0].toUpperCase() : '',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppColors.neonBlue,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: AppTextStyles.w700p20.copyWith(
+                    color: theme.colorScheme.tertiary,
+                  ),
                 ),
               ),
               const Gap(14),
@@ -51,10 +52,7 @@ class FruitListTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             fruit.name,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
+                            style: AppTextStyles.w700p16,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -64,45 +62,33 @@ class FruitListTile extends StatelessWidget {
                         if (fruit.family.isNotEmpty)
                           Row(
                             children: [
-                              const Icon(Icons.family_restroom,
-                                  size: 16, color: AppColors.neonBlue),
+                              Icon(Icons.family_restroom,
+                                  size: 16, color: theme.colorScheme.tertiary),
                               const Gap(2),
-                              Text(fruit.family,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(fontWeight: FontWeight.w500)),
+                              Text(fruit.family, style: AppTextStyles.w500p12),
                             ],
                           )
                         else if ((fruit.genus).isNotEmpty)
                           Row(
                             children: [
-                              const Icon(Icons.eco,
-                                  size: 16, color: AppColors.successGreen),
+                              Icon(Icons.eco,
+                                  size: 16, color: theme.colorScheme.secondary),
                               const Gap(2),
-                              Text(fruit.genus,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(fontWeight: FontWeight.w500)),
+                              Text(fruit.genus, style: AppTextStyles.w500p12),
                             ],
                           )
                         else if ((fruit.order).isNotEmpty)
                           Row(
                             children: [
-                              const Icon(Icons.account_tree,
-                                  size: 16, color: AppColors.cyberpunkPurple),
+                              Icon(Icons.account_tree,
+                                  size: 16, color: theme.colorScheme.primary),
                               const Gap(2),
-                              Text(fruit.order,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(fontWeight: FontWeight.w500)),
+                              Text(fruit.order, style: AppTextStyles.w500p12),
                             ],
                           ),
                         const Gap(6),
-                        const Icon(Icons.arrow_forward_ios,
-                            size: 14, color: AppColors.matrixSilver),
+                        Icon(Icons.arrow_forward_ios,
+                            size: 14, color: theme.colorScheme.outline),
                       ],
                     ),
                     const Gap(2),
@@ -112,14 +98,10 @@ class FruitListTile extends StatelessWidget {
                         if (fruit.genus.isNotEmpty)
                           Row(
                             children: [
-                              const Icon(Icons.eco,
-                                  size: 16, color: AppColors.successGreen),
+                              Icon(Icons.eco,
+                                  size: 16, color: theme.colorScheme.secondary),
                               const Gap(2),
-                              Text(fruit.genus,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(fontWeight: FontWeight.w500)),
+                              Text(fruit.genus, style: AppTextStyles.w500p12),
                             ],
                           ),
                         if (fruit.order.isNotEmpty)
@@ -127,15 +109,10 @@ class FruitListTile extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 12.0),
                             child: Row(
                               children: [
-                                const Icon(Icons.account_tree,
-                                    size: 16, color: AppColors.cyberpunkPurple),
+                                Icon(Icons.account_tree,
+                                    size: 16, color: theme.colorScheme.primary),
                                 const Gap(2),
-                                Text(fruit.order,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.w500)),
+                                Text(fruit.order, style: AppTextStyles.w500p12),
                               ],
                             ),
                           ),
@@ -146,22 +123,24 @@ class FruitListTile extends StatelessWidget {
                     Row(
                       children: [
                         _NutValue(
-                          icon: NutritionInfo.nutrients['sugar']!.icon,
-                          color: NutritionInfo.nutrients['sugar']!.color,
+                          icon: NutritionConstants.nutrients['sugar']!.icon,
+                          color: NutritionConstants.nutrients['sugar']!.color,
                           value: nutrition.sugar.toStringAsFixed(1),
                           label: 'sugar',
                         ),
                         _NutValue(
-                          icon: NutritionInfo.nutrients['carbohydrates']!.icon,
-                          color:
-                              NutritionInfo.nutrients['carbohydrates']!.color,
+                          icon: NutritionConstants
+                              .nutrients['carbohydrates']!.icon,
+                          color: NutritionConstants
+                              .nutrients['carbohydrates']!.color,
                           value: nutrition.carbohydrates.toStringAsFixed(1),
                           label: 'carbs',
                         ),
                         const Spacer(),
                         _NutValue(
-                          icon: NutritionInfo.nutrients['calories']!.icon,
-                          color: NutritionInfo.nutrients['calories']!.color,
+                          icon: NutritionConstants.nutrients['calories']!.icon,
+                          color:
+                              NutritionConstants.nutrients['calories']!.color,
                           value: nutrition.calories.toString(),
                           label: 'kcal',
                         ),
@@ -170,14 +149,14 @@ class FruitListTile extends StatelessWidget {
                     Row(
                       children: [
                         _NutValue(
-                          icon: NutritionInfo.nutrients['protein']!.icon,
-                          color: NutritionInfo.nutrients['protein']!.color,
+                          icon: NutritionConstants.nutrients['protein']!.icon,
+                          color: NutritionConstants.nutrients['protein']!.color,
                           value: nutrition.protein.toStringAsFixed(1),
                           label: 'protein',
                         ),
                         _NutValue(
-                          icon: NutritionInfo.nutrients['fat']!.icon,
-                          color: NutritionInfo.nutrients['fat']!.color,
+                          icon: NutritionConstants.nutrients['fat']!.icon,
+                          color: NutritionConstants.nutrients['fat']!.color,
                           value: nutrition.fat.toStringAsFixed(1),
                           label: 'fat',
                         ),
@@ -221,16 +200,15 @@ class _NutValue extends StatelessWidget {
           const Gap(2),
           Text(
             value,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                ),
+            style: AppTextStyles.w600p14.copyWith(
+              color: color,
+            ),
           ),
           Text(
             ' $label',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.matrixSilver,
-                ),
+            style: AppTextStyles.w400p12.copyWith(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            ),
           ),
         ],
       ),

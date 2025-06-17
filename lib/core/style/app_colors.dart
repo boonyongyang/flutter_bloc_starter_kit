@@ -11,6 +11,7 @@ class AppColors {
 
   // Accent colors
   static const Color neonAqua = Color(0xFF05D9E8); // Bright teal for highlights
+  // static const Color darkTeal = Color(0xFF116466); // Dark teal
   static const Color syntheticIndigo = Color(0xFF7C7FF9); // Softer indigo
   static const Color cyborgPurple = Color(0xFFAB65FF); // Brighter purple
   static const Color digitalTeal = Color(0xFF3DDBD9); // Bright teal

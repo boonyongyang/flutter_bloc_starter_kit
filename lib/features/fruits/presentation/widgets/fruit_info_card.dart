@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
-import '../../../../core/style/app_colors.dart';
-import '../../models/fruit_model.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../../data/models/fruit_model.dart';
 
 class FruitInfoCard extends StatelessWidget {
   final Fruit fruit;
@@ -25,13 +26,13 @@ class FruitInfoCard extends StatelessWidget {
             Row(
               children: [
                 _buildFruitAvatar(context),
-                const SizedBox(width: 20),
+                const Gap(20),
                 Expanded(
                   child: _buildFruitHeader(context),
                 ),
               ],
             ),
-            const SizedBox(height: 14),
+            const Gap(14),
             _buildFruitDescription(context),
           ],
         ),
@@ -40,15 +41,15 @@ class FruitInfoCard extends StatelessWidget {
   }
 
   Widget _buildFruitAvatar(BuildContext context) {
+    final theme = Theme.of(context);
     return CircleAvatar(
       radius: 32,
-      backgroundColor: AppColors.neonAqua.withOpacity(0.15),
+      backgroundColor: theme.colorScheme.secondary.withOpacity(0.15),
       child: Text(
         fruit.name.isNotEmpty ? fruit.name[0].toUpperCase() : '',
-        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: AppColors.neonAqua,
-              fontWeight: FontWeight.bold,
-            ),
+        style: AppTextStyles.w700p24.copyWith(
+          color: theme.colorScheme.secondary,
+        ),
       ),
     );
   }
@@ -59,18 +60,13 @@ class FruitInfoCard extends StatelessWidget {
       children: [
         Text(
           fruit.name,
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style: AppTextStyles.w700p20,
         ),
-        const SizedBox(height: 4),
+        const Gap(4),
         Text(
           '${fruit.family} family · ${fruit.genus} genus',
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AppColors.matrixSilver),
+          style: AppTextStyles.w400p14.copyWith(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest),
         ),
       ],
     );
@@ -79,7 +75,7 @@ class FruitInfoCard extends StatelessWidget {
   Widget _buildFruitDescription(BuildContext context) {
     return Text(
       'The ${fruit.name} is a member of the ${fruit.family} family and belongs to the ${fruit.genus} genus. It is classified under the order ${fruit.order}.',
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: AppTextStyles.w400p16,
     );
   }
 }

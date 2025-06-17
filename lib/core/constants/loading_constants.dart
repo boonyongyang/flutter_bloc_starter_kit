@@ -1,25 +1,22 @@
-// BorderRadius for shimmer cards
-const double kShimmerCardBorderRadius = 12.0;
+/// Shimmer loading constants
+class LoadingConstants {
+  // Dimensions
+  static const double shimmerCardBorderRadius = 12.0;
+  static const double shimmerOverviewHeight = 100.0;
+  static const double shimmerBarChartHeight = 200.0;
+  static const double shimmerTaxonomyHeight = 250.0;
+  static const double shimmerNotableHeight = 150.0;
+  static const double shimmerComparisonHeight = 300.0;
+  static const double shimmerListHeaderIconSize = 20.0;
+  static const double shimmerListHeaderTextWidth = 100.0;
+  static const double shimmerListHeaderCounterWidth = 80.0;
+  static const double shimmerListItemImageSize = 40.0;
+  static const double shimmerListItemTitleHeight = 16.0;
+  static const double shimmerListItemSubtitleHeight = 12.0;
 
-// Heights for shimmer placeholder containers
-const double kShimmerOverviewHeight = 100.0;
-const double kShimmerBarChartHeight = 200.0;
-const double kShimmerTaxonomyHeight = 250.0;
-const double kShimmerNotableHeight = 150.0;
-const double kShimmerComparisonHeight = 300.0;
+  // Counts
+  static const int shimmerOverviewCardCount = 3;
+  static const int shimmerListItemCount = 5;
 
-// Count for generating shimmer overview cards
-const int kShimmerOverviewCardCount = 3;
-
-// Dimensions for shimmer list header elements
-const double kShimmerListHeaderIconSize = 20.0;
-const double kShimmerListHeaderTextWidth = 100.0;
-const double kShimmerListHeaderCounterWidth = 80.0;
-
-// Count for generating shimmer list items
-const int kShimmerListItemCount = 5;
-
-// Dimensions for shimmer list item elements
-const double kShimmerListItemImageSize = 40.0;
-const double kShimmerListItemTitleHeight = 16.0;
-const double kShimmerListItemSubtitleHeight = 12.0;
+  LoadingConstants._();
+}

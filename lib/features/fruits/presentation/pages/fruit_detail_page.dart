@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../taxonomy/presentation/widgets/taxonomy_fact_card.dart';
-import '../../models/fruit_model.dart';
+import '../../data/models/fruit_model.dart';
 import '../widgets/fruit_info_card.dart';
 import '../widgets/nutrition_chips.dart';
 import '../widgets/radar_chart_widget.dart';

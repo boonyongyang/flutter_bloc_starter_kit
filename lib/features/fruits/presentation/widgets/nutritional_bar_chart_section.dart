@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/style/app_colors.dart';
+import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/constants/nutrition_constants.dart';
 
 /// Widget for displaying bar chart of average nutritional content
@@ -26,15 +26,12 @@ class NutritionalBarChartSection extends StatelessWidget {
       children: [
         Text(
           'Average Nutritional Content',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: AppTextStyles.w700p18,
         ),
         const Gap(12),
         Container(
           height: 160,
           decoration: BoxDecoration(
-            color: AppColors.nightShade.withOpacity(0.04),
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.all(16),
@@ -47,7 +44,7 @@ class NutritionalBarChartSection extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: avgSugar.toDouble(),
-                      color: NutritionInfo.nutrients['sugar']!.color,
+                      color: NutritionConstants.nutrients['sugar']!.color,
                       width: 20,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -61,7 +58,8 @@ class NutritionalBarChartSection extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: avgCarbs.toDouble(),
-                      color: NutritionInfo.nutrients['carbohydrates']!.color,
+                      color:
+                          NutritionConstants.nutrients['carbohydrates']!.color,
                       width: 20,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -75,7 +73,7 @@ class NutritionalBarChartSection extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: avgProtein.toDouble(),
-                      color: NutritionInfo.nutrients['protein']!.color,
+                      color: NutritionConstants.nutrients['protein']!.color,
                       width: 20,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -89,7 +87,7 @@ class NutritionalBarChartSection extends StatelessWidget {
                   barRods: [
                     BarChartRodData(
                       toY: avgFat.toDouble(),
-                      color: NutritionInfo.nutrients['fat']!.color,
+                      color: NutritionConstants.nutrients['fat']!.color,
                       width: 20,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -124,9 +122,8 @@ class NutritionalBarChartSection extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
                           text,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+                          style: AppTextStyles.w700p10.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                       );

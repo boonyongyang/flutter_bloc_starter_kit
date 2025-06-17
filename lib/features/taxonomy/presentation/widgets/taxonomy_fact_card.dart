@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../core/config/logger.dart';
-import '../../bloc/taxonomy_cubit.dart';
-import '../../bloc/taxonomy_state.dart';
+import '../bloc/taxonomy_cubit.dart';
+import '../bloc/taxonomy_state.dart';
 import '../../../../core/constants/taxonomy_constants.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/style/style.dart';
-import '../../../fruits/models/fruit_model.dart';
-import '../../models/taxonomy_fact_model.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../../../fruits/data/models/fruit_model.dart';
+import '../../data/models/taxonomy_fact_model.dart';
 
 class TaxonomyFactCard extends StatefulWidget {
   final Fruit fruit;
@@ -31,7 +32,8 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   void initState() {
     super.initState();
     _taxonomyCubit = TaxonomyCubit(locator());
-    _selectedTypeNotifier = ValueNotifier(kFamilyType); // Default to family
+    _selectedTypeNotifier =
+        ValueNotifier(TaxonomyConstants.familyType); // Default to family
     _loadFact();
   }
 
@@ -51,19 +53,19 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
         'Family: ${fruit.family}, Genus: ${fruit.genus}, Order: ${fruit.order}');
 
     switch (selectedType) {
-      case kFamilyType:
+      case TaxonomyConstants.familyType:
         if (fruit.family.isEmpty) {
           logger.d('Warning: Fruit has empty family name');
         }
         _taxonomyCubit.getFamilyFact(fruit.family);
         break;
-      case kGenusType:
+      case TaxonomyConstants.genusType:
         if (fruit.genus.isEmpty) {
           logger.d('Warning: Fruit has empty genus name');
         }
         _taxonomyCubit.getGenusFact(fruit.genus);
         break;
-      case kOrderType:
+      case TaxonomyConstants.orderType:
         if (fruit.order.isEmpty) {
           logger.d('Warning: Fruit has empty order name');
         }
@@ -122,13 +124,11 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
             const Gap(8),
             Text(
               'Taxonomy Facts',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: AppTextStyles.w700p16,
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const Gap(12),
         Center(
           child: SizedBox(
             // Setting a width constraint to ensure proper sizing
@@ -142,21 +142,21 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
 
   Widget _buildTypeSelector(String selectedType) {
     return SegmentedButton<String>(
-      segments: const [
+      segments: [
         ButtonSegment<String>(
-          value: kFamilyType,
-          icon: Icon(Icons.family_restroom, size: 16),
-          label: Text('Family', style: TextStyle(fontSize: 12)),
+          value: TaxonomyConstants.familyType,
+          icon: const Icon(Icons.family_restroom, size: 16),
+          label: Text('Family', style: AppTextStyles.w400p12),
         ),
         ButtonSegment<String>(
-          value: kGenusType,
-          icon: Icon(Icons.spa, size: 16),
-          label: Text('Genus', style: TextStyle(fontSize: 12)),
+          value: TaxonomyConstants.genusType,
+          icon: const Icon(Icons.spa, size: 16),
+          label: Text('Genus', style: AppTextStyles.w400p12),
         ),
         ButtonSegment<String>(
-          value: kOrderType,
-          icon: Icon(Icons.sort, size: 16),
-          label: Text('Order', style: TextStyle(fontSize: 12)),
+          value: TaxonomyConstants.orderType,
+          icon: const Icon(Icons.sort, size: 16),
+          label: Text('Order', style: AppTextStyles.w400p12),
         ),
       ],
       selected: {selectedType},
@@ -175,9 +175,13 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   }
 
   Widget _buildContent(
-      BuildContext context, TaxonomyState state, String selectedType) {
+    BuildContext context,
+    TaxonomyState state,
+    String selectedType,
+  ) {
     if (state is TaxonomyLoading) {
-      final displayType = kTaxonomyDisplayNames[selectedType] ?? selectedType;
+      final displayType =
+          TaxonomyConstants.taxonomyDisplayNames[selectedType] ?? selectedType;
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 40),
@@ -188,12 +192,12 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
                 valueColor: AlwaysStoppedAnimation<Color>(
                     _getColorForType(selectedType)),
               ),
-              const SizedBox(height: 16),
+              const Gap(16),
               Text(
                 'Loading $displayType information...',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: _getColorForType(selectedType),
-                    ),
+                style: AppTextStyles.w400p12.copyWith(
+                  color: _getColorForType(selectedType),
+                ),
               ),
             ],
           ),
@@ -235,15 +239,14 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
             children: [
               Text(
                 _getTaxonomyTypeIcon(selectedType),
-                style: const TextStyle(fontSize: 20),
+                style: AppTextStyles.w400p20,
               ),
               const Gap(8),
               Text(
                 taxonomyName,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: _getColorForType(selectedType),
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: AppTextStyles.w600p14.copyWith(
+                  color: _getColorForType(selectedType),
+                ),
               ),
             ],
           ),
@@ -251,7 +254,7 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
         const Gap(16),
         Text(
           fact.description,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: AppTextStyles.w400p14,
         ),
         const Gap(16),
         Container(
@@ -274,9 +277,9 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
                   const Gap(6),
                   Text(
                     'Fun Facts',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: _getColorForType(selectedType),
-                        ),
+                    style: AppTextStyles.w600p14.copyWith(
+                      color: _getColorForType(selectedType),
+                    ),
                   ),
                 ],
               ),
@@ -287,16 +290,14 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('•',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                            style: AppTextStyles.w700p16.copyWith(
                               color: _getColorForType(selectedType),
                             )),
                         const Gap(8),
                         Expanded(
                           child: Text(
                             funFact,
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: AppTextStyles.w400p12,
                           ),
                         ),
                       ],
@@ -312,7 +313,7 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   // Helper method to build error display
   Widget _buildErrorDisplay(
       BuildContext context, String message, String selectedType) {
-    final displayType = kTaxonomyDisplayNames[selectedType] ??
+    final displayType = TaxonomyConstants.taxonomyDisplayNames[selectedType] ??
         selectedType[0].toUpperCase() + selectedType.substring(1);
 
     return Container(
@@ -326,15 +327,14 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.info_outline, color: Colors.red.shade400, size: 32),
-          const SizedBox(height: 16),
+          const Gap(16),
           Text(
             'No taxonomy information available',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.red.shade700,
-                  fontWeight: FontWeight.w600,
-                ),
+            style: AppTextStyles.w600p14.copyWith(
+              color: Colors.red.shade700,
+            ),
           ),
-          const SizedBox(height: 8),
+          const Gap(8),
           // Show which category was missing
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -344,12 +344,12 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
             ),
             child: Text(
               '$displayType: ${_getTaxonomyName(selectedType)}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.red.shade800,
-                  ),
+              style: AppTextStyles.w400p12.copyWith(
+                color: Colors.red.shade800,
+              ),
             ),
           ),
-          const SizedBox(height: 20),
+          const Gap(20),
           ElevatedButton.icon(
             onPressed: _loadFact,
             icon: const Icon(Icons.refresh, size: 16),
@@ -370,11 +370,11 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   // Get the current taxonomy name based on selected type
   String _getTaxonomyName(String selectedType) {
     switch (selectedType) {
-      case kFamilyType:
+      case TaxonomyConstants.familyType:
         return widget.fruit.family;
-      case kGenusType:
+      case TaxonomyConstants.genusType:
         return widget.fruit.genus;
-      case kOrderType:
+      case TaxonomyConstants.orderType:
         return widget.fruit.order;
       default:
         return '';
@@ -382,16 +382,16 @@ class _TaxonomyFactCardState extends State<TaxonomyFactCard> {
   }
 
   String _getTaxonomyTypeIcon(String selectedType) {
-    return kTaxonomyIcons[selectedType] ?? '🔍';
+    return TaxonomyConstants.taxonomyIcons[selectedType] ?? '🔍';
   }
 
   Color _getColorForType(String selectedType) {
     switch (selectedType) {
-      case kFamilyType:
+      case TaxonomyConstants.familyType:
         return AppColors.neonBlue;
-      case kGenusType:
+      case TaxonomyConstants.genusType:
         return AppColors.successGreen;
-      case kOrderType:
+      case TaxonomyConstants.orderType:
         return AppColors.cyberpunkPurple;
       default:
         return AppColors.matrixSilver;

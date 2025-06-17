@@ -1,4 +1,4 @@
-import '../models/fruit_model.dart';
+import '../data/models/fruit_model.dart';
 
 class FruitAnalysisData {
   final double avgSugar;

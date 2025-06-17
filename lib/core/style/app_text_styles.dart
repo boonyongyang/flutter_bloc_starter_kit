@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'style.dart';
 
 /// Contains all text styles used in the app
 /// Naming convention: w{weight}p{size}
 /// Example: w600p12 means weight 600, text size 12
 class AppTextStyles {
-  // Base style with default color
-  static const TextStyle _baseStyle = TextStyle(
-    color: AppColors.hologramWhite,
-  );
+  // Base style without color - let theme handle text colors
+  static const TextStyle _baseStyle = TextStyle();
 
   static final TextStyle w700p24 = _baseStyle.copyWith(
     fontSize: 24,
@@ -175,7 +172,6 @@ class AppTextStyles {
   static final TextStyle caption = _baseStyle.copyWith(
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppColors.ghostBlue,
     letterSpacing: 0.4,
   );
 
@@ -189,7 +185,6 @@ class AppTextStyles {
   static final TextStyle overline = _baseStyle.copyWith(
     fontSize: 10,
     fontWeight: FontWeight.w400,
-    color: AppColors.matrixSilver,
     letterSpacing: 1.5,
     textBaseline: TextBaseline.alphabetic,
   );
@@ -197,7 +192,6 @@ class AppTextStyles {
   static final TextStyle link = _baseStyle.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppColors.neonAqua,
     decoration: TextDecoration.underline,
   );
 }

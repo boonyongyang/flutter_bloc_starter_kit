@@ -3,7 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/nutrition_constants.dart';
-import '../../models/fruit_model.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../../data/models/fruit_model.dart';
 
 /// Widget for displaying notable fruits section
 class NotableFruitsSection extends StatelessWidget {
@@ -27,9 +28,7 @@ class NotableFruitsSection extends StatelessWidget {
       children: [
         Text(
           'Notable Fruits',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: AppTextStyles.w700p18,
         ),
         const Gap(12),
         Row(
@@ -38,8 +37,8 @@ class NotableFruitsSection extends StatelessWidget {
               child: NotableFruitCard(
                 fruit: highestCaloriesFruit,
                 title: 'Highest Calories',
-                icon: NutritionInfo.nutrients['calories']!.icon,
-                color: NutritionInfo.nutrients['calories']!.color,
+                icon: NutritionConstants.nutrients['calories']!.icon,
+                color: NutritionConstants.nutrients['calories']!.color,
                 value: '${highestCaloriesFruit.nutritions.calories} kcal',
               ),
             ),
@@ -48,8 +47,8 @@ class NotableFruitsSection extends StatelessWidget {
               child: NotableFruitCard(
                 fruit: highestProteinFruit,
                 title: 'Highest Protein',
-                icon: NutritionInfo.nutrients['protein']!.icon,
-                color: NutritionInfo.nutrients['protein']!.color,
+                icon: NutritionConstants.nutrients['protein']!.icon,
+                color: NutritionConstants.nutrients['protein']!.color,
                 value:
                     '${highestProteinFruit.nutritions.protein.toStringAsFixed(1)}g',
               ),
@@ -63,8 +62,8 @@ class NotableFruitsSection extends StatelessWidget {
               child: NotableFruitCard(
                 fruit: highestSugarFruit,
                 title: 'Sweetest',
-                icon: NutritionInfo.nutrients['sugar']!.icon,
-                color: NutritionInfo.nutrients['sugar']!.color,
+                icon: NutritionConstants.nutrients['sugar']!.icon,
+                color: NutritionConstants.nutrients['sugar']!.color,
                 value:
                     '${highestSugarFruit.nutritions.sugar.toStringAsFixed(1)}g sugar',
               ),
@@ -127,28 +126,23 @@ class NotableFruitCard extends StatelessWidget {
                   const Gap(6),
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                    style: AppTextStyles.w400p12,
                   ),
                 ],
               ),
               const Gap(8),
               Text(
                 fruit.name,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: AppTextStyles.w700p16,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               const Gap(4),
               Text(
                 value,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: color,
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: AppTextStyles.w600p14.copyWith(
+                  color: color,
+                ),
               ),
             ],
           ),

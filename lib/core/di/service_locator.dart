@@ -4,43 +4,45 @@ import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:uuid/uuid.dart';
 
-import '../config/logger.dart';
-import '../network/fruits_api_client.dart';
-import '../storage/local_database_client.dart';
-import '../providers/performance_config.dart';
-import '../../features/auth/bloc/auth_cubit.dart';
-import '../../features/auth/services/auth_service.dart';
-import '../../features/fruits/data/fruits_repository_impl.dart';
+import '../../features/fruits/data/datasources/fruits_api_client.dart';
 import '../../features/fruits/data/fruits_repository.dart';
-import '../../features/taxonomy/data/taxonomy_repository.dart';
-import '../../features/taxonomy/data/taxonomy_repository_impl.dart';
+import '../../features/taxonomy/data/repositories/taxonomy_repository.dart';
+import '../storage/local_database_client.dart';
+import '../../features/auth/presentation/bloc/auth_cubit.dart';
+import '../../features/auth/services/auth_service.dart';
+import '../../features/fruits/data/i_fruits_repository.dart';
+import '../../features/taxonomy/data/repositories/i_taxonomy_repository.dart';
 
 final locator = GetIt.instance;
-final Dio dio = Dio(
-  BaseOptions(
-    baseUrl: 'https://api.example.com',
-    connectTimeout: const Duration(seconds: 30),
-    receiveTimeout: const Duration(seconds: 30),
-  ),
-)..interceptors.add(
-    PrettyDioLogger(
-      compact: true,
-      maxWidth: 150,
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-      responseBody: true,
-      error: true,
-    ),
-  );
 
 void setupServiceLocator() {
-  logger.d('setupServiceLocator called');
+  // Register Dio as a lazy singleton
+  locator.registerLazySingleton<Dio>(() {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://api.example.com',
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+      ),
+    );
+    dio.interceptors.add(
+      PrettyDioLogger(
+        compact: true,
+        maxWidth: 150,
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        error: true,
+      ),
+    );
+    return dio;
+  });
+
   // Register services as singletons
-  locator.registerLazySingleton(() => PerformanceConfig());
-  locator.registerLazySingleton<FruitsRepository>(
-      () => FruitsRepositoryImpl(FruitsApiClient(dio)));
+  locator.registerLazySingleton<IFruitsRepository>(
+      () => FruitsRepository(FruitsApiClient(locator<Dio>())));
 
   // Register FlutterSecureStorage
   locator.registerLazySingleton<FlutterSecureStorage>(
@@ -60,8 +62,8 @@ void setupServiceLocator() {
   locator.registerLazySingleton(() => localDbClient);
 
   // Register our taxonomy repository (using the local database)
-  locator.registerLazySingleton<TaxonomyRepository>(
-      () => TaxonomyRepositoryImpl(localDbClient));
+  locator.registerLazySingleton<ITaxonomyRepository>(
+      () => TaxonomyRepository(localDbClient));
 
   // Register Cubits/Blocs as factories
   locator.registerFactory<AuthCubit>(

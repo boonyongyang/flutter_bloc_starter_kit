@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../constants/animation_constants.dart';
 
 CustomTransitionPage<T> buildPageWithTransition<T>({

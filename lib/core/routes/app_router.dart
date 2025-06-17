@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/services/auth_service.dart';
 import '../../features/fruits/presentation/pages/fruits_page.dart';
-import '../../features/fruits/bloc/fruits_cubit.dart';
+import '../../features/fruits/presentation/bloc/fruits_cubit.dart';
 import '../../features/fruits/presentation/pages/fruit_detail_page.dart';
-import '../../features/fruits/models/fruit_model.dart';
-import '../../features/fruits/data/fruits_repository.dart';
+import '../../features/fruits/data/models/fruit_model.dart';
+import '../../features/fruits/data/i_fruits_repository.dart';
 import '../di/service_locator.dart';
 import 'app_routes.dart';
 
@@ -39,7 +39,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => MaterialPage(
         child: BlocProvider(
           create: (context) => FruitsCubit(
-            locator<FruitsRepository>(),
+            locator<IFruitsRepository>(),
           )..fetchFruits(),
           child: const FruitsPage(),
         ),

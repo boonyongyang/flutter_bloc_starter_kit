@@ -5,17 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../core/constants/fruit_constants.dart';
+import '../../../../core/constants/loading_constants.dart';
 import '../../../../core/constants/nutrition_constants.dart';
 import '../../../../core/constants/taxonomy_constants.dart';
-import '../../../../core/constants/presentation_constants.dart';
 import '../../../../core/routes/app_routes.dart';
-import '../../../../core/style/app_colors.dart';
-import '../../../auth/bloc/auth_cubit.dart';
-import '../../../auth/bloc/auth_state.dart';
-import '../../bloc/fruits_cubit.dart';
-import '../../bloc/fruits_state.dart';
-import '../../models/fruit_model.dart';
-import '../../models/fruit_sort.dart';
+import '../../../../core/style/style.dart';
+import '../../../auth/presentation/bloc/auth_cubit.dart';
+import '../../../auth/presentation/bloc/auth_state.dart';
+import '../bloc/fruits_cubit.dart';
+import '../bloc/fruits_state.dart';
+import '../../data/models/fruit_model.dart';
+import '../../data/models/fruit_sort.dart';
 import '../../utils/fruit_analysis_utils.dart';
 import '../widgets/fruit_list_tile.dart';
 import '../widgets/notable_fruits_section.dart';
@@ -23,7 +24,6 @@ import '../widgets/nutritional_bar_chart_section.dart';
 import '../widgets/nutritional_comparison_section.dart';
 import '../widgets/nutritional_overview_section.dart';
 import '../widgets/taxonomy_distribution_section.dart';
-import '../../../../core/constants/loading_constants.dart';
 
 class FruitsPage extends StatefulWidget {
   const FruitsPage({super.key});
@@ -116,20 +116,16 @@ class _FruitsPageState extends State<FruitsPage> {
         );
       },
     );
-    if (confirmLogout == true) {
+
+    if (confirmLogout == true && mounted) {
       context.read<AuthCubit>().logout();
     }
   }
 
   Future<void> _onRefreshRequested() async {
+    if (!mounted) return;
+
     context.read<FruitsCubit>().fetchFruits();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Refreshing fruits data...'),
-        duration: Duration(seconds: 1),
-      ),
-    );
-    // It's better to show success/failure based on the actual result from the cubit.
   }
 
   void _onScrollToTopPressed() {
@@ -147,17 +143,31 @@ class _FruitsPageState extends State<FruitsPage> {
       controller: _scrollController,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Fruits Dashboard'),
+          title: Text(
+            'Fruits Dashboard',
+            style: AppTextStyles.w700p20,
+          ),
           leading: IconButton(
             icon: const Icon(Icons.info_outline),
             tooltip: 'Icon legend',
             onPressed: _showIconInfoSheet,
           ),
           actions: [
+            // IconButton(
+            //   icon: Icon(
+            //     Theme.of(context).brightness == Brightness.dark
+            //         ? Icons.light_mode
+            //         : Icons.dark_mode,
+            //   ),
+            //   tooltip: 'Toggle Theme',
+            //   onPressed: () {
+            //     context.read<ThemeCubit>().toggleTheme();
+            //   },
+            // ),
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.logout,
-                color: AppColors.errorRed,
+                color: Theme.of(context).colorScheme.error,
               ),
               tooltip: 'Logout',
               onPressed: _onLogoutPressed,
@@ -215,7 +225,8 @@ class _IconInfoSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<_IconInfo> items = IconGlossaryConstants.items.map((itemData) {
+    final List<_IconInfo> items =
+        FruitConstants.iconGlossaryItems.map((itemData) {
       final String key = itemData['key'] as String;
       final InfoSourceType sourceType =
           itemData['sourceType'] as InfoSourceType;
@@ -223,12 +234,12 @@ class _IconInfoSheet extends StatelessWidget {
       Color color;
 
       if (sourceType == InfoSourceType.nutrition) {
-        icon = NutritionInfo.nutrients[key]!.icon;
-        color = NutritionInfo.nutrients[key]!.color;
+        icon = NutritionConstants.nutrients[key]!.icon;
+        color = NutritionConstants.nutrients[key]!.color;
       } else {
         // InfoSourceType.taxonomy
-        icon = TaxonomyInfo.taxonomy[key]!.icon;
-        color = TaxonomyInfo.taxonomy[key]!.color;
+        icon = TaxonomyConstants.taxonomyInfo[key]!.icon;
+        color = TaxonomyConstants.taxonomyInfo[key]!.color;
       }
 
       return _IconInfo(
@@ -250,11 +261,7 @@ class _IconInfoSheet extends StatelessWidget {
               children: [
                 const Icon(Icons.info_outline, size: 24),
                 const Gap(8),
-                Text('Glossary',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(fontWeight: FontWeight.bold)),
+                Text('Glossary', style: AppTextStyles.w700p18),
               ],
             ),
             const Gap(12),
@@ -276,15 +283,11 @@ class _IconInfoSheet extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(item.title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                        color: item.color)),
+                                style: AppTextStyles.w600p14
+                                    .copyWith(color: item.color)),
                             const Gap(2),
                             Text(item.description,
-                                style: Theme.of(context).textTheme.bodySmall),
+                                style: AppTextStyles.w400p12),
                           ],
                         ),
                       ),
@@ -292,13 +295,6 @@ class _IconInfoSheet extends StatelessWidget {
                   ),
                 )),
             const Gap(8),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Close'),
-              ),
-            ),
           ],
         ),
       ),
@@ -388,10 +384,7 @@ class _FruitsBody extends StatelessWidget {
                           );
                           return Text(
                             '${_getGreeting()}, $username!',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
+                            style: AppTextStyles.w700p16,
                           );
                         },
                       ),
@@ -454,12 +447,7 @@ class _FruitsBody extends StatelessWidget {
                           const Gap(8),
                           Text(
                             'All Fruits',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: AppTextStyles.w700p16,
                           ),
                         ],
                       ),
@@ -469,22 +457,29 @@ class _FruitsBody extends StatelessWidget {
                         child: Row(
                           children: [
                             ActionChip(
-                              avatar: const Icon(
+                              avatar: Icon(
                                 Icons.sort,
                                 size: 16,
-                                color: AppColors.hologramWhite,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                               label: Text(
                                 effectiveSort.label,
-                                style: const TextStyle(
-                                  color: AppColors.hologramWhite,
-                                  fontSize: 12,
+                                style: AppTextStyles.w400p12.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                 ),
                               ),
                               onPressed: onSortPressed,
-                              backgroundColor: AppColors.cyberpunkPurple,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
+                                side: BorderSide(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer,
+                                  width: 1,
+                                ),
                               ),
                               visualDensity: VisualDensity.compact,
                               padding: const EdgeInsets.symmetric(
@@ -495,12 +490,11 @@ class _FruitsBody extends StatelessWidget {
                             const Spacer(),
                             Text(
                               '${analysisData.fruitCount} items',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color: AppColors.matrixSilver,
-                                  ),
+                              style: AppTextStyles.w400p12.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
+                              ),
                             ),
                           ],
                         ),
@@ -573,12 +567,17 @@ class _FruitsBodyLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardBorderRadius = BorderRadius.circular(kShimmerCardBorderRadius);
-    final shimmerElementColor = Colors.white.withOpacity(0.5);
+    final cardBorderRadius =
+        BorderRadius.circular(LoadingConstants.shimmerCardBorderRadius);
+    final shimmerElementColor =
+        Theme.of(context).colorScheme.surface.withOpacity(0.5);
 
     return Shimmer.fromColors(
-      baseColor: AppColors.midnightBlue,
-      highlightColor: AppColors.nightShade,
+      baseColor: Theme.of(context)
+          .colorScheme
+          .surfaceContainerHighest
+          .withOpacity(0.3),
+      highlightColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
         children: [
@@ -594,13 +593,13 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
-                    kShimmerOverviewCardCount,
+                    LoadingConstants.shimmerOverviewCardCount,
                     (_) => Expanded(
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: cardBorderRadius),
                         child: Container(
-                          height: kShimmerOverviewHeight,
+                          height: LoadingConstants.shimmerOverviewHeight,
                           margin: const EdgeInsets.symmetric(horizontal: 4),
                           decoration: BoxDecoration(
                             color: shimmerElementColor,
@@ -616,7 +615,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: kShimmerBarChartHeight,
+                    height: LoadingConstants.shimmerBarChartHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -628,7 +627,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: kShimmerTaxonomyHeight,
+                    height: LoadingConstants.shimmerTaxonomyHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -640,7 +639,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: kShimmerNotableHeight,
+                    height: LoadingConstants.shimmerNotableHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -652,7 +651,7 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
                   child: Container(
-                    height: kShimmerComparisonHeight,
+                    height: LoadingConstants.shimmerComparisonHeight,
                     decoration: BoxDecoration(
                       color: shimmerElementColor,
                       borderRadius: cardBorderRadius,
@@ -664,22 +663,22 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                        width: kShimmerListHeaderIconSize,
-                        height: kShimmerListHeaderIconSize,
+                        width: LoadingConstants.shimmerListHeaderIconSize,
+                        height: LoadingConstants.shimmerListHeaderIconSize,
                         decoration: BoxDecoration(
                             color: shimmerElementColor,
                             borderRadius: BorderRadius.circular(4))),
                     const Gap(8),
                     Container(
-                        width: kShimmerListHeaderTextWidth,
-                        height: kShimmerListHeaderIconSize,
+                        width: LoadingConstants.shimmerListHeaderTextWidth,
+                        height: LoadingConstants.shimmerListHeaderIconSize,
                         decoration: BoxDecoration(
                             color: shimmerElementColor,
                             borderRadius: BorderRadius.circular(4))),
                     const Spacer(),
                     Container(
-                        width: kShimmerListHeaderCounterWidth,
-                        height: kShimmerListHeaderIconSize,
+                        width: LoadingConstants.shimmerListHeaderCounterWidth,
+                        height: LoadingConstants.shimmerListHeaderIconSize,
                         decoration: BoxDecoration(
                             color: shimmerElementColor,
                             borderRadius: BorderRadius.circular(4))),
@@ -690,15 +689,15 @@ class _FruitsBodyLoadingView extends StatelessWidget {
           ),
           // Shimmer for FruitListTiles
           ...List.generate(
-            kShimmerListItemCount,
+            LoadingConstants.shimmerListItemCount,
             (index) => Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Row(
                 children: [
                   Container(
-                      width: kShimmerListItemImageSize,
-                      height: kShimmerListItemImageSize,
+                      width: LoadingConstants.shimmerListItemImageSize,
+                      height: LoadingConstants.shimmerListItemImageSize,
                       decoration: BoxDecoration(
                           color: shimmerElementColor,
                           borderRadius: BorderRadius.circular(8)),
@@ -709,15 +708,15 @@ class _FruitsBodyLoadingView extends StatelessWidget {
                       children: [
                         Container(
                             width: double.infinity,
-                            height: kShimmerListItemTitleHeight,
+                            height: LoadingConstants.shimmerListItemTitleHeight,
                             decoration: BoxDecoration(
                                 color: shimmerElementColor,
                                 borderRadius: BorderRadius.circular(4))),
                         const Gap(4),
                         Container(
-                            width:
-                                100, // Could be a constant if desired, e.g., kShimmerListItemSubtitleMaxWidth
-                            height: kShimmerListItemSubtitleHeight,
+                            width: 100,
+                            height:
+                                LoadingConstants.shimmerListItemSubtitleHeight,
                             decoration: BoxDecoration(
                                 color: shimmerElementColor,
                                 borderRadius: BorderRadius.circular(4))),
@@ -745,10 +744,9 @@ class _SortBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('Sort by',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('Sort by', style: AppTextStyles.w700p18),
           ),
           ...FruitSort.values.map((sort) {
             return RadioListTile<FruitSort>(

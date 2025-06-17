@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../../../../core/constants/nutrition_constants.dart';
-import '../../models/fruit_model.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../../data/models/fruit_model.dart';
 
 class NutritionChips extends StatelessWidget {
   final Nutrition nutrition;
@@ -20,34 +22,34 @@ class NutritionChips extends StatelessWidget {
           chips: [
             _NutritionChip(
               label: 'Carbs: ${nutrition.carbohydrates.toStringAsFixed(1)}g',
-              icon: NutritionInfo.nutrients['carbohydrates']!.icon,
-              color: NutritionInfo.nutrients['carbohydrates']!.color,
+              icon: NutritionConstants.nutrients['carbohydrates']!.icon,
+              color: NutritionConstants.nutrients['carbohydrates']!.color,
             ),
             _NutritionChip(
               label: 'Protein: ${nutrition.protein.toStringAsFixed(1)}g',
-              icon: NutritionInfo.nutrients['protein']!.icon,
-              color: NutritionInfo.nutrients['protein']!.color,
+              icon: NutritionConstants.nutrients['protein']!.icon,
+              color: NutritionConstants.nutrients['protein']!.color,
             ),
             _NutritionChip(
               label: 'Fat: ${nutrition.fat.toStringAsFixed(1)}g',
-              icon: NutritionInfo.nutrients['fat']!.icon,
-              color: NutritionInfo.nutrients['fat']!.color,
+              icon: NutritionConstants.nutrients['fat']!.icon,
+              color: NutritionConstants.nutrients['fat']!.color,
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const Gap(16),
         _NutritionSection(
           title: 'Other',
           chips: [
             _NutritionChip(
               label: 'Calories: ${nutrition.calories}',
-              icon: NutritionInfo.nutrients['calories']!.icon,
-              color: NutritionInfo.nutrients['calories']!.color,
+              icon: NutritionConstants.nutrients['calories']!.icon,
+              color: NutritionConstants.nutrients['calories']!.color,
             ),
             _NutritionChip(
               label: 'Sugar: ${nutrition.sugar.toStringAsFixed(1)}g',
-              icon: NutritionInfo.nutrients['sugar']!.icon,
-              color: NutritionInfo.nutrients['sugar']!.color,
+              icon: NutritionConstants.nutrients['sugar']!.icon,
+              color: NutritionConstants.nutrients['sugar']!.color,
             ),
           ],
         ),
@@ -72,12 +74,9 @@ class _NutritionSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context)
-              .textTheme
-              .labelLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style: AppTextStyles.w600p14,
         ),
-        const SizedBox(height: 6),
+        const Gap(6),
         Wrap(
           spacing: 12,
           runSpacing: 8,
@@ -105,7 +104,7 @@ class _NutritionChip extends StatelessWidget {
       avatar: Icon(icon, color: color, size: 16),
       label: Text(
         label,
-        style: Theme.of(context).textTheme.bodySmall,
+        style: AppTextStyles.w400p12,
       ),
       backgroundColor: color.withOpacity(0.08),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

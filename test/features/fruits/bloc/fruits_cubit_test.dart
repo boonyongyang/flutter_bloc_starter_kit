@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_bloc_starter_kit/features/fruits/bloc/fruits_cubit.dart';
-import 'package:flutter_bloc_starter_kit/features/fruits/bloc/fruits_state.dart';
-import 'package:flutter_bloc_starter_kit/features/fruits/models/fruit_model.dart';
-import 'package:flutter_bloc_starter_kit/features/fruits/data/fruits_repository.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/presentation/bloc/fruits_cubit.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/presentation/bloc/fruits_state.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/data/models/fruit_model.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/data/i_fruits_repository.dart';
 
-class MockFruitsRepository extends Mock implements FruitsRepository {}
+class MockFruitsRepository extends Mock implements IFruitsRepository {}
 
 void main() {
   group('FruitsCubit', () {

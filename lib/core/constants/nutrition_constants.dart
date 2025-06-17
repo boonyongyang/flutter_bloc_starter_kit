@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../style/app_colors.dart';
 
-/// Common nutrition icons and colors used throughout the app
-class NutritionInfo {
+/// Nutrition display constants
+class NutritionConstants {
+  // Icons and colors
   static const Map<String, ({IconData icon, Color color, String tooltip})>
       nutrients = {
     'sugar': (
@@ -32,4 +33,6 @@ class NutritionInfo {
       tooltip: 'Energy provided in kcal'
     ),
   };
+
+  NutritionConstants._();
 }

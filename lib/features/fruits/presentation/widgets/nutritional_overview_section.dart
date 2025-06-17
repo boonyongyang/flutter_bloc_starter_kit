@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../core/style/app_colors.dart';
 import '../../../../core/constants/nutrition_constants.dart';
+import '../../../../core/style/app_text_styles.dart';
 
 /// Widget for displaying nutritional overview cards in a horizontal list
 class NutritionalOverviewSection extends StatelessWidget {
@@ -28,9 +28,7 @@ class NutritionalOverviewSection extends StatelessWidget {
       children: [
         Text(
           'Nutritional Overview',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: AppTextStyles.w700p18,
         ),
         const Gap(12),
         SizedBox(
@@ -41,29 +39,29 @@ class NutritionalOverviewSection extends StatelessWidget {
               _NutritionSummaryCard(
                 title: 'Avg. Calories',
                 value: avgCalories.toStringAsFixed(0),
-                icon: NutritionInfo.nutrients['calories']!.icon,
-                color: NutritionInfo.nutrients['calories']!.color,
+                icon: NutritionConstants.nutrients['calories']!.icon,
+                color: NutritionConstants.nutrients['calories']!.color,
                 subtitle: '$fruitCount fruits',
               ),
               _NutritionSummaryCard(
                 title: 'Avg. Protein',
                 value: '${avgProtein.toStringAsFixed(1)}g',
-                icon: NutritionInfo.nutrients['protein']!.icon,
-                color: NutritionInfo.nutrients['protein']!.color,
+                icon: NutritionConstants.nutrients['protein']!.icon,
+                color: NutritionConstants.nutrients['protein']!.color,
                 subtitle: 'per fruit',
               ),
               _NutritionSummaryCard(
                 title: 'Avg. Sugar',
                 value: '${avgSugar.toStringAsFixed(1)}g',
-                icon: NutritionInfo.nutrients['sugar']!.icon,
-                color: NutritionInfo.nutrients['sugar']!.color,
+                icon: NutritionConstants.nutrients['sugar']!.icon,
+                color: NutritionConstants.nutrients['sugar']!.color,
                 subtitle: 'per fruit',
               ),
               _NutritionSummaryCard(
                 title: 'Avg. Carbs',
                 value: '${avgCarbs.toStringAsFixed(1)}g',
-                icon: NutritionInfo.nutrients['carbohydrates']!.icon,
-                color: NutritionInfo.nutrients['carbohydrates']!.color,
+                icon: NutritionConstants.nutrients['carbohydrates']!.icon,
+                color: NutritionConstants.nutrients['carbohydrates']!.color,
                 subtitle: 'per fruit',
               ),
             ],
@@ -111,26 +109,23 @@ class _NutritionSummaryCard extends StatelessWidget {
                 const Gap(6),
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: AppTextStyles.w600p12,
                 ),
               ],
             ),
             const Spacer(),
             Text(
               value,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: AppTextStyles.w700p20.copyWith(
+                color: color,
+              ),
             ),
             const Gap(2),
             Text(
               subtitle,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.matrixSilver,
-                  ),
+              style: AppTextStyles.w400p12.copyWith(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              ),
             ),
           ],
         ),

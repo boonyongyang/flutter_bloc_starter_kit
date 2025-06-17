@@ -5,9 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:hive_ce/hive.dart';
 
 import '../../../../core/routes/app_routes.dart';
-import '../../bloc/auth_cubit.dart';
-import '../../bloc/auth_state.dart';
-import '../../../../core/storage/storage_constants.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../bloc/auth_cubit.dart';
+import '../bloc/auth_state.dart';
+import '../../../../core/constants/storage_constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -58,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
       // Hide keyboard
       FocusScope.of(context).unfocus();
       context.read<AuthCubit>().login(
-            _usernameController.text.trim(), // Trim whitespace
+            _usernameController.text.trim(),
             _passwordController.text,
           );
     }
@@ -69,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_appBarTitle), // Use dynamic title
+        title: Text(_appBarTitle),
         centerTitle: true,
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
@@ -101,9 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     Text(
                       'Login to Your Account',
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.w700p24,
                       textAlign: TextAlign.center,
                     ),
                     const Gap(32),
@@ -170,9 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: theme.colorScheme.primary,
                           foregroundColor: theme.colorScheme.onPrimary,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          textStyle: AppTextStyles.w700p14,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -182,8 +179,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const Gap(16),
-                    // TODO: [Demo Enhancement] Add a "Forgot Password?" option
-                    // TODO: [Demo Enhancement] Add a "Sign Up" option or link
                   ],
                 ),
               ),

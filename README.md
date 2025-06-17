@@ -31,3 +31,24 @@ The goal of this repository is to provide a **comprehensive starter kit** for Fl
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
+
+## 🚧 Future Enhancements
+
+This starter kit is actively maintained and improved. Here are planned enhancements:
+
+### 🎨 **Advanced Theming System**
+- **Design Tokens Integration**: Implement design token system for better Figma workflow integration
+- **Material 3 ColorScheme**: Migrate to Material 3 design system with automatic light/dark mode generation
+- **Theme Extensions**: Replace hardcoded colors with semantic theme-based color system
+- **Design System Documentation**: Create comprehensive design system documentation
+
+### 🔄 **Offline Capabilities**
+- **Offline Sync**: Handle API failures and sync offline data seamlessly
+- **Connection Awareness**: Smart handling of network connectivity changes
+
+### 📱 **Developer Experience**
+- **Code Generation**: Enhanced code generation for models and services
+- **CI/CD Pipeline**: Automated testing and deployment workflows
+- **Performance Monitoring**: Integration with Firebase Performance and Crashlytics
+
+---

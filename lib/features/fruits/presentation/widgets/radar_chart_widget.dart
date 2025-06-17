@@ -1,7 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../../../../core/style/app_colors.dart';
+import '../../../../core/style/app_text_styles.dart';
 
 class MacroNutrientRadarChart extends StatefulWidget {
   final List<double> macroValues;
@@ -47,11 +49,9 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
 
   @override
   Widget build(BuildContext context) {
-    final tickStyle = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: AppColors.matrixSilver,
-          fontWeight: FontWeight.w600,
-          fontSize: 13,
-        );
+    final tickStyle = AppTextStyles.w600p12.copyWith(
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+    );
 
     return Column(
       children: [
@@ -62,11 +62,17 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.nightShade.withOpacity(0.12),
+                  // color: Theme.of(context)
+                  //     .colorScheme
+                  //     .surfaceContainerHighest
+                  //     .withOpacity(0.5),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.neonBlue.withOpacity(0.08),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.08),
                       blurRadius: 24,
                       offset: const Offset(0, 8),
                     ),
@@ -96,12 +102,10 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                           : AppColors.cyberpunkPurple,
                       width: 2.5,
                     ),
-                    titleTextStyle:
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.neonAqua,
-                              letterSpacing: 1.2,
-                            ),
+                    titleTextStyle: AppTextStyles.w700p16.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      letterSpacing: 1.2,
+                    ),
                     getTitle: (index, angle) {
                       return RadarChartTitle(
                         text: widget.macroLabels[index],
@@ -151,15 +155,14 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                       children: [
                         Text(
                           widget.macroLabels[touchedIndex!],
-                          style: const TextStyle(
+                          style: AppTextStyles.w700p12.copyWith(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const Gap(8),
                         Text(
                           '${widget.macroValues[touchedIndex!].toStringAsFixed(1)}g',
-                          style: const TextStyle(
+                          style: AppTextStyles.w400p12.copyWith(
                             color: Colors.white,
                           ),
                         ),
@@ -170,29 +173,30 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
             ],
           ),
         ),
-        const SizedBox(height: 28),
+        const Gap(28),
         Container(
           margin: const EdgeInsets.only(top: 8),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppColors.nightShade.withOpacity(0.15),
+            // color: Theme.of(context)
+            //     .colorScheme
+            //     .surfaceContainerHighest
+            //     .withOpacity(0.5),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: AppColors.matrixSilver.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
               width: 1,
             ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 4, bottom: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 4, bottom: 8),
                 child: Text(
                   'Chart Configuration',
-                  style: TextStyle(
-                    color: AppColors.ghostBlue,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13,
+                  style: AppTextStyles.w600p12.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -209,14 +213,15 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                     ),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           'Shape:',
-                          style: TextStyle(
-                            color: AppColors.ghostBlue,
-                            fontSize: 12,
+                          style: AppTextStyles.w400p12.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const Gap(8),
                         GestureDetector(
                           onTap: _toggleRadarShape,
                           child: Container(
@@ -241,7 +246,7 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 6),
+                        const Gap(6),
                         GestureDetector(
                           onTap: _toggleRadarShape,
                           child: Container(
@@ -280,14 +285,15 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                     ),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           'Ticks:',
-                          style: TextStyle(
-                            color: AppColors.ghostBlue,
-                            fontSize: 12,
+                          style: AppTextStyles.w400p12.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const Gap(8),
                         InkWell(
                           onTap: () {
                             setState(() {
@@ -322,9 +328,8 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                           ),
                           child: Text(
                             '$_tickCount',
-                            style: const TextStyle(
-                              color: AppColors.digitalTeal,
-                              fontWeight: FontWeight.w600,
+                            style: AppTextStyles.w600p12.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ),

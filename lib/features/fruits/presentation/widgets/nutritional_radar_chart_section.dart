@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/style/app_colors.dart';
+import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/constants/nutrition_constants.dart';
-import '../../models/fruit_model.dart';
+import '../../data/models/fruit_model.dart';
 
 class NutritionalComparisonSection extends StatefulWidget {
   final List<Fruit> fruits;
@@ -81,16 +81,15 @@ class _NutritionalComparisonSectionState
                 children: [
                   Text(
                     'Nutritional Comparison',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: AppTextStyles.w700p16,
                   ),
                   const Gap(4),
                   Text(
                     'Compare nutrients between any two fruits',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.matrixSilver,
-                        ),
+                    style: AppTextStyles.w400p12.copyWith(
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                    ),
                   ),
                 ],
               ),
@@ -118,7 +117,10 @@ class _NutritionalComparisonSectionState
           builder: (context, isVertical, _) {
             return Container(
               decoration: BoxDecoration(
-                color: AppColors.nightShade.withOpacity(0.04),
+                color: Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest
+                    .withOpacity(0.3),
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.all(16),
@@ -147,7 +149,7 @@ class _NutritionalComparisonSectionState
           padding: const EdgeInsets.only(bottom: 12.0),
           child: Row(
             children: [
-              const SizedBox(width: 90),
+              const Gap(90),
               ..._buildNutrientLabels(),
             ],
           ),
@@ -160,17 +162,16 @@ class _NutritionalComparisonSectionState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
-                  Text('Sugar', style: Theme.of(context).textTheme.bodySmall),
+                  const Gap(10),
+                  Text('Sugar', style: AppTextStyles.w400p12),
                   const Gap(12),
-                  Text('Carbs', style: Theme.of(context).textTheme.bodySmall),
+                  Text('Carbs', style: AppTextStyles.w400p12),
                   const Gap(12),
-                  Text('Protein', style: Theme.of(context).textTheme.bodySmall),
+                  Text('Protein', style: AppTextStyles.w400p12),
                   const Gap(12),
-                  Text('Fat', style: Theme.of(context).textTheme.bodySmall),
+                  Text('Fat', style: AppTextStyles.w400p12),
                   const Gap(12),
-                  Text('Calories',
-                      style: Theme.of(context).textTheme.bodySmall),
+                  Text('Calories', style: AppTextStyles.w400p12),
                 ],
               ),
             ),
@@ -236,9 +237,7 @@ class _NutritionalComparisonSectionState
             const Gap(8),
             Text(
               fruit.name,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: AppTextStyles.w600p14,
             ),
           ],
         ),
@@ -259,7 +258,7 @@ class _NutritionalComparisonSectionState
                         child: _NutrientBar(
                           value: fruit.nutritions.sugar,
                           maxValue: 20,
-                          color: NutritionInfo.nutrients['sugar']!.color,
+                          color: NutritionConstants.nutrients['sugar']!.color,
                         ),
                       ),
                     ],
@@ -275,8 +274,8 @@ class _NutritionalComparisonSectionState
                         child: _NutrientBar(
                           value: fruit.nutritions.carbohydrates,
                           maxValue: 25,
-                          color:
-                              NutritionInfo.nutrients['carbohydrates']!.color,
+                          color: NutritionConstants
+                              .nutrients['carbohydrates']!.color,
                         ),
                       ),
                     ],
@@ -292,7 +291,7 @@ class _NutritionalComparisonSectionState
                         child: _NutrientBar(
                           value: fruit.nutritions.protein,
                           maxValue: 5,
-                          color: NutritionInfo.nutrients['protein']!.color,
+                          color: NutritionConstants.nutrients['protein']!.color,
                         ),
                       ),
                     ],
@@ -307,7 +306,7 @@ class _NutritionalComparisonSectionState
                         child: _NutrientBar(
                           value: fruit.nutritions.fat,
                           maxValue: 5,
-                          color: NutritionInfo.nutrients['fat']!.color,
+                          color: NutritionConstants.nutrients['fat']!.color,
                         ),
                       ),
                     ],
@@ -322,10 +321,10 @@ class _NutritionalComparisonSectionState
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          '${fruit.nutritions.calories}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: NutritionInfo.nutrients['calories']!.color,
+                          '${fruit.nutritions.calories} kcal',
+                          style: AppTextStyles.w700p12.copyWith(
+                            color:
+                                NutritionConstants.nutrients['calories']!.color,
                           ),
                         ),
                       ),
@@ -349,10 +348,9 @@ class _NutritionalComparisonSectionState
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.withOpacity(0.3)),
-            color: Theme.of(context).brightness == Brightness.dark
-                ? AppColors.nightShade.withOpacity(0.3)
-                : Colors.white,
+            border: Border.all(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.3)),
+            color: Theme.of(context).colorScheme.surface,
           ),
           child: DropdownButton<Fruit>(
             value: selectedFruit,
@@ -384,8 +382,8 @@ class _NutritionalComparisonSectionState
       Expanded(
         child: Center(
           child: _NutrientLabel(
-            icon: NutritionInfo.nutrients['sugar']!.icon,
-            color: NutritionInfo.nutrients['sugar']!.color,
+            icon: NutritionConstants.nutrients['sugar']!.icon,
+            color: NutritionConstants.nutrients['sugar']!.color,
             label: 'Sugar',
           ),
         ),
@@ -393,8 +391,8 @@ class _NutritionalComparisonSectionState
       Expanded(
         child: Center(
           child: _NutrientLabel(
-            icon: NutritionInfo.nutrients['carbohydrates']!.icon,
-            color: NutritionInfo.nutrients['carbohydrates']!.color,
+            icon: NutritionConstants.nutrients['carbohydrates']!.icon,
+            color: NutritionConstants.nutrients['carbohydrates']!.color,
             label: 'Carbs',
           ),
         ),
@@ -402,9 +400,18 @@ class _NutritionalComparisonSectionState
       Expanded(
         child: Center(
           child: _NutrientLabel(
-            icon: NutritionInfo.nutrients['protein']!.icon,
-            color: NutritionInfo.nutrients['protein']!.color,
+            icon: NutritionConstants.nutrients['protein']!.icon,
+            color: NutritionConstants.nutrients['protein']!.color,
             label: 'Protein',
+          ),
+        ),
+      ),
+      Expanded(
+        child: Center(
+          child: _NutrientLabel(
+            icon: NutritionConstants.nutrients['fat']!.icon,
+            color: NutritionConstants.nutrients['fat']!.color,
+            label: 'Fat',
           ),
         ),
       ),
@@ -416,21 +423,12 @@ class _NutritionalComparisonSectionState
       children: [
         Row(
           children: [
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-              ),
-            ),
-            const Gap(8),
+            Icon(Icons.circle, color: color, size: 12),
+            const Gap(4),
             Expanded(
               child: Text(
                 fruit.name,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: AppTextStyles.w600p14,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -441,32 +439,31 @@ class _NutritionalComparisonSectionState
         _NutrientBar(
           value: fruit.nutritions.sugar,
           maxValue: 20,
-          color: NutritionInfo.nutrients['sugar']!.color,
+          color: NutritionConstants.nutrients['sugar']!.color,
         ),
         const Gap(12),
         _NutrientBar(
           value: fruit.nutritions.carbohydrates,
           maxValue: 25,
-          color: NutritionInfo.nutrients['carbohydrates']!.color,
+          color: NutritionConstants.nutrients['carbohydrates']!.color,
         ),
         const Gap(12),
         _NutrientBar(
           value: fruit.nutritions.protein,
           maxValue: 5,
-          color: NutritionInfo.nutrients['protein']!.color,
+          color: NutritionConstants.nutrients['protein']!.color,
         ),
         const Gap(12),
         _NutrientBar(
           value: fruit.nutritions.fat,
           maxValue: 5,
-          color: NutritionInfo.nutrients['fat']!.color,
+          color: NutritionConstants.nutrients['fat']!.color,
         ),
         const Gap(12),
         Text(
           '${fruit.nutritions.calories} kcal',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: NutritionInfo.nutrients['calories']!.color,
+          style: AppTextStyles.w700p12.copyWith(
+            color: NutritionConstants.nutrients['calories']!.color,
           ),
         ),
       ],
@@ -493,9 +490,7 @@ class _NutrientLabel extends StatelessWidget {
         const Gap(4),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.w700p10.copyWith(
             color: color,
           ),
         ),
@@ -518,13 +513,14 @@ class _NutrientBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final percentage = (value / maxValue).clamp(0.0, 1.0);
+
     return Column(
       children: [
         Container(
           width: 60,
           height: 8,
           decoration: BoxDecoration(
-            color: Colors.grey.shade300,
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
             borderRadius: BorderRadius.circular(4),
           ),
           child: FractionallySizedBox(
@@ -541,10 +537,9 @@ class _NutrientBar extends StatelessWidget {
         const Gap(2),
         Text(
           '${value.toStringAsFixed(1)}g',
-          style: TextStyle(
+          style: AppTextStyles.w700p10.copyWith(
             fontSize: 9,
             color: color,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ],

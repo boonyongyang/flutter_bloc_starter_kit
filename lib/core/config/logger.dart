@@ -1,6 +1,10 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:logger/logger.dart';
 
+/// A logger instance for the application.
+///
+/// This logger uses the PrettyPrinter for formatting log messages and a custom
+/// log filter that only allows logging when the application is not in release mode.
 final logger = Logger(
   printer: PrettyPrinter(
     methodCount: 0,

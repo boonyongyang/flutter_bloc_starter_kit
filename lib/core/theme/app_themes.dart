@@ -20,6 +20,13 @@ class AppThemes {
       onSecondary: AppColors.hologramWhite,
       surface: AppColors.hologramWhite,
       onSurface: AppColors.shadowBlack,
+      tertiary: AppColors.neonBlue,
+      onTertiary: AppColors.hologramWhite,
+      error: AppColors.errorRed,
+      onError: AppColors.hologramWhite,
+      outline: AppColors.matrixSilver,
+      surfaceContainerHighest: AppColors.matrixSilver,
+      onSurfaceVariant: AppColors.shadowBlack,
     ),
     textTheme: TextTheme(
       headlineLarge:
@@ -50,6 +57,13 @@ class AppThemes {
       onSecondary: AppColors.hologramWhite,
       surface: AppColors.nightShade,
       onSurface: AppColors.hologramWhite,
+      tertiary: AppColors.neonBlue,
+      onTertiary: AppColors.hologramWhite,
+      error: AppColors.errorRed,
+      onError: AppColors.hologramWhite,
+      outline: AppColors.matrixSilver,
+      surfaceContainerHighest: AppColors.matrixSilver,
+      onSurfaceVariant: AppColors.hologramWhite,
     ),
     textTheme: TextTheme(
       headlineLarge: AppTextStyles.w800p32.copyWith(

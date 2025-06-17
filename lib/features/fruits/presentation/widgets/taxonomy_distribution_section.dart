@@ -2,8 +2,8 @@ import 'dart:math' show sqrt;
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../core/style/app_colors.dart';
-import '../../models/fruit_model.dart';
+import '../../../../core/style/app_text_styles.dart';
+import '../../data/models/fruit_model.dart';
 
 /// Widget for displaying taxonomy distribution in a bubble chart
 class TaxonomyDistributionSection extends StatelessWidget {
@@ -36,16 +36,14 @@ class TaxonomyDistributionSection extends StatelessWidget {
       children: [
         Text(
           'Taxonomy Distribution',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: AppTextStyles.w700p18,
         ),
         const Gap(8),
         Text(
           'Most common fruit families in the database',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.matrixSilver,
-              ),
+          style: AppTextStyles.w400p12.copyWith(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          ),
         ),
         const Gap(12),
         Container(
@@ -55,7 +53,8 @@ class TaxonomyDistributionSection extends StatelessWidget {
                 ? const Color(0xFF1E1E2E) // Dark theme background
                 : const Color(0xFFF8F8FB), // Light theme background
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.withOpacity(0.2)),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.2)),
           ),
           padding: const EdgeInsets.symmetric(
             horizontal: 12,
@@ -128,10 +127,11 @@ class TaxonomyDistributionSection extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: Text(
                                     family.value.toString(),
-                                    style: TextStyle(
+                                    style: (size > 50
+                                            ? AppTextStyles.w700p14
+                                            : AppTextStyles.w700p12)
+                                        .copyWith(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: size > 50 ? 14 : 12,
                                       shadows: [
                                         Shadow(
                                           color: Colors.black.withOpacity(0.5),
@@ -151,7 +151,7 @@ class TaxonomyDistributionSection extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 16),
+              const Gap(16),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -167,19 +167,14 @@ class TaxonomyDistributionSection extends StatelessWidget {
                             backgroundColor: color,
                             child: Text(
                               family.value.toString(),
-                              style: const TextStyle(
-                                fontSize: 9,
+                              style: AppTextStyles.w700p10.copyWith(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           label: Text(
                             family.key,
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                            style: AppTextStyles.w600p12,
                           ),
                           backgroundColor: Theme.of(context).brightness ==
                                   Brightness.dark
