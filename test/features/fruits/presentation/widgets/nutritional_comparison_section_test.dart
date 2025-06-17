@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../lib/features/fruits/data/models/fruit_model.dart';
-import '../../../../../lib/features/fruits/presentation/widgets/nutritional_comparison_section.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/data/models/fruit_model.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/presentation/widgets/nutritional_comparison_section.dart';
 
 void main() {
   group('NutritionalComparisonSection', () {
@@ -11,7 +11,7 @@ void main() {
 
     setUp(() {
       mockFruits = [
-        Fruit(
+        const Fruit(
           name: 'Apple',
           id: 1,
           family: 'Rosaceae',
@@ -25,7 +25,7 @@ void main() {
             protein: 0.3,
           ),
         ),
-        Fruit(
+        const Fruit(
           name: 'Banana',
           id: 2,
           family: 'Musaceae',
@@ -39,7 +39,7 @@ void main() {
             protein: 1.0,
           ),
         ),
-        Fruit(
+        const Fruit(
           name: 'Orange',
           id: 3,
           family: 'Rutaceae',
@@ -83,7 +83,7 @@ void main() {
           home: Scaffold(
             body: NutritionalComparisonSection(
               fruits: mockFruits,
-              selectedFruits: ['Apple', 'Orange'],
+              selectedFruits: const ['Apple', 'Orange'],
             ),
           ),
         ),
@@ -95,7 +95,7 @@ void main() {
 
     testWidgets('handles empty fruits list gracefully', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalComparisonSection(
               fruits: [],
@@ -115,7 +115,7 @@ void main() {
           home: Scaffold(
             body: NutritionalComparisonSection(
               fruits: [mockFruits.first],
-              selectedFruits: ['Apple'],
+              selectedFruits: const ['Apple'],
             ),
           ),
         ),
@@ -147,7 +147,7 @@ void main() {
           home: Scaffold(
             body: NutritionalComparisonSection(
               fruits: mockFruits,
-              selectedFruits: [],
+              selectedFruits: const [],
             ),
           ),
         ),
@@ -213,7 +213,7 @@ void main() {
           home: Scaffold(
             body: NutritionalComparisonSection(
               fruits: mockFruits,
-              selectedFruits: ['Mango', 'Kiwi'], // Not in fruits list
+              selectedFruits: const ['Mango', 'Kiwi'], // Not in fruits list
             ),
           ),
         ),
@@ -229,7 +229,7 @@ void main() {
           home: Scaffold(
             body: NutritionalComparisonSection(
               fruits: mockFruits,
-              selectedFruits: ['Apple'], // Only one selected
+              selectedFruits: const ['Apple'], // Only one selected
             ),
           ),
         ),
@@ -288,7 +288,7 @@ void main() {
           home: Scaffold(
             body: NutritionalComparisonSection(
               fruits: mockFruits,
-              selectedFruits: ['Apple', 'Banana'],
+              selectedFruits: const ['Apple', 'Banana'],
             ),
           ),
         ),

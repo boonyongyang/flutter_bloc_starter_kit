@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../../lib/features/fruits/presentation/widgets/nutritional_bar_chart_section.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/presentation/widgets/nutritional_bar_chart_section.dart';
 
 void main() {
   group('NutritionalBarChartSection', () {
     testWidgets('renders section title and bar chart correctly', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 12.5,
@@ -36,7 +36,7 @@ void main() {
 
     testWidgets('handles zero values correctly', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 0,
@@ -56,7 +56,7 @@ void main() {
 
     testWidgets('handles large values correctly', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 100.5,
@@ -76,7 +76,7 @@ void main() {
 
     testWidgets('has correct widget hierarchy and structure', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 12.5,
@@ -105,7 +105,7 @@ void main() {
 
     testWidgets('displays chart with proper styling and decoration', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 12.5,
@@ -137,7 +137,7 @@ void main() {
 
     testWidgets('handles decimal values properly', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 12.567,
@@ -156,7 +156,7 @@ void main() {
 
     testWidgets('maintains proper layout structure', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 12.5,
@@ -179,7 +179,7 @@ void main() {
 
     testWidgets('renders bar chart with correct number of bars', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: 12.5,
@@ -201,7 +201,7 @@ void main() {
 
     testWidgets('handles negative values gracefully', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
               avgSugar: -5.0, // Shouldn't happen in real data, but test edge case

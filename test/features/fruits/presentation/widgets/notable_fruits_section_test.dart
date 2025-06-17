@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../../lib/features/fruits/data/models/fruit_model.dart';
-import '../../../../../lib/features/fruits/presentation/widgets/notable_fruits_section.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/data/models/fruit_model.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/presentation/widgets/notable_fruits_section.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
 
@@ -23,7 +23,7 @@ void main() {
     late Fruit mockFruit4;
 
     setUp(() {
-      mockFruit1 = Fruit(
+      mockFruit1 = const Fruit(
         name: 'Apple',
         id: 1,
         family: 'Rosaceae',
@@ -38,7 +38,7 @@ void main() {
         ),
       );
 
-      mockFruit2 = Fruit(
+      mockFruit2 = const Fruit(
         name: 'Banana',
         id: 2,
         family: 'Musaceae',
@@ -53,7 +53,7 @@ void main() {
         ),
       );
 
-      mockFruit3 = Fruit(
+      mockFruit3 = const Fruit(
         name: 'Orange',
         id: 3,
         family: 'Rutaceae',
@@ -68,7 +68,7 @@ void main() {
         ),
       );
 
-      mockFruit4 = Fruit(
+      mockFruit4 = const Fruit(
         name: 'Grape',
         id: 4,
         family: 'Vitaceae',
@@ -233,7 +233,7 @@ void main() {
     late Fruit mockFruit;
 
     setUp(() {
-      mockFruit = Fruit(
+      mockFruit = const Fruit(
         name: 'Test Fruit',
         id: 1,
         family: 'Test Family',
@@ -289,7 +289,7 @@ void main() {
     });
 
     testWidgets('handles long fruit names with ellipsis', (tester) async {
-      final longNameFruit = Fruit(
+      const longNameFruit = Fruit(
         name: 'Very Long Fruit Name That Should Be Truncated',
         id: 1,
         family: 'Test Family',
@@ -310,7 +310,7 @@ void main() {
             routes: [
               GoRoute(
                 path: '/',
-                builder: (context, state) => SizedBox(
+                builder: (context, state) => const SizedBox(
                   width: 150, // Constrain width to force ellipsis
                   child: NotableFruitCard(
                     fruit: longNameFruit,

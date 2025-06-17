@@ -8,7 +8,6 @@ import '../bloc/taxonomy_state.dart';
 import '../../../../core/constants/taxonomy_constants.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/style/style.dart';
-import '../../../../core/style/app_text_styles.dart';
 import '../../../fruits/data/models/fruit_model.dart';
 import '../../data/models/taxonomy_fact_model.dart';
 

@@ -9,13 +9,13 @@ void main() {
     late Fruit testFruit;
 
     setUp(() {
-      testFruit = Fruit(
+      testFruit = const Fruit(
         id: 1,
         name: 'Apple',
         family: 'Rosaceae',
         order: 'Rosales',
         genus: 'Malus',
-        nutritions: const Nutrition(
+        nutritions: Nutrition(
           calories: 95,
           fat: 0.3,
           sugar: 19.0,

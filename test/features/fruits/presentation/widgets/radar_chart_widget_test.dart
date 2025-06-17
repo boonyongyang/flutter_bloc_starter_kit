@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../lib/features/fruits/presentation/widgets/radar_chart_widget.dart';
+import 'package:flutter_bloc_starter_kit/features/fruits/presentation/widgets/radar_chart_widget.dart';
 
 void main() {
   group('MacroNutrientRadarChart', () {
@@ -61,7 +61,7 @@ void main() {
 
     testWidgets('handles empty macro values gracefully', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: MacroNutrientRadarChart(
               macroValues: [],
@@ -78,7 +78,7 @@ void main() {
 
     testWidgets('handles single value correctly', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: MacroNutrientRadarChart(
               macroValues: [15.0],

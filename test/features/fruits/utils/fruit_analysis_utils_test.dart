@@ -8,13 +8,13 @@ void main() {
 
     setUp(() {
       sampleFruits = [
-        Fruit(
+        const Fruit(
           id: 1,
           name: 'Apple',
           family: 'Rosaceae',
           order: 'Rosales',
           genus: 'Malus',
-          nutritions: const Nutrition(
+          nutritions: Nutrition(
             calories: 95,
             fat: 0.3,
             sugar: 19.0,
@@ -22,13 +22,13 @@ void main() {
             protein: 0.5,
           ),
         ),
-        Fruit(
+        const Fruit(
           id: 2,
           name: 'Banana',
           family: 'Musaceae',
           order: 'Zingiberales',
           genus: 'Musa',
-          nutritions: const Nutrition(
+          nutritions: Nutrition(
             calories: 105,
             fat: 0.4,
             sugar: 14.0,
@@ -36,13 +36,13 @@ void main() {
             protein: 1.3,
           ),
         ),
-        Fruit(
+        const Fruit(
           id: 3,
           name: 'Orange',
           family: 'Rutaceae',
           order: 'Sapindales',
           genus: 'Citrus',
-          nutritions: const Nutrition(
+          nutritions: Nutrition(
             calories: 62,
             fat: 0.2,
             sugar: 12.0,
