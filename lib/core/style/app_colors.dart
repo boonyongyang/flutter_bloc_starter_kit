@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  // ============================================================================
+  // BRAND COLORS - Cyberpunk/Tech Theme
+  // ============================================================================
+
   // Main colors
   static const Color neonBlue = Color(0xFF3A7BEF); // Brighter blue
   static const Color cyberpunkPurple = Color(0xFF8A49D8); // Less dark purple
@@ -29,4 +33,18 @@ class AppColors {
   static const Color errorRed = Color(0xFFFF5E7C); // Softer red
   static const Color infoBlue = Color(0xFF56CCFF); // Brighter blue
   static const Color warningYellow = Color(0xFFFFC857); // Softer yellow
+
+  // ============================================================================
+  // DARK THEME SCHEME - Base colors and text colors
+  // ============================================================================
+
+  // Base colors
+  static const Color darkBackground = Color(0xFF030303);
+  static const Color darkSurface = Color(0xFF121212);
+  static const Color darkCard = Color(0xFF1E1E1E);
+
+  // Text colors
+  static const textPrimary = Colors.white;
+  static final textSecondary = Colors.white.withOpacity(0.7);
+  static final textTertiary = Colors.white.withOpacity(0.4);
 }
