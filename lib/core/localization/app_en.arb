@@ -1,11 +1,76 @@
 {
   "@@locale": "en",
   "homePageTitle": "Home Page",
+  "@homePageTitle": {},
   "welcomeMessage": "Welcome to the Flutter Bloc Starter Kit!",
+  "@welcomeMessage": {},
   "aboutProjectTitle": "About the Project",
+  "@aboutProjectTitle": {},
   "aboutProjectDescription": "Learn more about the features and goals.",
+  "@aboutProjectDescription": {},
   "apiCalls": "API Calls",
+  "@apiCalls": {},
   "localDatabase": "Local Database",
+  "@localDatabase": {},
   "offlineSync": "Offline Sync",
-  "localization": "Localization"
+  "@offlineSync": {},
+  "localization": "Localization",
+  "@localization": {},
+  "fruitsPageTitle": "Fruits Dashboard",
+  "@fruitsPageTitle": {},
+  "goodMorning": "Good Morning",
+  "@goodMorning": {},
+  "goodAfternoon": "Good Afternoon",
+  "@goodAfternoon": {},
+  "goodEvening": "Good Evening",
+  "@goodEvening": {},
+  "allFruits": "All Fruits",
+  "@allFruits": {},
+  "sortBy": "Sort by",
+  "@sortBy": {},
+  "glossary": "Glossary",
+  "@glossary": {},
+  "iconLegend": "Icon legend",
+  "@iconLegend": {},
+  "toggleTheme": "Toggle Theme",
+  "@toggleTheme": {},
+  "logout": "Logout",
+  "@logout": {},
+  "confirmLogout": "Confirm Logout",
+  "@confirmLogout": {},
+  "areYouSureLogout": "Are you sure you want to logout?",
+  "@areYouSureLogout": {},
+  "cancel": "Cancel",
+  "@cancel": {},
+  "tryAgain": "Try Again",
+  "@tryAgain": {},
+  "retry": "Retry",
+  "@retry": {},
+  "scrollToTop": "Scroll to Top",
+  "@scrollToTop": {},
+  "noFruitsAvailable": "No fruits available",
+  "@noFruitsAvailable": {},
+  "noDataAvailable": "No data available",
+  "@noDataAvailable": {},
+  "error": "Error",
+  "@error": {},
+  "itemsCount": "{count} items",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "greetingWithName": "{greeting}, {name}!",
+  "@greetingWithName": {
+    "placeholders": {
+      "greeting": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

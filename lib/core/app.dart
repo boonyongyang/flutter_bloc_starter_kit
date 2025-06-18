@@ -7,19 +7,15 @@ import 'config/env.dart';
 
 import 'routes/app_router.dart';
 
-/// The Widget that configures your application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // First, we get the ThemeCubit instance
     final themeCubit = BlocProvider.of<ThemeCubit>(context);
 
-    // Then we listen to the theme changes with BlocBuilder
     return BlocBuilder<ThemeCubit, ThemeData>(
       builder: (context, theme) {
-        // We wrap our router in another BlocProvider to ensure all route builders have access to the ThemeCubit
         return BlocProvider.value(
           value: themeCubit,
           child: MaterialApp.router(
@@ -27,6 +23,9 @@ class MyApp extends StatelessWidget {
             theme: theme,
             restorationScopeId: 'app',
             localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const [

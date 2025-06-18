@@ -11,6 +11,7 @@ import '../../../../core/constants/nutrition_constants.dart';
 import '../../../../core/constants/taxonomy_constants.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/style/style.dart';
+import '../../../../core/localization/l10n_extensions.dart';
 import '../../../auth/presentation/bloc/auth_cubit.dart';
 import '../../../auth/presentation/bloc/auth_state.dart';
 import '../bloc/fruits_cubit.dart';
@@ -97,17 +98,17 @@ class _FruitsPageState extends State<FruitsPage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Confirm Logout'),
-          content: const Text('Are you sure you want to logout?'),
+          title: Text(context.l10n.confirmLogout),
+          content: Text(context.l10n.areYouSureLogout),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(context.l10n.cancel),
               onPressed: () {
                 Navigator.of(dialogContext).pop(false);
               },
             ),
             TextButton(
-              child: const Text('Logout'),
+              child: Text(context.l10n.logout),
               onPressed: () {
                 Navigator.of(dialogContext).pop(true);
               },
@@ -144,12 +145,12 @@ class _FruitsPageState extends State<FruitsPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Fruits Dashboard',
+            context.l10n.fruitsPageTitle,
             style: AppTextStyles.w700p20,
           ),
           leading: IconButton(
             icon: const Icon(Icons.info_outline),
-            tooltip: 'Icon legend',
+            tooltip: context.l10n.iconLegend,
             onPressed: _showIconInfoSheet,
           ),
           actions: [
@@ -169,7 +170,7 @@ class _FruitsPageState extends State<FruitsPage> {
                 Icons.logout,
                 color: Theme.of(context).colorScheme.error,
               ),
-              tooltip: 'Logout',
+              tooltip: context.l10n.logout,
               onPressed: _onLogoutPressed,
             ),
           ],
@@ -208,7 +209,7 @@ class _FruitsPageState extends State<FruitsPage> {
                 ? FloatingActionButton(
                     shape: const CircleBorder(),
                     onPressed: _onScrollToTopPressed,
-                    tooltip: 'Scroll to Top',
+                    tooltip: context.l10n.scrollToTop,
                     child: const Icon(Icons.arrow_upward),
                   )
                 : const SizedBox.shrink();
@@ -261,7 +262,7 @@ class _IconInfoSheet extends StatelessWidget {
               children: [
                 const Icon(Icons.info_outline, size: 24),
                 const Gap(8),
-                Text('Glossary', style: AppTextStyles.w700p18),
+                Text(context.l10n.glossary, style: AppTextStyles.w700p18),
               ],
             ),
             const Gap(12),
@@ -330,17 +331,6 @@ class _FruitsBody extends StatelessWidget {
     this.scrollController,
   });
 
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'Good Morning';
-    } else if (hour < 17) {
-      return 'Good Afternoon';
-    } else {
-      return 'Good Evening';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FruitsCubit, FruitsState>(
@@ -383,7 +373,8 @@ class _FruitsBody extends StatelessWidget {
                             },
                           );
                           return Text(
-                            '${_getGreeting()}, $username!',
+                            L10nUtils.getGreetingWithName(
+                                context.l10n, username),
                             style: AppTextStyles.w700p16,
                           );
                         },
@@ -446,7 +437,7 @@ class _FruitsBody extends StatelessWidget {
                           const Icon(Icons.format_list_bulleted, size: 16),
                           const Gap(8),
                           Text(
-                            'All Fruits',
+                            context.l10n.allFruits,
                             style: AppTextStyles.w700p16,
                           ),
                         ],
@@ -489,7 +480,7 @@ class _FruitsBody extends StatelessWidget {
                             ),
                             const Spacer(),
                             Text(
-                              '${analysisData.fruitCount} items',
+                              context.l10n.itemsCount(analysisData.fruitCount),
                               style: AppTextStyles.w400p12.copyWith(
                                 color: Theme.of(context)
                                     .colorScheme
@@ -518,25 +509,23 @@ class _FruitsBody extends StatelessWidget {
         if (state is FruitsError) {
           return _buildErrorState(context, state.message);
         }
-
-        return _buildEmptyState(context, message: 'No data available.');
+        return _buildEmptyState(context, message: context.l10n.noDataAvailable);
       },
     );
   }
 
-  Widget _buildEmptyState(BuildContext context,
-      {String message = 'No fruits available'}) {
+  Widget _buildEmptyState(BuildContext context, {String? message}) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(message),
+          Text(message ?? context.l10n.noFruitsAvailable),
           const Gap(8),
           ElevatedButton(
             onPressed: () {
               context.read<FruitsCubit>().fetchFruits();
             },
-            child: const Text('Try Again'),
+            child: Text(context.l10n.tryAgain),
           )
         ],
       ),
@@ -548,13 +537,13 @@ class _FruitsBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Error: $errorMessage'),
+          Text('${context.l10n.error}: $errorMessage'),
           const Gap(16),
           ElevatedButton(
             onPressed: () {
               context.read<FruitsCubit>().fetchFruits();
             },
-            child: const Text('Retry'),
+            child: Text(context.l10n.retry),
           ),
         ],
       ),
@@ -746,7 +735,7 @@ class _SortBottomSheet extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text('Sort by', style: AppTextStyles.w700p18),
+            child: Text(context.l10n.sortBy, style: AppTextStyles.w700p18),
           ),
           ...FruitSort.values.map((sort) {
             return RadioListTile<FruitSort>(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/localization/l10n_extensions.dart';
 import '../../../theme/bloc/theme_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         // backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(
-          AppLocalizations.of(context)?.homePageTitle ?? 'Home Page',
+          context.l10n.homePageTitle,
           style: textTheme.titleLarge?.copyWith(
             color: colorScheme.onPrimary,
           ),
@@ -49,8 +49,7 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context)?.welcomeMessage ??
-                    'Welcome to the Flutter Bloc Starter Kit!',
+                context.l10n.welcomeMessage,
                 style: textTheme.headlineLarge,
               ),
               const Gap(16),
@@ -66,13 +65,11 @@ class HomePage extends StatelessWidget {
                     color: colorScheme.secondary,
                   ),
                   title: Text(
-                    AppLocalizations.of(context)?.aboutProjectTitle ??
-                        'About the Project',
+                    context.l10n.aboutProjectTitle,
                     style: textTheme.titleLarge,
                   ),
                   subtitle: Text(
-                    AppLocalizations.of(context)?.aboutProjectDescription ??
-                        'Learn more about the features and goals.',
+                    context.l10n.aboutProjectDescription,
                     style: textTheme.bodyMedium,
                   ),
                   onTap: () {
@@ -88,23 +85,13 @@ class HomePage extends StatelessWidget {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
                 children: [
-                  _buildFeatureCard(context, Icons.api,
-                      AppLocalizations.of(context)?.apiCalls ?? 'API Calls'),
+                  _buildFeatureCard(context, Icons.api, context.l10n.apiCalls),
                   _buildFeatureCard(
-                      context,
-                      Icons.storage,
-                      AppLocalizations.of(context)?.localDatabase ??
-                          'Local Database'),
+                      context, Icons.storage, context.l10n.localDatabase),
                   _buildFeatureCard(
-                      context,
-                      Icons.sync,
-                      AppLocalizations.of(context)?.offlineSync ??
-                          'Offline Sync'),
+                      context, Icons.sync, context.l10n.offlineSync),
                   _buildFeatureCard(
-                      context,
-                      Icons.language,
-                      AppLocalizations.of(context)?.localization ??
-                          'Localization'),
+                      context, Icons.language, context.l10n.localization),
                 ],
               ),
             ],
@@ -116,17 +103,13 @@ class HomePage extends StatelessWidget {
 
   Widget _buildFeatureCard(BuildContext context, IconData icon, String title) {
     void navigateToPage() {
-      if (title == AppLocalizations.of(context)?.apiCalls ||
-          title == 'API Calls') {
+      if (title == context.l10n.apiCalls) {
         context.go('/fruits');
-      } else if (title == AppLocalizations.of(context)?.localDatabase ||
-          title == 'Local Database') {
+      } else if (title == context.l10n.localDatabase) {
         context.go('/local-database');
-      } else if (title == AppLocalizations.of(context)?.offlineSync ||
-          title == 'Offline Sync') {
+      } else if (title == context.l10n.offlineSync) {
         context.go('/offline-sync');
-      } else if (title == AppLocalizations.of(context)?.localization ||
-          title == 'Localization') {
+      } else if (title == context.l10n.localization) {
         context.go('/localization');
       }
     }
