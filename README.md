@@ -101,13 +101,20 @@ abstract class FruitsApiService {
   Future<List<Fruit>> getAllFruits();
 }
 ```
-
 ## Key Dependencies
 
-**Core Architecture:** flutter_bloc, get_it, go_router  
-**Network & Data:** dio, retrofit, hive_ce, flutter_secure_storage  
-**Environment:** envied, freezed, flutter_localizations  
-**UI & Dev Tools:** fl_chart, shimmer, mocktail, flutter_lints, logger
+- **State Management:** `flutter_bloc`, `equatable`
+- **Dependency Injection:** `get_it`
+- **Routing:** `go_router`
+- **Networking:** `dio`, `retrofit`
+- **Local Storage:** `hive`, `flutter_secure_storage`
+- **Code Generation & Models:** `freezed`, `json_serializable`
+- **Environment Configuration:** `envied`
+- **Localization:** `flutter_localizations`
+- **Testing & Dev Tools:** `mocktail`, `flutter_lints`, `logger`
+- **UI Utilities:** `shimmer`, `fl_chart`
+
+These packages are chosen for their stability, community support, and alignment with best practices for scalable Flutter development.
 
 These dependencies provide type safety, offline-first capabilities, and developer-friendly tooling.
 
@@ -176,9 +183,8 @@ lib/
 ```
 
 ## Sample Features
-
 ### Fruits Feature
-Complete CRUD operations with API integration, local caching, state management, error handling, and data visualization.
+Demonstrates fetching fruit data from an API, local caching, state management, error handling, and data visualization.
 
 ### Authentication & Theme
 Basic auth flow with secure storage, route protection, and dynamic light/dark theming with persistence.
