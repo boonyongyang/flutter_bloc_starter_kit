@@ -2,6 +2,36 @@
 
 A demonstration of Flutter project architecture and best practices, showcasing how I approach building scalable Flutter applications.
 
+## App Preview
+
+### Screenshots
+<div align="center">
+  
+| Fruits Dashboard | Nutritional Comparison | Fruits List & Sorting | Fruit Details | Taxonomy Info |
+|:----------------:|:---------------------:|:--------------------:|:-------------:|:-------------:|
+| <img src="screenshots/fruits_dashboard.png" height="400" alt="Dashboard"/> | <img src="screenshots/nutritional_comparison.png" height="400" alt="Comparison"/> | <img src="screenshots/fruits_list_with_sorting.png" height="400" alt="List"/> | <img src="screenshots/fruit_detail_page.png" height="400" alt="Details"/> | <img src="screenshots/fruit_detail_taxonomy.png" height="400" alt="Taxonomy"/> |
+
+*Overview & insights* | *Nutritional analysis* | *Sorting & filtering* | *Detailed info* | *Taxonomy data*
+
+</div>
+
+### Demo Videos
+<div align="center">
+
+**Fruits Page Navigation**  
+![Fruits Page Demo](screenshots/gifs/fruits_page.gif)
+
+*Browse fruits, view nutritional data, and explore different sorting options*
+
+---
+
+**Fruit Detail Exploration**  
+![Fruit Detail Demo](screenshots/gifs/fruit_detail_page.gif)
+
+*Detailed nutritional analysis, charts, and taxonomy information*
+
+</div>
+
 ## Key Features
 
 - **Clean Architecture**: 2-layer architecture focusing on separation of concerns
