@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         return BlocProvider.value(
           value: themeCubit,
           child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             routerConfig: router,
             theme: theme,
             restorationScopeId: 'app',
