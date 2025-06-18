@@ -53,7 +53,23 @@ class _NutritionalComparisonSectionState
       _leftFruit = ValueNotifier<Fruit>(widget.fruits.first);
       _rightFruit = ValueNotifier<Fruit>(widget.fruits.first);
     } else {
-      throw Exception('Fruits list cannot be empty!');
+      // Handle empty fruits list gracefully - use placeholder fruit
+      const placeholderFruit = Fruit(
+        name: 'No Fruit Available',
+        id: 0,
+        family: 'N/A',
+        order: 'N/A',
+        genus: 'N/A',
+        nutritions: Nutrition(
+          calories: 0,
+          fat: 0,
+          sugar: 0,
+          carbohydrates: 0,
+          protein: 0,
+        ),
+      );
+      _leftFruit = ValueNotifier<Fruit>(placeholderFruit);
+      _rightFruit = ValueNotifier<Fruit>(placeholderFruit);
     }
   }
 
@@ -70,67 +86,70 @@ class _NutritionalComparisonSectionState
     if (widget.fruits.isEmpty) {
       return const SizedBox.shrink();
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Nutritional Comparison',
-                    style: AppTextStyles.w700p16,
-                  ),
-                  const Gap(4),
-                  Text(
-                    'Compare nutrients between any two fruits',
-                    style: AppTextStyles.w400p12.copyWith(
-                      color:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nutritional Comparison',
+                      style: AppTextStyles.w700p16,
                     ),
-                  ),
-                ],
+                    const Gap(4),
+                    Text(
+                      'Compare nutrients between any two fruits',
+                      style: AppTextStyles.w400p12.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            ValueListenableBuilder<bool>(
-              valueListenable: _isVerticalLayout,
-              builder: (context, isVertical, _) {
-                return IconButton(
-                  icon:
-                      Icon(isVertical ? Icons.view_agenda : Icons.view_column),
-                  onPressed: () {
-                    _isVerticalLayout.value = !isVertical;
-                  },
-                  tooltip: isVertical
-                      ? 'Switch to side-by-side view'
-                      : 'Switch to vertical view',
-                );
-              },
-            ),
-          ],
-        ),
-        const Gap(12),
-        ValueListenableBuilder<bool>(
-          valueListenable: _isVerticalLayout,
-          builder: (context, isVertical, _) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .surfaceContainerHighest
-                    .withOpacity(0.3),
-                borderRadius: BorderRadius.circular(12),
+              ValueListenableBuilder<bool>(
+                valueListenable: _isVerticalLayout,
+                builder: (context, isVertical, _) {
+                  return IconButton(
+                    icon: Icon(
+                        isVertical ? Icons.view_agenda : Icons.view_column),
+                    onPressed: () {
+                      _isVerticalLayout.value = !isVertical;
+                    },
+                    tooltip: isVertical
+                        ? 'Switch to side-by-side view'
+                        : 'Switch to vertical view',
+                  );
+                },
               ),
-              padding: const EdgeInsets.all(16),
-              child: isVertical
-                  ? _buildVerticalComparisonView(context)
-                  : _buildHorizontalComparisonView(context),
-            );
-          },
-        ),
-      ],
+            ],
+          ),
+          const Gap(12),
+          ValueListenableBuilder<bool>(
+            valueListenable: _isVerticalLayout,
+            builder: (context, isVertical, _) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest
+                      .withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.all(16),
+                child: isVertical
+                    ? _buildVerticalComparisonView(context)
+                    : _buildHorizontalComparisonView(context),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 

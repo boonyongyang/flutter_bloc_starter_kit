@@ -18,7 +18,7 @@ class NutritionConstants {
       tooltip: 'Total carbohydrates in grams'
     ),
     'protein': (
-      icon: Icons.egg,
+      icon: Icons.fitness_center,
       color: AppColors.successGreen,
       tooltip: 'Protein content in grams'
     ),

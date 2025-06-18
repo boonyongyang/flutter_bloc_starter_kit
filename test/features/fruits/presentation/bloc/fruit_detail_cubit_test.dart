@@ -18,7 +18,7 @@ void main() {
     setUp(() {
       mockRepository = MockIFruitsRepository();
       cubit = FruitDetailCubit(mockRepository);
-      
+
       testFruit = const Fruit(
         id: 1,
         name: 'Apple',
@@ -73,7 +73,8 @@ void main() {
         const FruitDetailError('Exception: Fruit not found'),
       ],
       verify: (_) {
-        verify(() => mockRepository.fetchFruitDetailByName('InvalidFruit')).called(1);
+        verify(() => mockRepository.fetchFruitDetailByName('InvalidFruit'))
+            .called(1);
       },
     );
 

@@ -129,7 +129,8 @@ void main() {
       expect(find.text('43 kcal'), findsOneWidget); // lowest calories
     });
 
-    testWidgets('displays correct icons and colors for each card', (tester) async {
+    testWidgets('displays correct icons and colors for each card',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp.router(
           routerConfig: GoRouter(
@@ -164,7 +165,8 @@ void main() {
       expect(find.byType(InkWell), findsNWidgets(4));
     });
 
-    testWidgets('navigates to fruit detail page when card is tapped', (tester) async {
+    testWidgets('navigates to fruit detail page when card is tapped',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp.router(
           routerConfig: GoRouter(
@@ -223,7 +225,8 @@ void main() {
       );
 
       // Verify layout structure
-      expect(find.byType(Column), findsNWidgets(5)); // main column + 4 card columns
+      expect(find.byType(Column),
+          findsNWidgets(5)); // main column + 4 card columns
       expect(find.byType(Row), findsNWidgets(6)); // 2 card rows + 4 icon rows
       expect(find.byType(Gap), findsNWidgets(10)); // various gaps for spacing
     });

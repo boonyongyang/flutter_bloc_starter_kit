@@ -29,7 +29,7 @@ class FruitAnalysisData {
 // Function to calculate nutritional averages and find extremes
 FruitAnalysisData calculateFruitAnalysisData(List<Fruit> sortedFruits) {
   if (sortedFruits.isEmpty) {
-    throw ArgumentError('Fruit list cannot be empty for analysis.');
+    throw StateError('Fruit list cannot be empty for analysis.');
   }
 
   double totalSugar = 0,

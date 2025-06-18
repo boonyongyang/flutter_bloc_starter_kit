@@ -5,7 +5,6 @@ import '../../../taxonomy/presentation/widgets/taxonomy_fact_card.dart';
 import '../../data/models/fruit_model.dart';
 import '../widgets/fruit_info_card.dart';
 import '../widgets/nutrition_chips.dart';
-import '../widgets/radar_chart_widget.dart';
 
 class FruitDetailPage extends StatelessWidget {
   final Fruit fruit;
@@ -15,12 +14,6 @@ class FruitDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nutrition = fruit.nutritions;
-    final macroLabels = ['Carbs', 'Protein', 'Fat'];
-    final macroValues = [
-      nutrition.carbohydrates,
-      nutrition.protein,
-      nutrition.fat
-    ];
 
     return Scaffold(
       body: CustomScrollView(
@@ -44,15 +37,6 @@ class FruitDetailPage extends StatelessWidget {
                 [
                   // Fruit info card
                   FruitInfoCard(fruit: fruit),
-
-                  const Gap(28),
-                  const Gap(28),
-
-                  // Radar chart for main macros
-                  MacroNutrientRadarChart(
-                    macroValues: macroValues,
-                    macroLabels: macroLabels,
-                  ),
 
                   const Gap(28),
 

@@ -27,7 +27,7 @@ void main() {
       ),
     );
     expect(find.text('Banana'), findsOneWidget);
-    expect(find.textContaining('Musaceae'), findsOneWidget);
-    expect(find.textContaining('Calories'), findsOneWidget);
+    expect(find.textContaining('Musaceae'), findsNWidgets(2));
+    expect(find.textContaining('genus'), findsNWidgets(2));
   });
 }

@@ -99,6 +99,7 @@ class _NutritionSummaryCard extends StatelessWidget {
       ),
       child: Container(
         width: 130,
+        constraints: const BoxConstraints(minWidth: 100),
         padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,9 +108,13 @@ class _NutritionSummaryCard extends StatelessWidget {
               children: [
                 Icon(icon, color: color, size: 16),
                 const Gap(6),
-                Text(
-                  title,
-                  style: AppTextStyles.w600p12,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppTextStyles.w600p12,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                 ),
               ],
             ),

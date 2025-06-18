@@ -59,7 +59,8 @@ void main() {
       mockSelectedFruits = ['Apple', 'Banana'];
     });
 
-    testWidgets('renders comparison section with title and description', (tester) async {
+    testWidgets('renders comparison section with title and description',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -73,7 +74,8 @@ void main() {
 
       // Verify the section title and description
       expect(find.text('Nutritional Comparison'), findsOneWidget);
-      expect(find.text('Compare nutrients between any two fruits'), findsOneWidget);
+      expect(find.text('Compare nutrients between any two fruits'),
+          findsOneWidget);
 
       // Verify the main structure
       expect(find.byType(Column), findsAtLeastNWidgets(1));
@@ -94,7 +96,7 @@ void main() {
 
       // Should render as SizedBox.shrink when no fruits
       expect(find.byType(SizedBox), findsOneWidget);
-      
+
       // Should not render the comparison content
       expect(find.text('Nutritional Comparison'), findsNothing);
     });
@@ -147,9 +149,10 @@ void main() {
 
       // Should have an icon button for layout toggle
       expect(find.byType(IconButton), findsAtLeastNWidgets(1));
-      
+
       // Should have ValueListenableBuilder for layout state
-      expect(find.byType(ValueListenableBuilder<bool>), findsAtLeastNWidgets(1));
+      expect(
+          find.byType(ValueListenableBuilder<bool>), findsAtLeastNWidgets(1));
     });
 
     testWidgets('handles layout toggle interaction', (tester) async {
@@ -305,8 +308,9 @@ void main() {
 
       // Verify text widgets are present with correct content
       expect(find.text('Nutritional Comparison'), findsOneWidget);
-      expect(find.text('Compare nutrients between any two fruits'), findsOneWidget);
-      
+      expect(find.text('Compare nutrients between any two fruits'),
+          findsOneWidget);
+
       // Verify the structure includes proper text styling
       expect(find.byType(Text), findsAtLeastNWidgets(2));
     });

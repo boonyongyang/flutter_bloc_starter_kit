@@ -28,7 +28,7 @@ void main() {
       // Should display average values
       expect(find.text('86'), findsOneWidget); // avgCalories rounded
       expect(find.text('1.2g'), findsOneWidget); // avgProtein
-      expect(find.text('12.5g'), findsOneWidget); // avgSugar  
+      expect(find.text('12.5g'), findsOneWidget); // avgSugar
       expect(find.text('18.7g'), findsOneWidget); // avgCarbs
 
       // Should display fruit count
@@ -79,7 +79,7 @@ void main() {
       // Should have horizontal ListView
       final listView = find.byType(ListView);
       expect(listView, findsOneWidget);
-      
+
       final listViewWidget = tester.widget<ListView>(listView);
       expect(listViewWidget.scrollDirection, equals(Axis.horizontal));
     });

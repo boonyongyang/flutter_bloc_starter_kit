@@ -7,7 +7,8 @@ import 'package:flutter_bloc_starter_kit/features/fruits/presentation/widgets/nu
 
 void main() {
   group('NutritionalBarChartSection', () {
-    testWidgets('renders section title and bar chart correctly', (tester) async {
+    testWidgets('renders section title and bar chart correctly',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -29,7 +30,7 @@ void main() {
 
       // Verify the container structure
       expect(find.byType(Container), findsAtLeastNWidgets(1));
-      
+
       // Verify the gap for spacing
       expect(find.byType(Gap), findsAtLeastNWidgets(1));
     });
@@ -103,7 +104,8 @@ void main() {
       expect(container.constraints?.maxHeight, equals(160));
     });
 
-    testWidgets('displays chart with proper styling and decoration', (tester) async {
+    testWidgets('displays chart with proper styling and decoration',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -127,10 +129,10 @@ void main() {
 
       // Verify container has decoration
       expect(container.decoration, isA<BoxDecoration>());
-      
+
       // Verify container has padding
       expect(container.padding, equals(const EdgeInsets.all(16)));
-      
+
       // Verify container has correct height
       expect(container.constraints?.maxHeight, equals(160));
     });
@@ -177,7 +179,8 @@ void main() {
       expect(gap.mainAxisExtent, equals(12));
     });
 
-    testWidgets('renders bar chart with correct number of bars', (tester) async {
+    testWidgets('renders bar chart with correct number of bars',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -193,7 +196,7 @@ void main() {
 
       // The chart should have bars for all 4 nutrition values
       expect(find.byType(BarChart), findsOneWidget);
-      
+
       // Verify the widget renders without throwing errors
       await tester.pump();
       expect(tester.takeException(), isNull);
@@ -204,7 +207,8 @@ void main() {
         const MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(
-              avgSugar: -5.0, // Shouldn't happen in real data, but test edge case
+              avgSugar:
+                  -5.0, // Shouldn't happen in real data, but test edge case
               avgCarbs: 25.0,
               avgProtein: 1.8,
               avgFat: 0.6,
@@ -216,14 +220,15 @@ void main() {
       // Should render without errors even with negative values
       expect(find.byType(NutritionalBarChartSection), findsOneWidget);
       expect(find.byType(BarChart), findsOneWidget);
-      
+
       // Verify no exceptions are thrown
       await tester.pump();
       expect(tester.takeException(), isNull);
     });
 
     testWidgets('widget updates correctly when values change', (tester) async {
-      Widget buildWidget(double sugar, double carbs, double protein, double fat) {
+      Widget buildWidget(
+          double sugar, double carbs, double protein, double fat) {
         return MaterialApp(
           home: Scaffold(
             body: NutritionalBarChartSection(

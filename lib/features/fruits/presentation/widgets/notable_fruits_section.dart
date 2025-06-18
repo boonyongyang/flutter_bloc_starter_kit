@@ -30,7 +30,6 @@ class NotableFruitsSection extends StatelessWidget {
           'Notable Fruits',
           style: AppTextStyles.w700p18,
         ),
-        const Gap(12),
         Row(
           children: [
             Expanded(
@@ -55,7 +54,6 @@ class NotableFruitsSection extends StatelessWidget {
             ),
           ],
         ),
-        const Gap(12),
         Row(
           children: [
             Expanded(
@@ -66,6 +64,7 @@ class NotableFruitsSection extends StatelessWidget {
                 color: NutritionConstants.nutrients['sugar']!.color,
                 value:
                     '${highestSugarFruit.nutritions.sugar.toStringAsFixed(1)}g sugar',
+                secondaryValue: '${highestSugarFruit.nutritions.calories} kcal',
               ),
             ),
             const Gap(12),
@@ -92,6 +91,7 @@ class NotableFruitCard extends StatelessWidget {
   final IconData icon;
   final Color color;
   final String value;
+  final String? secondaryValue;
 
   const NotableFruitCard({
     super.key,
@@ -100,6 +100,7 @@ class NotableFruitCard extends StatelessWidget {
     required this.icon,
     required this.color,
     required this.value,
+    this.secondaryValue,
   });
 
   @override
@@ -130,20 +131,27 @@ class NotableFruitCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const Gap(8),
+              const Gap(4),
               Text(
                 fruit.name,
                 style: AppTextStyles.w700p16,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const Gap(4),
               Text(
                 value,
                 style: AppTextStyles.w600p14.copyWith(
                   color: color,
                 ),
               ),
+              if (secondaryValue != null) ...[
+                Text(
+                  secondaryValue!,
+                  style: AppTextStyles.w400p12.copyWith(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

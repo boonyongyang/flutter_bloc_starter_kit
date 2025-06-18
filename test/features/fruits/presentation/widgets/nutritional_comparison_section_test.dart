@@ -72,7 +72,7 @@ void main() {
 
       // Verify the widget renders
       expect(find.byType(NutritionalComparisonSection), findsOneWidget);
-      
+
       // Verify the main structure components
       expect(find.byType(Column), findsAtLeastNWidgets(1));
     });
@@ -129,16 +129,23 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: NutritionalComparisonSection(
-              fruits: mockFruits,
-              selectedFruits: mockSelectedFruits,
+            body: SizedBox(
+              width: 800,
+              height: 600,
+              child: NutritionalComparisonSection(
+                fruits: mockFruits,
+                selectedFruits: mockSelectedFruits,
+              ),
             ),
           ),
         ),
       );
 
       // Should have ValueListenableBuilder widgets for reactive state
-      expect(find.byType(ValueListenableBuilder), findsAtLeastNWidgets(1));
+      expect(
+          find.byType(ValueListenableBuilder<bool>), findsAtLeastNWidgets(1));
+      expect(
+          find.byType(ValueListenableBuilder<Fruit>), findsAtLeastNWidgets(1));
     });
 
     testWidgets('handles fruits with no selected fruits', (tester) async {
@@ -253,7 +260,7 @@ void main() {
 
       // Should render without color-related errors
       expect(find.byType(NutritionalComparisonSection), findsOneWidget);
-      
+
       // No exceptions should be thrown
       expect(tester.takeException(), isNull);
     });
@@ -282,13 +289,19 @@ void main() {
       expect(find.byType(NutritionalComparisonSection), findsOneWidget);
     });
 
-    testWidgets('initializes with correct default fruits when sufficient fruits available', (tester) async {
+    testWidgets(
+        'initializes with correct default fruits when sufficient fruits available',
+        (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: NutritionalComparisonSection(
-              fruits: mockFruits,
-              selectedFruits: const ['Apple', 'Banana'],
+            body: SizedBox(
+              width: 800,
+              height: 600,
+              child: NutritionalComparisonSection(
+                fruits: mockFruits,
+                selectedFruits: const ['Apple', 'Banana'],
+              ),
             ),
           ),
         ),
@@ -296,9 +309,12 @@ void main() {
 
       // Should initialize without errors when enough fruits are provided
       expect(find.byType(NutritionalComparisonSection), findsOneWidget);
-      
+
       // Should have the proper widget structure
-      expect(find.byType(ValueListenableBuilder), findsAtLeastNWidgets(1));
+      expect(
+          find.byType(ValueListenableBuilder<bool>), findsAtLeastNWidgets(1));
+      expect(
+          find.byType(ValueListenableBuilder<Fruit>), findsAtLeastNWidgets(1));
     });
 
     testWidgets('handles gap widgets for proper spacing', (tester) async {

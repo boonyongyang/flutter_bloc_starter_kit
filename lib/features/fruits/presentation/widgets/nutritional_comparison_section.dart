@@ -53,7 +53,23 @@ class _NutritionalComparisonSectionState
       _leftFruit = ValueNotifier<Fruit>(widget.fruits.first);
       _rightFruit = ValueNotifier<Fruit>(widget.fruits.first);
     } else {
-      throw Exception('Fruits list cannot be empty!');
+      // Handle empty fruits list gracefully - use placeholder fruit
+      const placeholderFruit = Fruit(
+        name: 'No Fruit Available',
+        id: 0,
+        family: 'N/A',
+        order: 'N/A',
+        genus: 'N/A',
+        nutritions: Nutrition(
+          calories: 0,
+          fat: 0,
+          sugar: 0,
+          carbohydrates: 0,
+          protein: 0,
+        ),
+      );
+      _leftFruit = ValueNotifier<Fruit>(placeholderFruit);
+      _rightFruit = ValueNotifier<Fruit>(placeholderFruit);
     }
   }
 

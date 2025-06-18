@@ -27,6 +27,37 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
   final double _labelRotation = 0.0;
   int? touchedIndex;
 
+  // Helper method to ensure minimum data for radar chart
+  List<double> get _safeValues {
+    if (widget.macroValues.isEmpty) {
+      return [0.0, 0.0, 0.0]; // Minimum 3 values required by fl_chart
+    }
+    if (widget.macroValues.length < 3) {
+      final values = List<double>.from(widget.macroValues);
+      while (values.length < 3) {
+        values.add(0.0);
+      }
+      return values;
+    }
+    return widget.macroValues;
+  }
+
+  List<String> get _safeLabels {
+    if (widget.macroLabels.isEmpty) {
+      return ['Value 1', 'Value 2', 'Value 3']; // Default labels
+    }
+    if (widget.macroLabels.length < 3) {
+      final labels = List<String>.from(widget.macroLabels);
+      int count = labels.length + 1;
+      while (labels.length < 3) {
+        labels.add('Value $count');
+        count++;
+      }
+      return labels;
+    }
+    return widget.macroLabels;
+  }
+
   void _handleRadarTouch(RadarTouchResponse? response) {
     if (response == null || response.touchedSpot == null) {
       setState(() {
@@ -53,6 +84,9 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
     );
 
+    final safeValues = _safeValues;
+    final safeLabels = _safeLabels;
+
     return Column(
       children: [
         SizedBox(
@@ -62,10 +96,6 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  // color: Theme.of(context)
-                  //     .colorScheme
-                  //     .surfaceContainerHighest
-                  //     .withOpacity(0.5),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
@@ -81,60 +111,76 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                 padding: const EdgeInsets.all(16),
                 height: 220,
                 width: 220,
-                child: RadarChart(
-                  RadarChartData(
-                    radarShape: _radarShape,
-                    radarBackgroundColor: Colors.transparent,
-                    dataSets: [
-                      RadarDataSet(
-                        fillColor: AppColors.neonAqua.withOpacity(0.18),
-                        borderColor: AppColors.neonAqua,
-                        entryRadius: 7,
-                        borderWidth: 4,
-                        dataEntries: widget.macroValues
-                            .map((value) => RadarEntry(value: value))
-                            .toList(),
+                child: safeValues.isNotEmpty && safeValues.length >= 3
+                    ? RadarChart(
+                        RadarChartData(
+                          radarShape: _radarShape,
+                          radarBackgroundColor: Colors.transparent,
+                          dataSets: [
+                            RadarDataSet(
+                              fillColor: AppColors.neonAqua.withOpacity(0.18),
+                              borderColor: AppColors.neonAqua,
+                              entryRadius: 7,
+                              borderWidth: 4,
+                              dataEntries: safeValues
+                                  .map((value) => RadarEntry(value: value))
+                                  .toList(),
+                            ),
+                          ],
+                          radarBorderData: BorderSide(
+                            color: _radarShape == RadarShape.polygon
+                                ? AppColors.neonBlue
+                                : AppColors.cyberpunkPurple,
+                            width: 2.5,
+                          ),
+                          titleTextStyle: AppTextStyles.w700p16.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            letterSpacing: 1.2,
+                          ),
+                          getTitle: (index, angle) {
+                            return RadarChartTitle(
+                              text: index < safeLabels.length
+                                  ? safeLabels[index]
+                                  : 'Value ${index + 1}',
+                              angle: _labelRotation,
+                              positionPercentageOffset: _titlePositionOffset,
+                            );
+                          },
+                          titlePositionPercentageOffset: _titlePositionOffset,
+                          tickCount: _tickCount,
+                          ticksTextStyle: tickStyle,
+                          gridBorderData: BorderSide(
+                            color: _radarShape == RadarShape.polygon
+                                ? AppColors.matrixSilver
+                                : AppColors.digitalTeal,
+                            width: 1.5,
+                          ),
+                          tickBorderData: const BorderSide(
+                              color: AppColors.digitalTeal, width: 1),
+                          radarTouchData: RadarTouchData(
+                            enabled: true,
+                            touchCallback: (event, response) {
+                              _handleRadarTouch(response);
+                            },
+                            touchSpotThreshold: 18,
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                          'No data available',
+                          style: AppTextStyles.w400p14.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
+                          ),
+                        ),
                       ),
-                    ],
-                    radarBorderData: BorderSide(
-                      color: _radarShape == RadarShape.polygon
-                          ? AppColors.neonBlue
-                          : AppColors.cyberpunkPurple,
-                      width: 2.5,
-                    ),
-                    titleTextStyle: AppTextStyles.w700p16.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      letterSpacing: 1.2,
-                    ),
-                    getTitle: (index, angle) {
-                      return RadarChartTitle(
-                        text: widget.macroLabels[index],
-                        angle: _labelRotation,
-                        positionPercentageOffset: _titlePositionOffset,
-                      );
-                    },
-                    titlePositionPercentageOffset: _titlePositionOffset,
-                    tickCount: _tickCount,
-                    ticksTextStyle: tickStyle,
-                    gridBorderData: BorderSide(
-                      color: _radarShape == RadarShape.polygon
-                          ? AppColors.matrixSilver
-                          : AppColors.digitalTeal,
-                      width: 1.5,
-                    ),
-                    tickBorderData: const BorderSide(
-                        color: AppColors.digitalTeal, width: 1),
-                    radarTouchData: RadarTouchData(
-                      enabled: true,
-                      touchCallback: (event, response) {
-                        _handleRadarTouch(response);
-                      },
-                      touchSpotThreshold: 18,
-                    ),
-                  ),
-                ),
               ),
-              if (touchedIndex != null)
+              if (touchedIndex != null &&
+                  touchedIndex! < safeLabels.length &&
+                  touchedIndex! < safeValues.length)
                 Positioned(
                   top: 30,
                   child: Container(
@@ -154,14 +200,14 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          widget.macroLabels[touchedIndex!],
+                          safeLabels[touchedIndex!],
                           style: AppTextStyles.w700p12.copyWith(
                             color: Colors.white,
                           ),
                         ),
                         const Gap(8),
                         Text(
-                          '${widget.macroValues[touchedIndex!].toStringAsFixed(1)}g',
+                          '${safeValues[touchedIndex!].toStringAsFixed(1)}g',
                           style: AppTextStyles.w400p12.copyWith(
                             color: Colors.white,
                           ),
@@ -178,10 +224,6 @@ class _MacroNutrientRadarChartState extends State<MacroNutrientRadarChart> {
           margin: const EdgeInsets.only(top: 8),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            // color: Theme.of(context)
-            //     .colorScheme
-            //     .surfaceContainerHighest
-            //     .withOpacity(0.5),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
