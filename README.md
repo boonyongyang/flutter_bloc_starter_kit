@@ -7,11 +7,17 @@ A demonstration of Flutter project architecture and best practices, showcasing h
 ### Screenshots
 <div align="center">
   
-| Fruits Dashboard | Nutritional Comparison | Fruits List & Sorting | Fruit Details | Taxonomy Info |
-|:----------------:|:---------------------:|:--------------------:|:-------------:|:-------------:|
-| <img src="screenshots/fruits_dashboard.png" height="400" alt="Dashboard"/> | <img src="screenshots/nutritional_comparison.png" height="400" alt="Comparison"/> | <img src="screenshots/fruits_list_with_sorting.png" height="400" alt="List"/> | <img src="screenshots/fruit_detail_page.png" height="400" alt="Details"/> | <img src="screenshots/fruit_detail_taxonomy.png" height="400" alt="Taxonomy"/> |
+| Fruits Dashboard | Nutritional Comparison | Fruits List & Sorting |
+|:----------------:|:---------------------:|:--------------------:|
+| <img src="screenshots/fruits_dashboard.png" height="400" alt="Dashboard"/> | <img src="screenshots/nutritional_comparison.png" height="400" alt="Comparison"/> | <img src="screenshots/fruits_list_with_sorting.png" height="400" alt="List"/> |
 
-*Overview & insights* | *Nutritional analysis* | *Sorting & filtering* | *Detailed info* | *Taxonomy data*
+*Overview & insights* | *Nutritional analysis* | *Sorting & filtering*
+
+| Fruit Details | Taxonomy Info |
+|:-------------:|:-------------:|
+| <img src="screenshots/fruit_detail_page.png" height="400" alt="Details"/> | <img src="screenshots/fruit_detail_taxonomy.png" height="400" alt="Taxonomy"/> |
+
+*Detailed info* | *Taxonomy data*
 
 </div>
 
