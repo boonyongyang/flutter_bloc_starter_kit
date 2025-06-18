@@ -41,3 +41,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.staging
+
+# Generated files 
+lib/core/config/env.g.dart
+ios/Flutter/Environment.xcconfig 

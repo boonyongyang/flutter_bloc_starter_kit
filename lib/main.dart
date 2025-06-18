@@ -4,6 +4,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'core/config/logger.dart';
+import 'core/utils/app_info.dart';
 import 'features/auth/presentation/bloc/auth_cubit.dart';
 import 'features/auth/services/auth_service.dart';
 import 'features/theme/bloc/theme_cubit.dart';
@@ -14,7 +15,9 @@ import 'core/constants/storage_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  logger.d('in main');
+
+  // Log application startup information
+  AppInfo.logStartupInfo();
 
   // Initialize Hive
   final appDocumentDir = await getApplicationDocumentsDirectory();

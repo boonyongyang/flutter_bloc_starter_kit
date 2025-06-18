@@ -30,6 +30,7 @@ A complete starter project with real implementations of:
 - **Hive**: Local storage with offline-first patterns
 - **GoRouter**: Declarative navigation setup
 - **fl_chart**: Data visualization examples
+- **Envied**: Type-safe environment variable management
 - **Build Runner**: Code generation pipeline configured
 
 **Production-Ready Patterns**
@@ -52,8 +53,14 @@ A complete starter project with real implementations of:
 git clone https://github.com/boonyongyang/flutter_bloc_starter_kit.git my_new_app
 cd my_new_app
 
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your actual configuration values
+
 # Install dependencies
 flutter pub get
+
+# Generate code (models, API clients, environment config)
 flutter packages pub run build_runner build
 
 # Run and see what you're starting with
@@ -196,12 +203,19 @@ lib/features/
 Replace the sample API calls with your backend:
 
 ```dart
-// In lib/core/network/api_service.dart
-@RestApi(baseUrl: "https://your-api.com/")
+// 1. Update your environment variables in .env
+FRUITS_API_BASE_URL=https://your-api.com/api
+API_TIMEOUT_SECONDS=30
+
+// 2. The API client will automatically use your environment config
+@RestApi()
 abstract class ApiService {
   @GET("/your-endpoint")
   Future<List<YourModel>> getYourData();
 }
+
+// 3. Environment variables are type-safe and available via Env class
+print(Env.fruitsApiBaseUrl); // https://your-api.com/api
 ```
 
 ### Customize Data Models
@@ -222,6 +236,40 @@ class YourModel extends HiveObject {
   // Use the same annotation patterns for code generation
 }
 ```
+
+## Environment Configuration
+
+The template includes a robust environment management system using the `envied` package for type-safe environment variables.
+
+### Setting Up Environment Variables
+
+1. **Copy the example file:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configure your environment:**
+   ```bash
+   # .env file
+   # Application environment: dev, stag, prod
+   ENV=dev
+   
+   FRUITS_API_BASE_URL=https://fruityvice.com/api
+   
+   # Application ID
+   APP_ID=com.example.flutter_bloc_starter_kit
+   
+   # Application name  
+   APP_NAME=Flutter BLoC Starter Kit
+   
+   # Logging level: debug, info, warning, error
+   LOG_LEVEL=debug
+   ```
+
+3. **Generate environment config:**
+   ```bash
+   flutter packages pub run build_runner build
+   ```
 
 ## Testing Your Features
 
@@ -251,11 +299,14 @@ test/
 ### Code Generation
 
 ```bash
-# Generate models, API clients, routes
+# Generate models, API clients, routes, and environment config
 flutter packages pub run build_runner build
 
 # Watch for changes during development
 flutter packages pub run build_runner watch
+
+# Clean and regenerate all generated files
+flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
 
 ### Running Tests
@@ -273,6 +324,13 @@ flutter test --coverage               # With coverage
 - Error handling setup
 - Type-safe API calls
 - Response caching
+- Environment-based configuration
+
+### Environment Management (Envied)
+- Type-safe environment variables
+- Separate configs for development/staging/production
+- Build-time variable validation
+- Secure secret management
 
 ### Local Storage (Hive)
 - Model adapters generated
@@ -294,6 +352,7 @@ flutter test --coverage               # With coverage
 ```
 lib/
 ├── core/                    # Shared infrastructure
+│   ├── config/             # Environment 
 │   ├── di/                 # Dependency injection
 │   ├── network/            # API configuration
 │   ├── storage/            # Local storage setup

@@ -13,9 +13,7 @@ class _FruitsApiClient implements FruitsApiClient {
     this._dio, {
     this.baseUrl,
     this.errorLogger,
-  }) {
-    baseUrl ??= 'https://fruityvice.com/api';
-  }
+  });
 
   final Dio _dio;
 

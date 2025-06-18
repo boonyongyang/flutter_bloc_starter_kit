@@ -5,11 +5,11 @@ import '../models/fruit_model.dart';
 
 part 'fruits_api_client.g.dart';
 
-@RestApi(baseUrl: "https://fruityvice.com/api")
+@RestApi()
 abstract class FruitsApiClient {
   factory FruitsApiClient(
     Dio dio, {
-    String baseUrl,
+    String? baseUrl,
   }) = _FruitsApiClient;
 
   @GET("/fruit/all")

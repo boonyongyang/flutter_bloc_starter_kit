@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:uuid/uuid.dart';
 
+import '../config/env.dart';
 import '../../features/fruits/data/datasources/fruits_api_client.dart';
 import '../../features/fruits/data/fruits_repository.dart';
 import '../../features/taxonomy/data/repositories/taxonomy_repository.dart';
@@ -20,9 +21,9 @@ void setupServiceLocator() {
   locator.registerLazySingleton<Dio>(() {
     final dio = Dio(
       BaseOptions(
-        baseUrl: 'https://api.example.com',
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
+        baseUrl: Env.fruitsApiBaseUrl,
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
       ),
     );
     dio.interceptors.add(
