@@ -21,7 +21,7 @@ A demonstration of Flutter project architecture and best practices, showcasing h
 
 </div>
 
-### Demo Videos
+### Demo Gifs
 <div align="center">
 
 **Fruits Page Navigation**  
