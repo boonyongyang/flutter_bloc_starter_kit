@@ -1,406 +1,267 @@
 # Flutter Bloc Starter Kit
 
-**Your go-to base template for starting new Flutter projects.**
+A demonstration of Flutter project architecture and best practices, showcasing how I approach building scalable Flutter applications.
 
-Skip the initial setup headache and start with a solid foundation. This is the template I use when beginning any new Flutter project - it includes all the architectural decisions, package integrations, and boilerplate code you'd write anyway.
+## Overview
 
-## The Problem This Solves
+This project demonstrates my approach to Flutter development, including architectural decisions, state management patterns, and integration of essential dependencies. It serves as a practical example of clean code principles and modern Flutter development practices.
 
-Starting a new Flutter project usually means:
-- Setting up clean architecture from scratch
-- Configuring state management (again)
-- Integrating common packages like Dio, Hive, GoRouter
-- Writing the same auth flow, routing, and error handling
-- Setting up testing structure and CI
+## Key Features
 
-**This template gives you all of that out of the box.**
-
-## What You Get
-
-A complete starter project with real implementations of:
-
-**Core Architecture Setup**
-- Clean 2-layer architecture (Data + Presentation) already configured
-- Bloc/Cubit state management with proper dependency injection
-- Feature-first folder structure ready for your business logic
-- Repository pattern with interfaces for easy testing
-
-**Essential Integrations**
-- **Dio + Retrofit**: Type-safe API calls with error handling
-- **Hive**: Local storage with offline-first patterns
-- **GoRouter**: Declarative navigation setup
-- **fl_chart**: Data visualization examples
-- **Envied**: Type-safe environment variable management
-- **Build Runner**: Code generation pipeline configured
-
-**Production-Ready Patterns**
-- Authentication flow (replace with your auth provider)
-- Error state management and user feedback
-- Light/dark theme switching (Work In Progress)
-- Responsive design foundations
-- Comprehensive testing setup (unit, widget, integration)
-
-**Sample Features** (replace with your own)
-- Simple Login/logout flow
-- Data listing with search and filtering
-- Dashboard with interactive charts
-- Settings and theme preferences
+- **Clean Architecture**: 2-layer architecture focusing on separation of concerns
+- **State Management**: BLoC/Cubit pattern with proper dependency injection
+- **Type-safe APIs**: Retrofit with Dio for robust network layer
+- **Local Storage**: Hive for efficient offline-first data persistence
+- **Environment Management**: Type-safe environment configuration with Envied
+- **Localization**: Multi-language support with proper l10n implementation
+- **Testing**: Comprehensive test coverage across all layers
 
 ## Quick Start
 
 ```bash
-# Use this template for your new project
-git clone https://github.com/boonyongyang/flutter_bloc_starter_kit.git my_new_app
-cd my_new_app
+# Clone the repository
+git clone https://github.com/boonyongyang/flutter_bloc_starter_kit.git
+cd flutter_bloc_starter_kit
 
 # Set up environment variables
 cp .env.example .env
-# Edit .env with your actual configuration values
 
 # Install dependencies
 flutter pub get
 
-# Generate code (models, API clients, environment config)
+# Generate code (models, environment config)
 flutter packages pub run build_runner build
 
-# Run and see what you're starting with
+# Run the application
 flutter run
 ```
 
-**What you'll see**: A working app with login, dashboard, and sample data - ready to be replaced with your actual features.
+## Architecture Decisions
 
-## Architecture Decisions Made For You
+### 2-Layer Clean Architecture
 
-### 2-Layer Clean Architecture (No Domain Layer)
-
-Most tutorials show 3-layer clean architecture. For 90% of apps, that's overkill. This template uses a practical 2-layer approach:
+This project uses a simplified 2-layer architecture instead of the traditional 3-layer approach:
 
 ```
-┌─────────────────────────────────────┐
-│         Presentation Layer          │
-│  • Pages & Widgets                  │
-│  • Bloc/Cubit (Business Logic)     │
-│  • UI State Management             │
-└─────────────────────────────────────┘
-                    │
-                    │ Repository Interface
-                    ▼
-┌─────────────────────────────────────┐
-│            Data Layer               │
-│  • API Services (Dio/Retrofit)     │
-│  • Local Storage (Hive)            │
-│  • Repository Implementations      │
-│  • Data Models                     │
-└─────────────────────────────────────┘
+Presentation Layer (UI + Business Logic)
+├── Pages & Widgets
+├── BLoC/Cubit (State Management)
+└── UI State Handling
+
+Data Layer (Data Access)
+├── Repository Implementations
+├── API Services (Retrofit/Dio)
+├── Local Storage (Hive)
+└── Data Models
 ```
 
-**Why this works for most projects:**
-- Less boilerplate to maintain
-- Easier for teams to understand
-- Faster feature development
-- You can add a domain layer later if complexity grows
+**Why Skip the Domain Layer?**
 
-**When you'd add a domain layer:**
+For most applications, a domain layer adds unnecessary complexity without significant benefits:
+- Reduces boilerplate code and development time
+- Simpler project structure and easier onboarding
+- Business logic in Cubits is sufficient for most use cases
+- Can be added later when complexity genuinely requires it
 
+### Sample Implementation: Fruits Feature
+
+The fruits feature demonstrates the complete architecture pattern:
+
+**Cubit (Business Logic)**
 ```dart
-// Simple case - stays in Cubit
-class ProductsCubit extends Cubit<ProductsState> {
-  void filterProducts(String category) {
-    final filtered = allProducts.where((p) => p.category == category).toList();
-    emit(ProductsLoaded(filtered));
-  }
-}
-
-// Complex case - move to domain layer
-class ProductRecommendationUseCase {
-  List<Product> getRecommendations(User user) {
-    // Complex algorithm considering:
-    // - User purchase history
-    // - Seasonal trends
-    // - Inventory levels
-    // - Price optimization
-    // - ML-based predictions
-    return _complexRecommendationLogic(user);
-  }
-}
-```
-
-### State Management Strategy
-
-**Template includes both Bloc and Cubit examples:**
-
-```dart
-// Use Cubit for simple state changes
-class ProductFilterCubit extends Cubit<List<Product>> {
-  void filterByPrice(double maxPrice) {
-    final filtered = state.where((p) => p.price <= maxPrice).toList();
-    emit(filtered);
-  }
-}
-
-// Use Bloc for complex flows with events
-class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
-  // Better when you need event history, side effects, etc.
-}
-```
-
-### Repository Pattern Setup
-
-The template includes working repository examples you can copy for your features:
-
-```dart
-// Interface (defined in data layer)
-abstract class IProductRepository {
-  Future<List<Product>> getProducts();
-  Future<Product> getProductById(String id);
-  Future<void> saveToFavorites(Product product);
-}
-
-// Implementation (handles API + local storage)
-class ProductRepository implements IProductRepository {
-  final ApiService _api;
-  final LocalStorage _storage;
+class FruitsCubit extends Cubit<FruitsState> {
+  final IFruitsRepository _repository;
   
-  @override
-  Future<List<Product>> getProducts() async {
-    // Cache-first strategy already implemented
+  Future<void> fetchFruits() async {
+    emit(const FruitsLoading());
     try {
-      return await _storage.getCachedProducts();
-    } catch (_) {
-      final products = await _api.fetchProducts();
-      await _storage.cacheProducts(products);
-      return products;
+      final fruits = await _repository.fetchAllFruits();
+      emit(FruitsLoaded(fruits));
+    } catch (e) {
+      emit(FruitsError(e.toString()));
     }
   }
 }
 ```
 
-## Customizing For Your Project
-
-### Replace Sample Features
-
-The template includes sample features (fruits, auth, dashboard) that demonstrate patterns. Replace these with your actual features:
-
-```bash
-# Current sample features
-lib/features/
-├── auth/           # Replace with your auth logic
-├── fruits/         # Replace with your main feature
-├── home/           # Customize dashboard
-└── theme/          # Keep as-is
-
-# Your new project structure
-lib/features/
-├── auth/           # Your authentication
-├── products/       # Your main business feature
-├── orders/         # Another business feature
-├── home/           # Your dashboard
-└── theme/          # Keep the theme management
-```
-
-### Update API Endpoints
-
-Replace the sample API calls with your backend:
-
+**Repository (Data Access)**
 ```dart
-// 1. Update your environment variables in .env
-FRUITS_API_BASE_URL=https://your-api.com/api
-API_TIMEOUT_SECONDS=30
-
-// 2. The API client will automatically use your environment config
-@RestApi()
-abstract class ApiService {
-  @GET("/your-endpoint")
-  Future<List<YourModel>> getYourData();
-}
-
-// 3. Environment variables are type-safe and available via Env class
-print(Env.fruitsApiBaseUrl); // https://your-api.com/api
-```
-
-### Customize Data Models
-
-Replace sample models with your business models:
-
-```dart
-// Replace lib/features/fruits/data/models/
-// With your models using the same patterns
-@HiveType(typeId: 0)
-class YourModel extends HiveObject {
-  @HiveField(0)
-  final String id;
+class FruitsRepository implements IFruitsRepository {
+  final FruitsApiService _apiService;
   
-  @HiveField(1)  
-  final String name;
-  
-  // Use the same annotation patterns for code generation
+  @override
+  Future<List<Fruit>> fetchAllFruits() async {
+    return await _apiService.getAllFruits();
+  }
 }
 ```
+
+**API Client (Network Layer)**
+```dart
+@RestApi(baseUrl: "https://fruityvice.com/api/")
+abstract class FruitsApiService {
+  factory FruitsApiService(Dio dio) = _FruitsApiService;
+  
+  @GET("/fruit/all")
+  Future<List<Fruit>> getAllFruits();
+}
+```
+
+## Key Dependencies
+
+### Core Architecture
+- **flutter_bloc**: State management with BLoC pattern
+- **get_it**: Dependency injection container
+- **go_router**: Declarative routing solution
+
+### Network & Data
+- **dio**: HTTP client with interceptors and error handling
+- **retrofit**: Type-safe API client generation
+- **hive_ce**: Lightweight, fast local database
+- **json_serializable**: JSON serialization code generation
+- **flutter_secure_storage**: Secure data persistence
+
+### Environment & Configuration
+- **envied**: Type-safe environment variable management
+- **flutter_localizations**: Internationalization support
+- **freezed**: Immutable data classes with code generation
+
+### UI & Visualization
+- **fl_chart**: Data visualization and charts
+- **gap**: Consistent spacing widgets
+- **shimmer**: Loading state animations
+
+### Development Tools
+- **build_runner**: Code generation automation
+- **mocktail**: Mocking for unit tests
+- **flutter_lints**: Code analysis and best practices
+- **logger**: Structured logging with levels
+
+These dependencies work together to provide:
+- Type safety across the entire application
+- Offline-first capabilities with automatic caching
+- Maintainable and testable code architecture
+- Developer-friendly tooling and code generation
+- Secure data handling and environment management
 
 ## Environment Configuration
 
-The template includes a robust environment management system using the `envied` package for type-safe environment variables.
+The project uses Envied for type-safe environment management:
 
-### Setting Up Environment Variables
+```dart
+// .env
+ENV=dev
+FRUITS_API_BASE_URL=https://fruityvice.com/api
+APP_NAME=Flutter BLoC Starter Kit
+LOG_LEVEL=debug
 
-1. **Copy the example file:**
-   ```bash
-   cp .env.example .env
-   ```
+// Generated environment class
+@Envied(path: '.env')
+abstract class Env {
+  @EnviedField(varName: 'FRUITS_API_BASE_URL')
+  static const String fruitsApiBaseUrl = _Env.fruitsApiBaseUrl;
+}
+```
 
-2. **Configure your environment:**
-   ```bash
-   # .env file
-   # Application environment: dev, stag, prod
-   ENV=dev
-   
-   FRUITS_API_BASE_URL=https://fruityvice.com/api
-   
-   # Application ID
-   APP_ID=com.example.flutter_bloc_starter_kit
-   
-   # Application name  
-   APP_NAME=Flutter BLoC Starter Kit
-   
-   # Logging level: debug, info, warning, error
-   LOG_LEVEL=debug
-   ```
+## Testing
 
-3. **Generate environment config:**
-   ```bash
-   flutter packages pub run build_runner build
-   ```
-
-## Testing Your Features
-
-The template includes testing examples for every layer:
+Comprehensive testing structure covering all layers:
 
 ```bash
-# Test structure ready for your features
 test/
 ├── features/
-│   ├── auth/           # Authentication tests
-│   ├── your_feature/   # Copy the test patterns
-│   └── integration/    # End-to-end flows
-├── core/              # Core functionality tests
-└── helpers/           # Test utilities
+│   ├── fruits/
+│   │   ├── data/repositories/    # Repository tests
+│   │   └── presentation/bloc/    # Cubit/BLoC tests
+│   └── taxonomy/
+└── unit_test.dart               # Core functionality tests
 ```
 
-## Development Workflow
-
-### Adding New Features
-
-1. **Copy the pattern** from existing features
-2. **Replace sample data** with your models
-3. **Update repository** with your API calls
-4. **Modify UI** for your use case
-5. **Add tests** following existing examples
-
-### Code Generation
-
+**Running Tests**
 ```bash
-# Generate models, API clients, routes, and environment config
-flutter packages pub run build_runner build
+# Run all tests
+flutter test
 
-# Watch for changes during development
-flutter packages pub run build_runner watch
+# Run with coverage
+flutter test --coverage
 
-# Clean and regenerate all generated files
-flutter packages pub run build_runner build --delete-conflicting-outputs
+# Run specific feature tests
+flutter test test/features/fruits/
 ```
-
-### Running Tests
-
-```bash
-flutter test                           # All tests
-flutter test test/features/auth/       # Specific feature
-flutter test --coverage               # With coverage
-```
-
-## Ready-to-Use Integrations
-
-### API Client (Dio + Retrofit)
-- HTTP interceptors configured
-- Error handling setup
-- Type-safe API calls
-- Response caching
-- Environment-based configuration
-
-### Environment Management (Envied)
-- Type-safe environment variables
-- Separate configs for development/staging/production
-- Build-time variable validation
-- Secure secret management
-
-### Local Storage (Hive)
-- Model adapters generated
-- Offline-first patterns
-- Data persistence layer
-
-### Navigation (GoRouter)
-- Route definitions
-- Navigation guards
-- Deep linking support
-
-### Charts (fl_chart)
-- Responsive chart examples
-- Theme integration
-- Data visualization patterns
 
 ## Project Structure
 
 ```
 lib/
 ├── core/                    # Shared infrastructure
-│   ├── config/             # Environment 
-│   ├── di/                 # Dependency injection
+│   ├── config/             # App configuration
+│   ├── di/                 # Dependency injection setup
+│   ├── localization/       # L10n configuration and extensions
 │   ├── network/            # API configuration
-│   ├── storage/            # Local storage setup
-│   ├── routes/             # Navigation routes
-│   └── theme/              # App theming
-├── features/               # Your business features
-│   ├── auth/               # Authentication (customize)
-│   ├── sample_feature/     # Replace with your features
-│   └── shared/             # Shared UI components
-└── main.dart               # App entry point
+│   ├── routes/             # Navigation setup
+│   ├── style/              # App theming and colors
+│   └── utils/              # Utility functions
+├── features/               # Feature modules
+│   ├── auth/               # Authentication
+│   ├── fruits/             # Sample feature implementation
+│   ├── taxonomy/           # Local data management
+│   └── theme/              # Theme switching
+└── main.dart               # Application entry point
 ```
 
-## What to Build Next
+## Sample Features
 
-This template handles the foundation. Focus on your business logic:
+### Fruits Feature
+Demonstrates complete CRUD operations with:
+- API integration using Retrofit
+- Local caching with Hive
+- State management with Cubit
+- Error handling and loading states
+- Data visualization with charts
 
-- Replace sample features with your app's core functionality
-- Add your specific business models and API endpoints
-- Customize the UI to match your brand
-- Add feature-specific business rules
-- Integrate with your chosen backend services
+### Authentication
+Basic auth flow showing:
+- Secure storage integration
+- Route protection
+- State persistence
+
+### Theme Management
+Dynamic theming with:
+- Light/dark mode switching
+- Persistent theme preferences
+- **(🚧WIP)** Advanced color scheme customization
+- **(🚧WIP)** System theme detection and auto-switching
+
+### Localization
+Multi-language support featuring:
+- Type-safe localization with flutter_localizations
+- Context extension for clean l10n access (`context.l10n`)
+- Comprehensive string management in `.arb` files
+- **(🚧WIP)** Dynamic language switching without app restart
+- **(🚧WIP)** Pluralization and date formatting patterns
+- **(🚧WIP)** RTL language support and layout adaptation
 
 ## Future Enhancements
 
-Planned improvements to make this template even better:
-
-**Advanced Features**
-- Push notifications setup
-- Deep linking configuration
-- App analytics integration
-- Crash reporting setup
-- Performance monitoring tools
-
-**UI/UX Improvements**
-- Accessibility enhancements
-- Animations and micro-interactions
-- Component library expansion
-- Design system documentation
-
-**Offline-First Capabilities**
+**Performance & Optimization**
+- Implementation of proper pagination for large datasets
 - Background sync with conflict resolution
-- Offline queue for API requests
-- Smart caching strategies for better performance
-- Network connectivity awareness
+- Image caching and optimization strategies
 
 **Developer Experience**
-- VS Code snippets for common patterns
-- GitHub Actions CI/CD templates
-- Docker setup for consistent development
+- CI/CD pipeline setup with GitHub Actions
 - Code generation templates for new features
+- Automated testing in CI environment
+
+**Production Readiness**
+- Crash reporting integration (Firebase Crashlytics)
+- Analytics implementation (Firebase Analytics, Mixpanel)
+- Performance monitoring setup
+
+**Architecture Evolution**
+- Migration to domain layer when business complexity increases
+- Implementation of use cases for complex business rules
+- Advanced error handling patterns
+
+This project represents a practical approach to Flutter development, balancing simplicity with scalability, and demonstrating real-world patterns that can be applied to production applications.
 
