@@ -8,7 +8,7 @@ import '../config/env.dart';
 import '../../features/fruits/data/datasources/fruits_api_client.dart';
 import '../../features/fruits/data/fruits_repository.dart';
 import '../../features/taxonomy/data/repositories/taxonomy_repository.dart';
-import '../storage/local_database_client.dart';
+import '../../features/taxonomy/data/datasources/taxonomy_local_client.dart';
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
 import '../../features/auth/services/auth_service.dart';
 import '../../features/fruits/data/i_fruits_repository.dart';
@@ -58,13 +58,13 @@ void setupServiceLocator() {
         locator<Uuid>(),
       ));
 
-  // Register our local database client as a singleton
-  final localDbClient = LocalDatabaseClient();
-  locator.registerLazySingleton(() => localDbClient);
+  // Register our taxonomy local data source as a singleton
+  final taxonomyDataSource = TaxonomyLocalClient();
+  locator.registerLazySingleton(() => taxonomyDataSource);
 
-  // Register our taxonomy repository (using the local database)
+  // Register our taxonomy repository (using the local data source)
   locator.registerLazySingleton<ITaxonomyRepository>(
-      () => TaxonomyRepository(localDbClient));
+      () => TaxonomyRepository(taxonomyDataSource));
 
   // Register Cubits/Blocs as factories
   locator.registerFactory<AuthCubit>(

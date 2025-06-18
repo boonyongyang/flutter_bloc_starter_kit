@@ -10,7 +10,7 @@ import 'features/auth/services/auth_service.dart';
 import 'features/theme/bloc/theme_cubit.dart';
 import 'core/app.dart';
 import 'core/di/service_locator.dart';
-import 'core/storage/local_database_client.dart';
+import 'features/taxonomy/data/datasources/taxonomy_local_client.dart';
 import 'core/constants/storage_constants.dart';
 
 void main() async {
@@ -22,7 +22,6 @@ void main() async {
   // Initialize Hive
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
-  // TODO: Register any Hive TypeAdapters here if you create custom model classes for Hive
 
   // Open the app settings box
   await Hive.openBox(StorageConstants.appSettingsBox);
@@ -34,15 +33,15 @@ void main() async {
   final authService = locator<AuthService>();
   await authService.init();
 
-  // Initialize local database (if it also uses Hive, ensure Hive.init is called before this)
-  final localDbClient = locator<LocalDatabaseClient>();
-  await localDbClient.init();
+  // Initialize taxonomy local data source
+  final taxonomyDataSource = locator<TaxonomyLocalClient>();
+  await taxonomyDataSource.init();
 
   // Force refresh data from asset to get the latest taxonomy facts
   logger.d('Refreshing taxonomy facts from JSON file...');
-  await localDbClient
+  await taxonomyDataSource
       .clearAll(); // Clear existing data to ensure we get the latest
-  await localDbClient.refreshFromAsset();
+  await taxonomyDataSource.refreshFromAsset();
   runApp(
     MultiBlocProvider(
       providers: [

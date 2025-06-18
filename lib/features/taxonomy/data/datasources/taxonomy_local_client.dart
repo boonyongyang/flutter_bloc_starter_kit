@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../features/taxonomy/data/models/taxonomy_fact_model.dart';
-import '../config/logger.dart';
-import '../constants/taxonomy_constants.dart';
+import '../models/taxonomy_fact_model.dart';
+import '../../../../core/config/logger.dart';
+import '../../../../core/constants/taxonomy_constants.dart';
 
-class LocalDatabaseClient {
+/// Local database client specifically for taxonomy data storage and retrieval
+class TaxonomyLocalClient {
   final String _taxonomyBoxName = TaxonomyConstants.taxonomyBoxName;
   final String _taxonomyDataKey = TaxonomyConstants.taxonomyDataKey;
 
