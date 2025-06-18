@@ -2,10 +2,6 @@
 
 A demonstration of Flutter project architecture and best practices, showcasing how I approach building scalable Flutter applications.
 
-## Overview
-
-This project demonstrates my approach to Flutter development, including architectural decisions, state management patterns, and integration of essential dependencies. It serves as a practical example of clean code principles and modern Flutter development practices.
-
 ## Key Features
 
 - **Clean Architecture**: 2-layer architecture focusing on separation of concerns
@@ -57,9 +53,8 @@ Data Layer (Data Access)
 
 **Why Skip the Domain Layer?**
 
-For most applications, a domain layer adds unnecessary complexity without significant benefits:
+For most applications, a domain layer adds unnecessary complexity:
 - Reduces boilerplate code and development time
-- Simpler project structure and easier onboarding
 - Business logic in Cubits is sufficient for most use cases
 - Can be added later when complexity genuinely requires it
 
@@ -109,40 +104,12 @@ abstract class FruitsApiService {
 
 ## Key Dependencies
 
-### Core Architecture
-- **flutter_bloc**: State management with BLoC pattern
-- **get_it**: Dependency injection container
-- **go_router**: Declarative routing solution
+**Core Architecture:** flutter_bloc, get_it, go_router  
+**Network & Data:** dio, retrofit, hive_ce, flutter_secure_storage  
+**Environment:** envied, freezed, flutter_localizations  
+**UI & Dev Tools:** fl_chart, shimmer, mocktail, flutter_lints, logger
 
-### Network & Data
-- **dio**: HTTP client with interceptors and error handling
-- **retrofit**: Type-safe API client generation
-- **hive_ce**: Lightweight, fast local database
-- **json_serializable**: JSON serialization code generation
-- **flutter_secure_storage**: Secure data persistence
-
-### Environment & Configuration
-- **envied**: Type-safe environment variable management
-- **flutter_localizations**: Internationalization support
-- **freezed**: Immutable data classes with code generation
-
-### UI & Visualization
-- **fl_chart**: Data visualization and charts
-- **gap**: Consistent spacing widgets
-- **shimmer**: Loading state animations
-
-### Development Tools
-- **build_runner**: Code generation automation
-- **mocktail**: Mocking for unit tests
-- **flutter_lints**: Code analysis and best practices
-- **logger**: Structured logging with levels
-
-These dependencies work together to provide:
-- Type safety across the entire application
-- Offline-first capabilities with automatic caching
-- Maintainable and testable code architecture
-- Developer-friendly tooling and code generation
-- Secure data handling and environment management
+These dependencies provide type safety, offline-first capabilities, and developer-friendly tooling.
 
 ## Environment Configuration
 
@@ -205,63 +172,27 @@ lib/
 │   ├── auth/               # Authentication
 │   ├── fruits/             # Sample feature implementation
 │   ├── taxonomy/           # Local data management
-│   └── theme/              # Theme switching
 └── main.dart               # Application entry point
 ```
 
 ## Sample Features
 
 ### Fruits Feature
-Demonstrates complete CRUD operations with:
-- API integration using Retrofit
-- Local caching with Hive
-- State management with Cubit
-- Error handling and loading states
-- Data visualization with charts
+Complete CRUD operations with API integration, local caching, state management, error handling, and data visualization.
 
-### Authentication
-Basic auth flow showing:
-- Secure storage integration
-- Route protection
-- State persistence
-
-### Theme Management
-Dynamic theming with:
-- Light/dark mode switching
-- Persistent theme preferences
-- **(🚧WIP)** Advanced color scheme customization
-- **(🚧WIP)** System theme detection and auto-switching
+### Authentication & Theme
+Basic auth flow with secure storage, route protection, and dynamic light/dark theming with persistence.
 
 ### Localization
-Multi-language support featuring:
-- Type-safe localization with flutter_localizations
-- Context extension for clean l10n access (`context.l10n`)
-- Comprehensive string management in `.arb` files
-- **(🚧WIP)** Dynamic language switching without app restart
-- **(🚧WIP)** Pluralization and date formatting patterns
-- **(🚧WIP)** RTL language support and layout adaptation
+Type-safe l10n with context extension (`context.l10n`) and `.arb` string management.  
+**(🚧WIP)** Dynamic language switching, pluralization, RTL support
 
 ## Future Enhancements
 
-**Performance & Optimization**
-- Implementation of proper pagination for large datasets
-- Background sync with conflict resolution
-- Image caching and optimization strategies
+**Performance:** Pagination, background sync, image caching  
+**Developer Experience:** CI/CD pipeline, code generation templates  
+**Production:** Crash reporting, analytics, performance monitoring  
+**Architecture:** Domain layer migration for complex business rules
 
-**Developer Experience**
-- CI/CD pipeline setup with GitHub Actions
-- Code generation templates for new features
-- Automated testing in CI environment
-
-**Production Readiness**
-- Crash reporting integration (Firebase Crashlytics)
-- Analytics implementation (Firebase Analytics, Mixpanel)
-- Performance monitoring setup
-
-**Architecture Evolution**
-- Migration to domain layer when business complexity increases
-- Implementation of use cases for complex business rules
-- Advanced error handling patterns
-
-This project represents a practical approach to Flutter development, balancing simplicity with scalability, and demonstrating real-world patterns that can be applied to production applications.
+This project demonstrates practical Flutter development patterns, balancing simplicity with scalability for production applications.
 
