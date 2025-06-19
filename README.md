@@ -141,13 +141,13 @@ abstract class FruitsApiService {
 
 - **State Management:** `flutter_bloc`, `equatable`
 - **Dependency Injection:** `get_it`
-- **Routing:** `go_router`
+- **Routing:** `go_router`, `go_router_builder`
 - **Networking:** `dio`, `retrofit`
 - **Local Storage:** `hive`, `flutter_secure_storage`
 - **Code Generation & Models:** `freezed`, `json_serializable`
 - **Environment Configuration:** `envied`
-- **Localization:** `flutter_localizations`
-- **Testing & Dev Tools:** `mocktail`, `flutter_lints`, `logger`
+- **Localization:** `flutter_localizations` (or `easy_localization`)
+- **Testing & Dev Tools:** `mocktail`, `bloc_test`, `flutter_lints`, `logger`
 - **UI Utilities:** `shimmer`, `fl_chart`
 
 These packages are chosen for their stability, community support, and alignment with best practices for scalable Flutter development.
